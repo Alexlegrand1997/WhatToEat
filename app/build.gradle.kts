@@ -1,13 +1,20 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
+
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
+
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id ("org.jetbrains.kotlin.plugin.serialization") version "1.8.20"
 }
+
 
 android {
     namespace = "com.example.whattoeat"
     compileSdk = 34
 
     defaultConfig {
+
         applicationId = "com.example.whattoeat"
         minSdk = 24
         targetSdk = 34
@@ -19,7 +26,6 @@ android {
             useSupportLibrary = true
         }
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -50,7 +56,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -66,4 +71,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //Bibliothèque Fuel pour les requêtes HTTP
+    implementation (libs.fuel.android)
+    implementation (libs.fuel.json)
 }
