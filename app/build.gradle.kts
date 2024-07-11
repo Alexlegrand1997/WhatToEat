@@ -1,8 +1,8 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
+import java.util.Properties
 
 
 plugins {
-
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id ("org.jetbrains.kotlin.plugin.serialization") version "1.8.20"
@@ -14,6 +14,9 @@ android {
     compileSdk = 34
 
     defaultConfig {
+        val properties = Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+        buildConfigField("String","SPOONACULAR_API_KEY",properties.getProperty("SPOONACULAR_API_KEY"))
 
         applicationId = "com.example.whattoeat"
         minSdk = 24
