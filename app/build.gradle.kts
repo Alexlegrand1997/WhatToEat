@@ -1,4 +1,3 @@
-
 import java.util.Properties
 
 
@@ -78,4 +77,7 @@ dependencies {
     //Bibliothèque Fuel pour les requêtes HTTP
     implementation (libs.fuel.android)
     implementation (libs.fuel.json)
+
+    //Serialization for JSON
+    implementation (libs.kotlinx.serialization.json)
 }
