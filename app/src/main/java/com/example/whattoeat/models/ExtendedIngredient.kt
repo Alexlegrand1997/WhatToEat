@@ -14,7 +14,7 @@ data class ExtendedIngredient (
     val amount: Float =0.0F,
     val unit: String ="",
     val meta: List<String> = listOf(),
-    val measures: Measures =Measures()
+    val measures: Measures = Measures()
 
 )
 
