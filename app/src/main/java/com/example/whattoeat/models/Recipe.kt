@@ -15,6 +15,30 @@ data class Recipe (
     val lowFodmap: Boolean=false,
     val weightWatcherSmartPoints :Int =0,
     val gaps:String ="",
-//    val preparationMinutes:
+    val preparationMinutes:String="", // TODO : TO VALIDATE
+    val cookingMinutes: Double=0.0, //TODO : TO VALIDATE
+    val aggregateLikes:Int =0 ,
+    val healthScore: Float =0.0f,
+    val creditsText:String ="",
+    val license:String ="",
+    val sourceName:String="",
+    val pricePerServing:Float =0.0f,
+    val extendedIngredients :List<ExtendedIngredient> = listOf(),
+    val id : Int,
+    val title:String ="",
+    val readyMinutes:Int=0,
+    val serving:Int=0,
+    val sourceUrl:String="",
+    val image :String="",
+    val imageType:String="",
+    val summary:String="",
+    val cuisines: List<String> = listOf(),
+    val dishTypes: List<String> = listOf(),
+    val diets: List<String> = listOf(),
+    val occasions: List<String> = listOf(),
+    val instructions:String = "",
+    val originalId : Int =0,
+    val spoonacularScore: Float=0.0f,
+    val spoonacularSourceUrl:String=""
 
 )
