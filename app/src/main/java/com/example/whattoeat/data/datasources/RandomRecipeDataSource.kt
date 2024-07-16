@@ -3,7 +3,7 @@ package com.example.whattoeat.data.datasources
 
 import com.example.whattoeat.BuildConfig.SPOONACULAR_API_KEY
 import com.example.whattoeat.core.Constants
-import com.example.whattoeat.models.Recipe
+import com.example.whattoeat.models.Recipes
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.json.responseJson
 import com.github.kittinunf.result.Result
@@ -14,7 +14,7 @@ class RandomRecipeDataSource {
 
     private val json = Json { ignoreUnknownKeys = true }
 
-    fun getOne(): Recipe{
+    fun getOne(): Recipes {
         val(_,_,result) = Constants.RANDOM_RECIPE.httpGet().appendHeader("x-api-key",
             SPOONACULAR_API_KEY
         ).responseJson()
