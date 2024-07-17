@@ -21,8 +21,7 @@ class RandomRecipeViewModel(application: Application): AndroidViewModel(applicat
         getRandomRecipe()
     }
 
-
-   private fun getRandomRecipe(){
+    fun getRandomRecipe(){
         viewModelScope.launch{
             _randomRecipeRepository.retrieveOne().collect{ apiResult ->
                 when(apiResult){

@@ -40,8 +40,8 @@ fun LoadingSpinner() {
             Spacer(modifier = Modifier.fillMaxHeight(0.5f))
 
             Text(
-                text = "Andromia",
-                style = TextStyle(fontSize = 65.sp, fontFamily = FontFamily.Monospace, color = Color.White, fontWeight = FontWeight.SemiBold)
+                text = "What To Eat",
+                style = TextStyle(fontSize = 45.sp, fontFamily = FontFamily.Monospace, color = Color.White, fontWeight = FontWeight.SemiBold)
             )
 
             LinearProgressIndicator(

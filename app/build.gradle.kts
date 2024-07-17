@@ -84,4 +84,7 @@ dependencies {
 
     //Serialization for JSON
     implementation (libs.kotlinx.serialization.json)
+
+    // Extension to load Image from web with the help of Async
+    implementation(libs.coil.compose)
 }

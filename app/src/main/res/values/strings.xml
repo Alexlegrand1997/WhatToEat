@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">WhatToEat</string>
+    <string name="picture_unavailable">Picture unavailable</string>
 </resources>
