@@ -31,7 +31,7 @@ import kotlin.random.Random
 @Composable
 fun LoadingSpinner() {
     Surface(modifier = Modifier.fillMaxSize()) {
-        val imgNumber = Random.nextInt(1, 5)
+        val imgNumber = Random.nextInt(1, 3)
         RandomLoadingImg(imgNumber.toString())
         Column(
             verticalArrangement = Arrangement.Center,
