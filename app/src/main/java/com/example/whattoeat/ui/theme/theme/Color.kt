@@ -1,4 +1,4 @@
-package com.example.whattoeat.ui.theme
+package com.example.whattoeat.ui.theme.theme
 
 import androidx.compose.ui.graphics.Color
 

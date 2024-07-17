@@ -3,7 +3,7 @@ package com.example.whattoeat.models
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Recipe (
+data class Recipe(
     val vegetarian: Boolean=false,
     val vegan: Boolean=false,
     val glutenFree: Boolean=false,
@@ -13,23 +13,22 @@ data class Recipe (
     val veryPopular: Boolean=false,
     val sustainable: Boolean=false,
     val lowFodmap: Boolean=false,
-    val weightWatcherSmartPoints :Int =0,
+    val weightWatcherSmartPoints:Int =0,
     val gaps:String ="",
-    val preparationMinutes:String="", // TODO : TO VALIDATE
-    val cookingMinutes: Double=0.0, //TODO : TO VALIDATE
-    val aggregateLikes:Int =0 ,
-    val healthScore: Float =0.0f,
+    val preparationMinutes:String?="" , // TODO : TO VALIDATE
+    val cookingMinutes: Double? =0.0, //TODO : TO VALIDATE
+    val aggregateLikes:Int =0,
+    val healthScore: Int =0,
     val creditsText:String ="",
-    val license:String ="",
     val sourceName:String="",
     val pricePerServing:Float =0.0f,
-    val extendedIngredients :List<ExtendedIngredient> = listOf(),
-    val id : Int,
+    val extendedIngredients:List<ExtendedIngredient> = listOf(),
+    val id: Int,
     val title:String ="",
-    val readyMinutes:Int=0,
-    val serving:Int=0,
+    val readyInMinutes:Int=0,
+    val servings:Int=0,
     val sourceUrl:String="",
-    val image :String="",
+    val image:String="",
     val imageType:String="",
     val summary:String="",
     val cuisines: List<String> = listOf(),
@@ -37,7 +36,8 @@ data class Recipe (
     val diets: List<String> = listOf(),
     val occasions: List<String> = listOf(),
     val instructions:String = "",
-    val originalId : Int =0,
+    val analyzedInstructions:List<Step> = listOf(),
+    val originalId: Int? =0,
     val spoonacularScore: Float=0.0f,
     val spoonacularSourceUrl:String=""
 
