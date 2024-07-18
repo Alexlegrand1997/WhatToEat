@@ -36,7 +36,7 @@ data class Recipe(
     val diets: List<String> = listOf(),
     val occasions: List<String> = listOf(),
     val instructions:String = "",
-    val analyzedInstructions:List<Step> = listOf(),
+    val analyzedInstructions:List<Steps> = listOf(),
     val originalId: Int? =0,
     val spoonacularScore: Float=0.0f,
     val spoonacularSourceUrl:String=""

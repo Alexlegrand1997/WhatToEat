@@ -1,5 +1,6 @@
 package com.example.whattoeat.ui.theme.screens.randomRecipe
 
+import android.text.style.BackgroundColorSpan
 import android.widget.Toast
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
@@ -31,11 +32,17 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -57,11 +64,17 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.ParentDataModifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -74,6 +87,7 @@ import com.example.whattoeat.core.Constants
 import com.example.whattoeat.models.ExtendedIngredient
 import com.example.whattoeat.models.Recipe
 import com.example.whattoeat.models.Recipes
+import com.example.whattoeat.models.Step
 import com.example.whattoeat.ui.theme.composables.LoadingSpinner
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 import kotlin.contracts.Returns
@@ -102,8 +116,14 @@ fun RandomRecipeScreen(
 
 @Composable
 fun RandomRecipeScreenCard(recipes: Recipes, randomRecipeViewModel: RandomRecipeViewModel) {
+    var currentRecipeInfo = remember {
+        mutableStateOf(false)
+    }
     Surface(modifier = Modifier.fillMaxSize()) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.padding(top = 20.dp)
@@ -113,9 +133,7 @@ fun RandomRecipeScreenCard(recipes: Recipes, randomRecipeViewModel: RandomRecipe
                     contentScale = ContentScale.FillWidth,
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
-                        .
-//                aspectRatio(16/9f).
-                        clip(RoundedCornerShape(20.dp)),
+                        .clip(RoundedCornerShape(20.dp)),
                     contentDescription = recipes.recipes[0].title,
                     loading = {
                         Box(
@@ -145,21 +163,10 @@ fun RandomRecipeScreenCard(recipes: Recipes, randomRecipeViewModel: RandomRecipe
                 selectedIndex = it
             })
 
-
-//            var checked by remember { mutableStateOf(true) }
-//
-//            Switch(
-//                checked = checked,
-//                onCheckedChange = {
-//                    checked = it
-//
-//                }
-//            )
-
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.75f),
+                    .fillMaxHeight(0.85f),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 items(recipes.recipes[0].extendedIngredients) { ingredient ->
@@ -169,9 +176,38 @@ fun RandomRecipeScreenCard(recipes: Recipes, randomRecipeViewModel: RandomRecipe
 
 
             Row(verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.Center) {
-                Button(onClick = { refreshRecipe(randomRecipeViewModel) }) {
+                Button(
+                    onClick = { currentRecipeInfo.value = true },
+                    Modifier
+                        .padding(start = 4.dp)
+                        .fillMaxWidth(1 / 3f)
+                ) {
+                    Text("Instruction")
+                }
+                Button(
+                    onClick = { },
+                    Modifier
+                        .padding(start = 4.dp, end = 4.dp)
+                        .fillMaxWidth(0.5f)
+                ) {
+                    Text("Save")
+                }
+                Button(
+                    onClick = { refreshRecipe(randomRecipeViewModel) },
+                    Modifier
+                        .padding(end = 4.dp)
+                        .fillMaxWidth()
+                ) {
                     Text(text = "New Recipe")
                 }
+            }
+
+            if (currentRecipeInfo.value) {
+                InstructionInfo(
+                    onDismissRequest = {},
+                    recipes.recipes[0].analyzedInstructions[0].steps,
+                    currentRecipeInfo
+                )
             }
         }
     }
@@ -201,7 +237,7 @@ fun ingredientCard(ingredient: ExtendedIngredient, typeMeasure: Int) {
             Column(Modifier.padding(start = 8.dp)) {
                 Text(ingredient.name)
                 // True is US
-                if (typeMeasure==1) {
+                if (typeMeasure == 1) {
                     Text("${ingredient.measures.us.amount} ${ingredient.measures.us.unitLong}")
                 }
                 // False is Metric
@@ -236,20 +272,6 @@ fun loadImageIngredient(ingredient: ExtendedIngredient) {
                 painter = painterResource(id = R.drawable.placeholder),
                 contentDescription = stringResource(id = R.string.picture_unavailable)
             )
-        }
-    )
-}
-
-
-@Composable
-fun SwitchUSOrMetric() {
-    var checked by remember { mutableStateOf(true) }
-
-    Switch(
-        checked = checked,
-        onCheckedChange = {
-            checked = it
-
         }
     )
 }
@@ -361,5 +383,89 @@ private fun TextSwitch(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun InstructionInfo(
+    onDismissRequest: () -> Unit,
+    steps: List<Step>,
+    currentRecipeInfo: MutableState<Boolean>
+) {
+    Dialog(
+        onDismissRequest = { onDismissRequest() }
+
+    ) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.9f),
+            shape = RoundedCornerShape(2.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.Start),
+                horizontalArrangement = Arrangement.Center,
+            ) {
+
+                LazyColumn(
+                    Modifier
+                        .fillMaxHeight(0.9f),
+                ) {
+                    items(steps) { step ->
+                        Row(Modifier.padding(top = 8.dp, end = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically) {
+                            Column(Modifier.fillMaxWidth(0.08f),
+                                horizontalAlignment = Alignment.CenterHorizontally){
+                            Text(step.number.toString())
+                            }
+                            StepInstructionCard(step)
+                        }
+                    }
+                }
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.End),
+                horizontalArrangement = Arrangement.Center,
+
+                ) {
+                OutlinedButton(
+                    onClick = { onDismissRequest(); currentRecipeInfo.value = false },
+                    modifier = Modifier.padding(8.dp),
+                ) {
+
+                    Text(
+                        stringResource(R.string.close), style = TextStyle(
+                            fontSize = 20.sp,
+                            fontFamily = FontFamily.Monospace,
+                            color = Color.White,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    )
+                }
+
+
+            }
+        }
+    }
+
+}
+
+@Composable
+fun StepInstructionCard(step: Step) {
+    Card(
+        Modifier
+            .fillMaxWidth(0.95f)
+            ,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.background
+        )
+    ) {
+        Text(text = step.step)
     }
 }
