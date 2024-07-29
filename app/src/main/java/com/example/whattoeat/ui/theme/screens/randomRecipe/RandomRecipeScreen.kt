@@ -1,6 +1,6 @@
 package com.example.whattoeat.ui.theme.screens.randomRecipe
 
-import android.text.style.BackgroundColorSpan
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
@@ -13,21 +13,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -37,10 +32,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.contentColorFor
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
@@ -52,7 +44,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -62,35 +53,38 @@ import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.ParentDataModifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
+
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
+
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import coil.compose.AsyncImage
+import androidx.room.Room
+
 import coil.compose.SubcomposeAsyncImage
-import coil.request.ImageRequest
-import coil.size.Size
+
 import com.example.whattoeat.R
 import com.example.whattoeat.core.Constants
+import com.example.whattoeat.data.daos.SaveRecipeUserDao
 import com.example.whattoeat.models.ExtendedIngredient
 import com.example.whattoeat.models.Recipe
+
 import com.example.whattoeat.models.Recipes
 import com.example.whattoeat.models.Step
 import com.example.whattoeat.ui.theme.composables.LoadingSpinner
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
-import kotlin.contracts.Returns
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 
 @Composable
 fun RandomRecipeScreen(
@@ -179,8 +173,12 @@ fun RandomRecipeScreenCard(recipes: Recipes, randomRecipeViewModel: RandomRecipe
                 ) {
                     Text("Instruction")
                 }
+                // Context use for the ROOM db
+                val context = LocalContext.current
+                //TODO : Have to change state of button to save or removeFromSave if the recipe is in the save list of the user
                 Button(
-                    onClick = { },
+                    onClick = { saveRecipe(context, recipes.recipes[0]) },
+//                    onClick = { saveRecipe(randomRecipeViewModel, recipes.recipes[0]) },
                     Modifier
                         .padding(start = 4.dp, end = 4.dp)
                         .fillMaxWidth(0.5f)
@@ -210,6 +208,35 @@ fun RandomRecipeScreenCard(recipes: Recipes, randomRecipeViewModel: RandomRecipe
 
 private fun refreshRecipe(randomRecipeViewModel: RandomRecipeViewModel) {
     randomRecipeViewModel.getRandomRecipe()
+}
+
+//private fun saveRecipe(randomRecipeViewModel: RandomRecipeViewModel,recipe: Recipe) {
+//   randomRecipeViewModel.saveRecipe(recipe)
+//}
+
+
+private fun saveRecipe(context: Context, recipe: Recipe) {
+    val db = Room.databaseBuilder(
+        context,
+        SaveRecipeUserDao.AppDatabase::class.java, "saveRecipe.db"
+    ).build()
+    val recipeDao = db.recipeDao()
+
+    val recipeToSave: SaveRecipeUserDao.RecipeSave = SaveRecipeUserDao.RecipeSave()
+
+    recipeToSave.id = recipe.id
+    recipeToSave.title = recipe.title
+    recipeToSave.image = recipe.image
+
+    GlobalScope.launch(Dispatchers.IO) {
+        recipeDao.insert(recipeToSave)
+        val testRecipe: SaveRecipeUserDao.RecipeSave = recipeDao.getOne(recipe.id)
+        withContext(Dispatchers.Main) {
+            Toast.makeText(
+                context, testRecipe.title, Toast.LENGTH_LONG
+            ).show()
+        }
+    }
 }
 
 
@@ -348,14 +375,16 @@ private fun TextSwitch(
 
                 }) {
                 items.forEachIndexed { index, text ->
-                    Box(modifier = Modifier
-                        .width(tabWidth)
-                        .fillMaxHeight()
-                        .clickable(interactionSource = remember {
-                            MutableInteractionSource()
-                        }, indication = null, onClick = {
-                            onSelectionChange(index)
-                        }), contentAlignment = Alignment.Center) {
+                    Box(
+                        modifier = Modifier
+                            .width(tabWidth)
+                            .fillMaxHeight()
+                            .clickable(interactionSource = remember {
+                                MutableInteractionSource()
+                            }, indication = null, onClick = {
+                                onSelectionChange(index)
+                            }), contentAlignment = Alignment.Center
+                    ) {
                         Text(
                             text = text, fontSize = 20.sp, color = Color.Gray
                         )
@@ -386,7 +415,7 @@ fun InstructionInfo(
                     .align(Alignment.Start),
                 horizontalArrangement = Arrangement.Center,
             ) {
-                if(steps.isNotEmpty()) {
+                if (steps.isNotEmpty()) {
                     LazyColumn(
                         Modifier.fillMaxHeight(0.9f),
                     ) {
@@ -405,8 +434,7 @@ fun InstructionInfo(
                             }
                         }
                     }
-                }
-                else{
+                } else {
                     Text(stringResource(R.string.no_instruction))
                 }
             }
@@ -452,3 +480,4 @@ fun StepInstructionCard(step: Step) {
         Text(text = step.step, Modifier.padding(4.dp))
     }
 }
+
