@@ -101,9 +101,7 @@ fun RandomRecipeScreen(
 
     when (val state = randomRecipeUIState) {
         is RandomRecipeUIState.Error -> Toast.makeText(
-            LocalContext.current,
-            state.exception.message,
-            Toast.LENGTH_LONG
+            LocalContext.current, state.exception.message, Toast.LENGTH_LONG
         ).show()
 
         RandomRecipeUIState.Loading -> LoadingSpinner()
@@ -121,15 +119,13 @@ fun RandomRecipeScreenCard(recipes: Recipes, randomRecipeViewModel: RandomRecipe
     }
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
-            Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.padding(top = 20.dp)
             ) {
-                SubcomposeAsyncImage(
-                    model = recipes.recipes[0].image,
+                SubcomposeAsyncImage(model = recipes.recipes[0].image,
                     contentScale = ContentScale.FillWidth,
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
@@ -137,18 +133,17 @@ fun RandomRecipeScreenCard(recipes: Recipes, randomRecipeViewModel: RandomRecipe
                     contentDescription = recipes.recipes[0].title,
                     loading = {
                         Box(
-                            contentAlignment = Alignment.Center,
-                            modifier = Modifier.height(225.dp)
+                            contentAlignment = Alignment.Center, modifier = Modifier.height(225.dp)
                         ) {
                             CircularProgressIndicator(modifier = Modifier.size(60.dp))
                         }
-                    }, error = {
+                    },
+                    error = {
                         Image(
                             painter = painterResource(id = R.drawable.placeholder),
                             contentDescription = stringResource(id = R.string.picture_unavailable)
                         )
-                    }
-                )
+                    })
                 Text(text = recipes.recipes[0].title)
             }
 
@@ -227,8 +222,7 @@ fun ingredientCard(ingredient: ExtendedIngredient, typeMeasure: Int) {
     ) {
         Row(modifier = Modifier.height(75.dp), verticalAlignment = Alignment.CenterVertically) {
             Column(
-                Modifier.fillMaxWidth(0.3f),
-                horizontalAlignment = Alignment.CenterHorizontally
+                Modifier.fillMaxWidth(0.3f), horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 loadImageIngredient(ingredient)
 
@@ -252,8 +246,7 @@ fun ingredientCard(ingredient: ExtendedIngredient, typeMeasure: Int) {
 
 @Composable
 fun loadImageIngredient(ingredient: ExtendedIngredient) {
-    SubcomposeAsyncImage(
-        model = Constants.URL_CDN_INGREDIENT + ingredient.image,
+    SubcomposeAsyncImage(model = Constants.URL_CDN_INGREDIENT + ingredient.image,
         contentScale = ContentScale.FillHeight,
         modifier = Modifier
             .clip(RoundedCornerShape(8.dp))
@@ -262,18 +255,17 @@ fun loadImageIngredient(ingredient: ExtendedIngredient) {
         filterQuality = FilterQuality.High,
         loading = {
             Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.height(225.dp)
+                contentAlignment = Alignment.Center, modifier = Modifier.height(225.dp)
             ) {
                 CircularProgressIndicator(modifier = Modifier.size(60.dp))
             }
-        }, error = {
+        },
+        error = {
             Image(
                 painter = painterResource(id = R.drawable.placeholder),
                 contentDescription = stringResource(id = R.string.picture_unavailable)
             )
-        }
-    )
+        })
 }
 
 
@@ -333,8 +325,7 @@ private fun TextSwitch(
                     drawRoundRect(
                         topLeft = Offset(x = indicatorOffset.toPx() + padding, padding),
                         size = androidx.compose.ui.geometry.Size(
-                            size.width / 2 - padding * 2,
-                            size.height - padding * 2
+                            size.width / 2 - padding * 2, size.height - padding * 2
                         ),
                         color = Color.Black,
                         cornerRadius = CornerRadius(x = 8.dp.toPx(), y = 8.dp.toPx()),
@@ -347,8 +338,7 @@ private fun TextSwitch(
                         drawRoundRect(
                             topLeft = Offset(x = indicatorOffset.toPx(), 0f),
                             size = androidx.compose.ui.geometry.Size(
-                                size.width / 2,
-                                size.height
+                                size.width / 2, size.height
                             ),
                             color = Color.White,
                             cornerRadius = CornerRadius(x = 8.dp.toPx(), y = 8.dp.toPx()),
@@ -356,28 +346,18 @@ private fun TextSwitch(
                         )
                     }
 
-                }
-            ) {
+                }) {
                 items.forEachIndexed { index, text ->
-                    Box(
-                        modifier = Modifier
-                            .width(tabWidth)
-                            .fillMaxHeight()
-                            .clickable(
-                                interactionSource = remember {
-                                    MutableInteractionSource()
-                                },
-                                indication = null,
-                                onClick = {
-                                    onSelectionChange(index)
-                                }
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
+                    Box(modifier = Modifier
+                        .width(tabWidth)
+                        .fillMaxHeight()
+                        .clickable(interactionSource = remember {
+                            MutableInteractionSource()
+                        }, indication = null, onClick = {
+                            onSelectionChange(index)
+                        }), contentAlignment = Alignment.Center) {
                         Text(
-                            text = text,
-                            fontSize = 20.sp,
-                            color = Color.Gray
+                            text = text, fontSize = 20.sp, color = Color.Gray
                         )
                     }
                 }
@@ -388,12 +368,9 @@ private fun TextSwitch(
 
 @Composable
 fun InstructionInfo(
-    onDismissRequest: () -> Unit,
-    steps: List<Step>,
-    currentRecipeInfo: MutableState<Boolean>
+    onDismissRequest: () -> Unit, steps: List<Step>, currentRecipeInfo: MutableState<Boolean>
 ) {
-    Dialog(
-        onDismissRequest = { onDismissRequest() }
+    Dialog(onDismissRequest = { onDismissRequest() }
 
     ) {
         Card(
@@ -409,21 +386,28 @@ fun InstructionInfo(
                     .align(Alignment.Start),
                 horizontalArrangement = Arrangement.Center,
             ) {
-
-                LazyColumn(
-                    Modifier
-                        .fillMaxHeight(0.9f),
-                ) {
-                    items(steps) { step ->
-                        Row(Modifier.padding(top = 8.dp, end = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically) {
-                            Column(Modifier.fillMaxWidth(0.08f),
-                                horizontalAlignment = Alignment.CenterHorizontally){
-                            Text(step.number.toString())
+                if(steps.isNotEmpty()) {
+                    LazyColumn(
+                        Modifier.fillMaxHeight(0.9f),
+                    ) {
+                        items(steps) { step ->
+                            Row(
+                                Modifier.padding(top = 8.dp, end = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column(
+                                    Modifier.fillMaxWidth(0.08f),
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    Text(step.number.toString())
+                                }
+                                StepInstructionCard(step)
                             }
-                            StepInstructionCard(step)
                         }
                     }
+                }
+                else{
+                    Text(stringResource(R.string.no_instruction))
                 }
             }
 
@@ -461,11 +445,10 @@ fun StepInstructionCard(step: Step) {
     Card(
         Modifier
             .fillMaxWidth(0.95f)
-            ,
-        colors = CardDefaults.cardColors(
+            .padding(4.dp), colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background
         )
     ) {
-        Text(text = step.step)
+        Text(text = step.step, Modifier.padding(4.dp))
     }
 }

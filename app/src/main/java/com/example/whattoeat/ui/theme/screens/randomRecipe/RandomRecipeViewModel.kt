@@ -44,7 +44,4 @@ class RandomRecipeViewModel(application: Application): AndroidViewModel(applicat
             }
         }
     }
-
-
-
 }
