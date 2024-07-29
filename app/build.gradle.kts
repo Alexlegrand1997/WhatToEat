@@ -4,7 +4,10 @@ import java.util.Properties
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id ("org.jetbrains.kotlin.plugin.serialization") version "2.0.0"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.0"
+    id("com.google.devtools.ksp")
+    alias(libs.plugins.compose.compiler)
+
 }
 
 
@@ -15,7 +18,11 @@ android {
     defaultConfig {
         val properties = Properties()
         properties.load(project.rootProject.file("local.properties").inputStream())
-        buildConfigField("String","SPOONACULAR_API_KEY",properties.getProperty("SPOONACULAR_API_KEY"))
+        buildConfigField(
+            "String",
+            "SPOONACULAR_API_KEY",
+            properties.getProperty("SPOONACULAR_API_KEY")
+        )
 
         applicationId = "com.example.whattoeat"
         minSdk = 24
@@ -79,12 +86,18 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     //Bibliothèque Fuel pour les requêtes HTTP
-    implementation (libs.fuel.android)
-    implementation (libs.fuel.json)
+    implementation(libs.fuel.android)
+    implementation(libs.fuel.json)
 
     //Serialization for JSON
-    implementation (libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.serialization.json)
 
     // Extension to load Image from web with the help of Async
     implementation(libs.coil.compose)
+
+    // Implementation of ROOM to save data in local storage
+
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
 }

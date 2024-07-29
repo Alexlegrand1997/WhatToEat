@@ -2,7 +2,8 @@
 agp = "8.5.0"
 coilCompose = "2.7.0"
 fuelAndroid = "2.3.1"
-kotlin = "1.9.0"
+#kotlin = "1.9.0"
+kotlin ="2.0.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -13,9 +14,12 @@ activityCompose = "1.9.0"
 composeBom = "2024.06.00"
 navigationRuntimeKtx = "2.7.7"
 navigationCompose = "2.7.7"
+roomRuntime = "2.6.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 fuel-android = { module = "com.github.kittinunf.fuel:fuel-android", version.ref = "fuelAndroid" }
 fuel-json = { module = "com.github.kittinunf.fuel:fuel-json", version.ref = "fuelAndroid" }
@@ -39,4 +43,4 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
