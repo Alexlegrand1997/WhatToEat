@@ -1,11 +1,9 @@
 package com.example.whattoeat.ui.theme.screens.randomRecipe
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.whattoeat.core.ApiResult
-import com.example.whattoeat.data.entities.RecipeSaveEntity
+import com.example.whattoeat.data.entities.SaveRecipeEntity
 import com.example.whattoeat.data.repositories.RandomRecipeRepository
 import com.example.whattoeat.data.repositories.SaveRecipeRepository
 import com.example.whattoeat.models.Recipe
@@ -54,7 +52,7 @@ class RandomRecipeViewModel @Inject constructor(private val _saveRecipeRepositor
 
 
     fun saveRecipe(recipe: Recipe) = viewModelScope.launch{
-        val saveRecipe =RecipeSaveEntity(idRecipe = recipe.id, title = recipe.title, image = recipe.image)
+        val saveRecipe =SaveRecipeEntity(idRecipe = recipe.id, title = recipe.title, image = recipe.image)
         _saveRecipeRepository.insertOneRecipe(saveRecipe)
     }
 

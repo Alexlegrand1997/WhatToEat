@@ -15,7 +15,7 @@ data class Recipe(
     val lowFodmap: Boolean=false,
     val weightWatcherSmartPoints:Int =0,
     val gaps:String ="",
-    val preparationMinutes:String?="" , // TODO : TO VALIDATE
+    val preparationMinutes:Int?=0 , // TODO : TO VALIDATE
     val cookingMinutes: Double? =0.0, //TODO : TO VALIDATE
     val aggregateLikes:Int =0,
     val healthScore: Int =0,

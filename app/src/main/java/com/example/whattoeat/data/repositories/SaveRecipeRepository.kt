@@ -2,10 +2,8 @@ package com.example.whattoeat.data.repositories
 
 
 import com.example.whattoeat.data.daos.RecipeDao
-import com.example.whattoeat.data.databases.SaveRecipeDatabase
-import com.example.whattoeat.data.entities.RecipeSaveEntity
+import com.example.whattoeat.data.entities.SaveRecipeEntity
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
 
 // Video use to make the repository with Room database
@@ -13,11 +11,11 @@ import javax.inject.Inject
 
 class SaveRecipeRepository (private val recipeDao: RecipeDao) {
 
-    fun getAllSaveRecipe(): Flow<List<RecipeSaveEntity>> {
+    fun getAllSaveRecipe(): Flow<List<SaveRecipeEntity>> {
         return recipeDao.getAll()
     }
 
-    suspend fun insertOneRecipe(recipeSaveEntity: RecipeSaveEntity){
-        recipeDao.insert(recipeSaveEntity)
+    suspend fun insertOneRecipe(saveRecipeEntity: SaveRecipeEntity){
+        recipeDao.insert(saveRecipeEntity)
     }
 }

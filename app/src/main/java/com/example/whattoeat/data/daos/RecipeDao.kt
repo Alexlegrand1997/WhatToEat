@@ -5,22 +5,22 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.whattoeat.data.entities.RecipeSaveEntity
+import com.example.whattoeat.data.entities.SaveRecipeEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RecipeDao {
 
     @Query("SELECT * FROM save_recipe_table")
-    fun getAll(): Flow<List<RecipeSaveEntity>>
+    fun getAll(): Flow<List<SaveRecipeEntity>>
 
     @Query("SELECT * FROM save_recipe_table WHERE id = :idRecipe")
-    suspend fun getOne(idRecipe: Int): RecipeSaveEntity
+    suspend fun getOne(idRecipe: Int): SaveRecipeEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(vararg recipeSaveEntity: RecipeSaveEntity)
+    suspend fun insert(vararg saveRecipeEntity: SaveRecipeEntity)
 
     @Delete
-    suspend fun delete(recipeSaveEntity: RecipeSaveEntity)
+    suspend fun delete(saveRecipeEntity: SaveRecipeEntity)
 
 }
