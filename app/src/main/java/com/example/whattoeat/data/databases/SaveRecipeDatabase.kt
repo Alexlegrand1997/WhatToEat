@@ -6,7 +6,7 @@ import com.example.whattoeat.data.daos.RecipeDao
 import com.example.whattoeat.data.entities.RecipeSaveEntity
 
 
-@Database(entities = [RecipeSaveEntity::class], version = 1, exportSchema = false)
+@Database(entities = [RecipeSaveEntity::class], version = 2, exportSchema = false)
 abstract class SaveRecipeDatabase : RoomDatabase() {
     abstract fun recipeDao(): RecipeDao
 }

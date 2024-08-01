@@ -10,6 +10,7 @@ import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.RoomDatabase
 import kotlinx.android.parcel.Parcelize
+import kotlinx.coroutines.flow.Flow
 
 
 class SaveRecipeUserDao{
@@ -17,12 +18,13 @@ class SaveRecipeUserDao{
     @Parcelize
     @Entity
     data class RecipeSave(
-        @PrimaryKey var id:Int?=0,
+        @PrimaryKey(autoGenerate = true) var id:Int =-1,
+        @ColumnInfo(name="idRecipe") var idRecipe:Int?=0,
         @ColumnInfo(name= "title") var title:String?="",
         @ColumnInfo(name= "image") var image:String?=""
     )
 
-    @Database(entities = [RecipeSave::class], version = 1, exportSchema = false)
+    @Database(entities = [RecipeSave::class], version = 2, exportSchema = false)
     abstract class AppDatabase : RoomDatabase(){
         abstract fun recipeDao() : RecipeDao
     }
@@ -32,7 +34,7 @@ class SaveRecipeUserDao{
     interface RecipeDao {
 
         @Query("SELECT * FROM recipesave")
-        suspend fun getAll(): List<RecipeSave>
+        fun getAll(): Flow<List<RecipeSave>>
 
         @Query("SELECT * FROM recipesave WHERE id = :idRecipe")
         suspend fun getOne(idRecipe: Int): RecipeSave

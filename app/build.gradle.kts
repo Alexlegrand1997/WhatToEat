@@ -65,6 +65,13 @@ android {
         }
     }
     android.buildFeatures.buildConfig = true
+
+    //For exportSchema true
+//    ksp {
+//        arg("room.schemaLocation", "$projectDir/schemas")
+//    }
+
+
 }
 
 dependencies {

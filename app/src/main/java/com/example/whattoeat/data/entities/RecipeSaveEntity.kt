@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 @Entity(tableName = "save_recipe_table", indices = [Index(value = ["idRecipe"], unique = true)])
 data class RecipeSaveEntity(
-    @PrimaryKey(autoGenerate = true) var id:Int =-1,
+    @PrimaryKey(autoGenerate = true) var id:Int=1,
     @ColumnInfo(name="idRecipe") var idRecipe:Int?=0,
     @ColumnInfo(name= "title") var title:String?="",
     @ColumnInfo(name= "image") var image:String?=""

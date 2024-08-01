@@ -88,8 +88,7 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun RandomRecipeScreen(
-    navController: NavHostController = rememberNavController(),
-    randomRecipeViewModel: RandomRecipeViewModel = viewModel()
+    randomRecipeViewModel: RandomRecipeViewModel
 ) {
     val randomRecipeUIState by randomRecipeViewModel.randomRecipeUIState.collectAsState()
 
@@ -177,8 +176,8 @@ fun RandomRecipeScreenCard(recipes: Recipes, randomRecipeViewModel: RandomRecipe
                 val context = LocalContext.current
                 //TODO : Have to change state of button to save or removeFromSave if the recipe is in the save list of the user
                 Button(
-                    onClick = { saveRecipe(context, recipes.recipes[0]) },
-//                    onClick = { saveRecipe(randomRecipeViewModel, recipes.recipes[0]) },
+//                    onClick = { saveRecipe(context, recipes.recipes[0]) },
+                    onClick = { saveRecipe(randomRecipeViewModel, recipes.recipes[0]) },
                     Modifier
                         .padding(start = 4.dp, end = 4.dp)
                         .fillMaxWidth(0.5f)
@@ -210,34 +209,45 @@ private fun refreshRecipe(randomRecipeViewModel: RandomRecipeViewModel) {
     randomRecipeViewModel.getRandomRecipe()
 }
 
-//private fun saveRecipe(randomRecipeViewModel: RandomRecipeViewModel,recipe: Recipe) {
-//   randomRecipeViewModel.saveRecipe(recipe)
-//}
+private fun saveRecipe(randomRecipeViewModel: RandomRecipeViewModel,recipe: Recipe) {
 
 
-private fun saveRecipe(context: Context, recipe: Recipe) {
-    val db = Room.databaseBuilder(
-        context,
-        SaveRecipeUserDao.AppDatabase::class.java, "saveRecipe.db"
-    ).build()
-    val recipeDao = db.recipeDao()
-
-    val recipeToSave: SaveRecipeUserDao.RecipeSave = SaveRecipeUserDao.RecipeSave()
-
-    recipeToSave.id = recipe.id
-    recipeToSave.title = recipe.title
-    recipeToSave.image = recipe.image
-
-    GlobalScope.launch(Dispatchers.IO) {
-        recipeDao.insert(recipeToSave)
-        val testRecipe: SaveRecipeUserDao.RecipeSave = recipeDao.getOne(recipe.id)
-        withContext(Dispatchers.Main) {
-            Toast.makeText(
-                context, testRecipe.title, Toast.LENGTH_LONG
-            ).show()
-        }
-    }
+   randomRecipeViewModel.saveRecipe(recipe)
+//    GlobalScope.launch(Dispatchers.IO) {
+//        recipeDao.insert(recipeToSave)
+//        val testRecipe: SaveRecipeUserDao.RecipeSave = recipeDao.getOne(recipe.id)
+//        withContext(Dispatchers.Main) {
+//            Toast.makeText(
+//                context, testRecipe.title, Toast.LENGTH_LONG
+//            ).show()
+//        }
+//    }
 }
+
+
+//private fun saveRecipe(context: Context, recipe: Recipe) {
+//    val db = Room.databaseBuilder(
+//        context,
+//        SaveRecipeUserDao.AppDatabase::class.java, "saveRecipe.db"
+//    ).build()
+//    val recipeDao = db.recipeDao()
+//
+//    val recipeToSave: SaveRecipeUserDao.RecipeSave = SaveRecipeUserDao.RecipeSave()
+//
+//    recipeToSave.id = recipe.id
+//    recipeToSave.title = recipe.title
+//    recipeToSave.image = recipe.image
+//
+//    GlobalScope.launch(Dispatchers.IO) {
+//        recipeDao.insert(recipeToSave)
+//        val testRecipe: SaveRecipeUserDao.RecipeSave = recipeDao.getOne(recipe.id)
+//        withContext(Dispatchers.Main) {
+//            Toast.makeText(
+//                context, testRecipe.title, Toast.LENGTH_LONG
+//            ).show()
+//        }
+//    }
+//}
 
 
 @Composable

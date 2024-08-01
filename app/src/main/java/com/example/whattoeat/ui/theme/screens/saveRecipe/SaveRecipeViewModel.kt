@@ -1,25 +1,26 @@
 package com.example.whattoeat.ui.theme.screens.saveRecipe
 
 import android.app.Application
-
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.whattoeat.data.daos.SaveRecipeUserDao.RecipeSave
-
+import com.example.whattoeat.data.entities.RecipeSaveEntity
 import com.example.whattoeat.data.repositories.SaveRecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SaveRecipeViewModel @Inject constructor(application: Application, private val _saveRecipeRepository:SaveRecipeRepository): AndroidViewModel(application) {
+class SaveRecipeViewModel @Inject constructor(private val _saveRecipeRepository:SaveRecipeRepository): ViewModel() {
 
+
+    var saveRecipe by mutableStateOf(RecipeSaveEntity())
+        private set
+
+    val getAllSaveRecipe = _saveRecipeRepository.getAllSaveRecipe()
 
     fun getAllRecipeSave()= viewModelScope.launch {
         _saveRecipeRepository.getAllSaveRecipe()
