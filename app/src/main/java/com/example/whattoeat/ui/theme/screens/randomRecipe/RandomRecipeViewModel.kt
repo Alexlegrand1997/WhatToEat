@@ -1,17 +1,22 @@
 package com.example.whattoeat.ui.theme.screens.randomRecipe
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.whattoeat.core.ApiResult
+import com.example.whattoeat.data.entities.SaveRecipeEntity
 import com.example.whattoeat.data.repositories.RandomRecipeRepository
+import com.example.whattoeat.data.repositories.SaveRecipeRepository
+import com.example.whattoeat.models.Recipe
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RandomRecipeViewModel(application: Application): AndroidViewModel(application) {
+@HiltViewModel
+class RandomRecipeViewModel @Inject constructor(private val _saveRecipeRepository:SaveRecipeRepository): ViewModel() {
     private val _randomRecipeUIState = MutableStateFlow<RandomRecipeUIState>(RandomRecipeUIState.Loading)
     val randomRecipeUIState: StateFlow<RandomRecipeUIState> = _randomRecipeUIState.asStateFlow()
 
@@ -44,4 +49,11 @@ class RandomRecipeViewModel(application: Application): AndroidViewModel(applicat
             }
         }
     }
+
+
+    fun saveRecipe(recipe: Recipe) = viewModelScope.launch{
+        val saveRecipe =SaveRecipeEntity(idRecipe = recipe.id, title = recipe.title, image = recipe.image)
+        _saveRecipeRepository.insertOneRecipe(saveRecipe)
+    }
+
 }

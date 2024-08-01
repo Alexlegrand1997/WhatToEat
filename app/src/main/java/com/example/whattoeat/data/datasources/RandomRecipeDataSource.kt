@@ -12,7 +12,7 @@ import kotlinx.serialization.json.Json
 
 class RandomRecipeDataSource {
 
-    private val json = Json { ignoreUnknownKeys = true }
+    private val json = Json { coerceInputValues=true; ignoreUnknownKeys = true }
 
     fun getOne(): Recipes {
         val(_,_,result) = Constants.RANDOM_RECIPE.httpGet().appendHeader("x-api-key",

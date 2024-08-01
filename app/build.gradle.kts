@@ -4,7 +4,11 @@ import java.util.Properties
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id ("org.jetbrains.kotlin.plugin.serialization") version "2.0.0"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.0"
+    id("com.google.devtools.ksp")
+    alias(libs.plugins.compose.compiler)
+    id("com.google.dagger.hilt.android")
+
 }
 
 
@@ -15,7 +19,11 @@ android {
     defaultConfig {
         val properties = Properties()
         properties.load(project.rootProject.file("local.properties").inputStream())
-        buildConfigField("String","SPOONACULAR_API_KEY",properties.getProperty("SPOONACULAR_API_KEY"))
+        buildConfigField(
+            "String",
+            "SPOONACULAR_API_KEY",
+            properties.getProperty("SPOONACULAR_API_KEY")
+        )
 
         applicationId = "com.example.whattoeat"
         minSdk = 24
@@ -57,6 +65,13 @@ android {
         }
     }
     android.buildFeatures.buildConfig = true
+
+    //For exportSchema true
+//    ksp {
+//        arg("room.schemaLocation", "$projectDir/schemas")
+//    }
+
+
 }
 
 dependencies {
@@ -70,6 +85,8 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
+//    implementation(libs.androidx.lifecycle.livedata.ktx)
+//    implementation(libs.androidx.ui.desktop)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -79,12 +96,27 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     //Bibliothèque Fuel pour les requêtes HTTP
-    implementation (libs.fuel.android)
-    implementation (libs.fuel.json)
+    implementation(libs.fuel.android)
+    implementation(libs.fuel.json)
 
     //Serialization for JSON
-    implementation (libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.serialization.json)
 
     // Extension to load Image from web with the help of Async
     implementation(libs.coil.compose)
+
+    // Implementation of ROOM to save data in local storage
+
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
+    testImplementation(libs.androidx.room.testing)
+    androidTestImplementation(libs.androidx.room.testing)
+    // Need KTX for the coroutine of ROOM
+    implementation(libs.androidx.room.ktx)
+
+    // Implementation for Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
 }
