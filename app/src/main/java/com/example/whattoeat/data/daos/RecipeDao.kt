@@ -5,7 +5,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.whattoeat.data.daos.SaveRecipeUserDao.RecipeSave
 import com.example.whattoeat.data.entities.RecipeSaveEntity
 import kotlinx.coroutines.flow.Flow
 

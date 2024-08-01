@@ -73,7 +73,6 @@ import coil.compose.SubcomposeAsyncImage
 
 import com.example.whattoeat.R
 import com.example.whattoeat.core.Constants
-import com.example.whattoeat.data.daos.SaveRecipeUserDao
 import com.example.whattoeat.models.ExtendedIngredient
 import com.example.whattoeat.models.Recipe
 
