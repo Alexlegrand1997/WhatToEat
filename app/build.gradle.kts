@@ -85,7 +85,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
-//    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
 //    implementation(libs.androidx.ui.desktop)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -118,5 +118,8 @@ dependencies {
     // Implementation for Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
+
+    // Implementation for DataStore
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
 
 }

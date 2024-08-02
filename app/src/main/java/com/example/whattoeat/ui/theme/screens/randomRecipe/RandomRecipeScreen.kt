@@ -1,22 +1,18 @@
 package com.example.whattoeat.ui.theme.screens.randomRecipe
 
+import android.annotation.SuppressLint
 import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,17 +20,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import coil.compose.SubcomposeAsyncImage
-import com.example.whattoeat.R
+import com.example.whattoeat.core.AppDataStore
 import com.example.whattoeat.models.Recipe
 import com.example.whattoeat.models.Recipes
 import com.example.whattoeat.ui.theme.composables.LoadImage
@@ -42,12 +35,16 @@ import com.example.whattoeat.ui.theme.composables.LoadingSpinner
 import com.example.whattoeat.ui.theme.screens.randomRecipe.components.IngredientCard
 import com.example.whattoeat.ui.theme.screens.randomRecipe.components.InstructionInfoCardModal
 import com.example.whattoeat.ui.theme.screens.randomRecipe.components.SwitchIngredientUnitQuantity
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun RandomRecipeScreen(
     randomRecipeViewModel: RandomRecipeViewModel
 ) {
+
+
     val randomRecipeUIState by randomRecipeViewModel.randomRecipeUIState.collectAsState()
 
     when (val state = randomRecipeUIState) {
@@ -55,7 +52,8 @@ fun RandomRecipeScreen(
             LocalContext.current, state.exception.message, Toast.LENGTH_LONG
         ).show()
 
-        RandomRecipeUIState.Loading -> LoadingSpinner()
+        RandomRecipeUIState.Loading -> {LoadingSpinner()
+        }
         is RandomRecipeUIState.Success -> {
             RandomRecipeScreenCard(state.recipes, randomRecipeViewModel)
         }
@@ -163,7 +161,7 @@ private fun refreshRecipe(randomRecipeViewModel: RandomRecipeViewModel) {
 private fun saveRecipe(randomRecipeViewModel: RandomRecipeViewModel, recipe: Recipe) {
 
 //   val Like = GlobalScope.launch {
-    randomRecipeViewModel.saveRecipe(recipe)
+         randomRecipeViewModel.saveRecipe(recipe)
 //   }
 //    if(test)
 

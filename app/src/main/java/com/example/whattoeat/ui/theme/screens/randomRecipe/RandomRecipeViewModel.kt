@@ -2,6 +2,8 @@ package com.example.whattoeat.ui.theme.screens.randomRecipe
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.whattoeat.MainActivity
+import com.example.whattoeat.core.AlreadyLoadRandomRecipe
 import com.example.whattoeat.core.ApiResult
 import com.example.whattoeat.data.entities.SaveRecipeEntity
 import com.example.whattoeat.data.repositories.RandomRecipeRepository
@@ -13,25 +15,25 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.nio.file.Files.copy
 import javax.inject.Inject
 
 @HiltViewModel
-class RandomRecipeViewModel @Inject constructor(private val _saveRecipeRepository:SaveRecipeRepository): ViewModel() {
-    private val _randomRecipeUIState = MutableStateFlow<RandomRecipeUIState>(RandomRecipeUIState.Loading)
+class RandomRecipeViewModel @Inject constructor(private val _saveRecipeRepository: SaveRecipeRepository) :
+    ViewModel() {
+    private val _randomRecipeUIState =
+        MutableStateFlow<RandomRecipeUIState>(RandomRecipeUIState.Loading)
     val randomRecipeUIState: StateFlow<RandomRecipeUIState> = _randomRecipeUIState.asStateFlow()
 
     private val _randomRecipeRepository = RandomRecipeRepository()
 
-    init {
-        getRandomRecipe()
-    }
 
-    fun getRandomRecipe(){
-        viewModelScope.launch{
-            _randomRecipeRepository.retrieveOne().collect{ apiResult ->
-                when(apiResult){
-                    is ApiResult.Error ->{
-                        _randomRecipeUIState.update{
+    fun getRandomRecipe() {
+        viewModelScope.launch {
+            _randomRecipeRepository.retrieveOne().collect { apiResult ->
+                when (apiResult) {
+                    is ApiResult.Error -> {
+                        _randomRecipeUIState.update {
                             RandomRecipeUIState.Error(
                                 IllegalStateException(
                                     apiResult.throwable
@@ -39,9 +41,11 @@ class RandomRecipeViewModel @Inject constructor(private val _saveRecipeRepositor
                             )
                         }
                     }
-                    ApiResult.Loading ->RandomRecipeUIState.Loading
-                    is ApiResult.Success->{
+
+                    ApiResult.Loading -> RandomRecipeUIState.Loading
+                    is ApiResult.Success -> {
                         _randomRecipeUIState.update {
+                            AlreadyLoadRandomRecipe.setLoadedRecipeState(true)
                             RandomRecipeUIState.Success(apiResult.data)
                         }
                     }
@@ -51,8 +55,9 @@ class RandomRecipeViewModel @Inject constructor(private val _saveRecipeRepositor
     }
 
 
-    fun saveRecipe(recipe: Recipe) = viewModelScope.launch{
-        val saveRecipe =SaveRecipeEntity(idRecipe = recipe.id, title = recipe.title, image = recipe.image)
+    fun saveRecipe(recipe: Recipe) = viewModelScope.launch {
+        val saveRecipe =
+            SaveRecipeEntity(idRecipe = recipe.id, title = recipe.title, image = recipe.image)
         _saveRecipeRepository.insertOneRecipe(saveRecipe)
     }
 
