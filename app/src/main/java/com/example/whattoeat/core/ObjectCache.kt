@@ -10,3 +10,14 @@ object AlreadyLoadRandomRecipe {
         return loadedRecipeState
     }
 }
+
+object CurrentSpecificRecipe {
+    private var currentRecipeId:String="0"
+    fun setRecipeId(id:String){
+        currentRecipeId=id
+    }
+    fun getRecipeId():String{
+        return currentRecipeId
+    }
+
+}

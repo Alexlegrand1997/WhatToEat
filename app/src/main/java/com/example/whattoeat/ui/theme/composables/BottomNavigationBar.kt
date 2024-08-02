@@ -42,7 +42,6 @@ fun NavigationApp(
     specificRecipeViewModel: SpecificRecipeViewModel
 ) {
     val navigationController = rememberNavController()
-    val context = LocalContext.current.applicationContext
     val selected = remember {
         mutableStateOf(Icons.Default.Home)
     }
@@ -117,17 +116,18 @@ fun NavigationApp(
                 )
             }
             composable(
-//                "${Screen.SpecificRecipe.screen}/{idRecipe}",
-                "${Screen.SpecificRecipe.screen}?idRecipe={idRecipe}",
+                "${Screen.SpecificRecipe.screen}/{idRecipe}",
                 arguments = listOf(navArgument("idRecipe")
                 {
                     type = NavType.StringType
                     defaultValue = ""
                 })
             ) { backStackEntry ->
+                // TODO : Verify that the getSpecificRecipe is not trigger twice and fix it if it is the case
+                backStackEntry.arguments?.getString("idRecipe")
+                    ?.let { specificRecipeViewModel.getSpecificRecipe(it) }
                 SpecificRecipeScreen(
-                    specificRecipeViewModel = specificRecipeViewModel,
-                    idRecipe = backStackEntry.arguments?.getString("idRecipe")
+                    specificRecipeViewModel = specificRecipeViewModel
                 )
             }
         }
