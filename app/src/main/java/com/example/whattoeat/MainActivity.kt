@@ -29,20 +29,27 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.whattoeat.data.repositories.SaveRecipeRepository
 import com.example.whattoeat.ui.theme.composables.NavigationApp
 import com.example.whattoeat.ui.theme.screens.home.HomeScreen
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeScreen
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeViewModel
 import com.example.whattoeat.ui.theme.screens.saveRecipe.SaveRecipeScreen
 import com.example.whattoeat.ui.theme.screens.saveRecipe.SaveRecipeViewModel
+import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeViewModel
 import com.example.whattoeat.ui.theme.theme.WhatToEatTheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+
     private val randomRecipeViewModel by viewModels<RandomRecipeViewModel>()
     private val saveRecipeViewModel by viewModels<SaveRecipeViewModel>()
+    private val specificRecipeViewModel by viewModels<SpecificRecipeViewModel>()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -51,7 +58,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize()
                 )
                 {
-                    NavigationApp(saveRecipeViewModel,randomRecipeViewModel)
+                    NavigationApp(saveRecipeViewModel,randomRecipeViewModel,specificRecipeViewModel)
                 }
             }
         }

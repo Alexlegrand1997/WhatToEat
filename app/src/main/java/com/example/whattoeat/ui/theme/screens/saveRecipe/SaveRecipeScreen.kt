@@ -12,6 +12,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import com.example.whattoeat.data.entities.SaveRecipeEntity
 import com.example.whattoeat.ui.theme.screens.randomRecipe.components.IngredientCard
 import com.example.whattoeat.ui.theme.screens.saveRecipe.components.SaveRecipeCard
@@ -20,19 +21,19 @@ import com.example.whattoeat.ui.theme.screens.saveRecipe.components.SaveRecipeCa
 @Composable
 fun SaveRecipeScreen(
     saveRecipeViewModel: SaveRecipeViewModel,
-    onUpdate: (id: Int) -> Unit
+    navController: NavController
 ) {
 
     val saveRecipes by saveRecipeViewModel.getAllSaveRecipe.collectAsState(initial = emptyList())
 
     if (saveRecipes.isNotEmpty()){
-        test(saveRecipes)
+        test(saveRecipes,navController)
     }
 }
 
 
 @Composable
-fun test(saveRecipes: List<SaveRecipeEntity>) {
+fun test(saveRecipes: List<SaveRecipeEntity>, navController: NavController) {
     Surface(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier
@@ -41,7 +42,7 @@ fun test(saveRecipes: List<SaveRecipeEntity>) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             items(saveRecipes) { recipe ->
-                SaveRecipeCard(saveRecipe = recipe)
+                SaveRecipeCard(saveRecipe = recipe, navController)
             }
         }
 

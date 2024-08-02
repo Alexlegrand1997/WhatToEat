@@ -14,7 +14,6 @@ import javax.inject.Inject
 @HiltViewModel
 class SaveRecipeViewModel @Inject constructor(private val _saveRecipeRepository:SaveRecipeRepository): ViewModel() {
 
-
     var saveRecipe by mutableStateOf(SaveRecipeEntity())
         private set
 
@@ -23,6 +22,5 @@ class SaveRecipeViewModel @Inject constructor(private val _saveRecipeRepository:
     fun getAllRecipeSave()= viewModelScope.launch {
         _saveRecipeRepository.getAllSaveRecipe()
     }
-
 }
 

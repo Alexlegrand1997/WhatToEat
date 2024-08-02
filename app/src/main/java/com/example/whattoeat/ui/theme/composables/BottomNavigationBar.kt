@@ -17,20 +17,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.whattoeat.MainActivity
+import com.example.whattoeat.core.AlreadyLoadRandomRecipe
 import com.example.whattoeat.core.Screen
 import com.example.whattoeat.ui.theme.screens.home.HomeScreen
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeScreen
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeViewModel
 import com.example.whattoeat.ui.theme.screens.saveRecipe.SaveRecipeScreen
 import com.example.whattoeat.ui.theme.screens.saveRecipe.SaveRecipeViewModel
+import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeScreen
+import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeViewModel
 
 //https://nameisjayant.medium.com/nested-navigation-in-jetpack-compose-597ecdc6eebb
 
 @Composable
-fun NavigationApp(saveRecipeViewModel:SaveRecipeViewModel, randomRecipeViewModel: RandomRecipeViewModel) {
+fun NavigationApp(
+    saveRecipeViewModel: SaveRecipeViewModel,
+    randomRecipeViewModel: RandomRecipeViewModel,
+    specificRecipeViewModel: SpecificRecipeViewModel
+) {
     val navigationController = rememberNavController()
     val context = LocalContext.current.applicationContext
     val selected = remember {
@@ -74,9 +84,13 @@ fun NavigationApp(saveRecipeViewModel:SaveRecipeViewModel, randomRecipeViewModel
                 // Navigate to RandomRecipe
                 IconButton(onClick = {
                     selected.value = Icons.Default.Refresh
-                    navigationController.navigate(Screen.RandomRecipe.screen) {
-                        popUpTo(0)
-                    }
+
+                    if (!AlreadyLoadRandomRecipe.getLoadedRecipeState()){
+                            randomRecipeViewModel.getRandomRecipe()
+                        }
+                        navigationController . navigate (Screen.RandomRecipe.screen) {
+                            popUpTo(0)
+                        }
                 }, modifier = Modifier.weight(1f)) {
                     Icon(
                         Icons.Default.Refresh,
@@ -95,14 +109,25 @@ fun NavigationApp(saveRecipeViewModel:SaveRecipeViewModel, randomRecipeViewModel
             modifier = Modifier.padding((paddingValues))
         ) {
             composable(Screen.Home.screen) { HomeScreen() }
-            composable(Screen.RandomRecipe.screen) { RandomRecipeScreen(randomRecipeViewModel =randomRecipeViewModel) }
+            composable(Screen.RandomRecipe.screen) { RandomRecipeScreen(randomRecipeViewModel = randomRecipeViewModel) }
             composable(Screen.SaveRecipe.screen) {
-                SaveRecipeScreen(saveRecipeViewModel = saveRecipeViewModel,
-                    onUpdate = { id ->
-                        navigationController.navigate(
-                            route = "${Screen.SaveRecipe.screen}/$id"
-                        )
-                    }
+                SaveRecipeScreen(
+                    saveRecipeViewModel = saveRecipeViewModel,
+                    navController = navigationController
+                )
+            }
+            composable(
+//                "${Screen.SpecificRecipe.screen}/{idRecipe}",
+                "${Screen.SpecificRecipe.screen}?idRecipe={idRecipe}",
+                arguments = listOf(navArgument("idRecipe")
+                {
+                    type = NavType.StringType
+                    defaultValue = ""
+                })
+            ) { backStackEntry ->
+                SpecificRecipeScreen(
+                    specificRecipeViewModel = specificRecipeViewModel,
+                    idRecipe = backStackEntry.arguments?.getString("idRecipe")
                 )
             }
         }
