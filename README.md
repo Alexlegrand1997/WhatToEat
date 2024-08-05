@@ -18,4 +18,12 @@ Favorite page :
 This page is use to register all the recipe that are interesting and that the user would like to be able to retrieve quickly.
 To respect Spoonacular API just the id, name of the recipe and picture url are save. So the client will still have to make a request to the api
 to go get the information of the recipe.
+
 ![image](https://github.com/user-attachments/assets/8f94deb5-06b7-42e5-86e7-187041336ff3)
+
+When and recipe is selectionned the client will be redirected on the recipe information page where he will be able to unsave the recipe and see the instruction to make it. The client will also have access to the ingredient information.
+![image](https://github.com/user-attachments/assets/8d80489b-7df2-4049-b720-96f7b7d38af6)
+![image](https://github.com/user-attachments/assets/433a9907-7880-4463-88f4-8484e5d41471)
+
+Random Recipe Page:
+
