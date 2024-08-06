@@ -3,4 +3,7 @@
     <string name="picture_unavailable">Picture unavailable</string>
     <string name="close">close</string>
     <string name="no_instruction">No Instruction Found</string>
+    <string name="choise_theme">Theme Selection</string>
+    <string name="ok">ok</string>
+    <string name="cancel">Cancel</string>
 </resources>

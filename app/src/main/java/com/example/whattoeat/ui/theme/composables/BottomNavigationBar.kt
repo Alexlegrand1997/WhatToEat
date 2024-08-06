@@ -26,6 +26,7 @@ import com.example.whattoeat.MainActivity
 import com.example.whattoeat.core.AlreadyLoadRandomRecipe
 import com.example.whattoeat.core.Screen
 import com.example.whattoeat.ui.theme.screens.home.HomeScreen
+import com.example.whattoeat.ui.theme.screens.home.HomeViewModel
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeScreen
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeViewModel
 import com.example.whattoeat.ui.theme.screens.saveRecipe.SaveRecipeScreen
@@ -37,6 +38,7 @@ import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeViewM
 
 @Composable
 fun NavigationApp(
+    homeViewModel: HomeViewModel,
     saveRecipeViewModel: SaveRecipeViewModel,
     randomRecipeViewModel: RandomRecipeViewModel,
     specificRecipeViewModel: SpecificRecipeViewModel
@@ -107,7 +109,7 @@ fun NavigationApp(
             startDestination = Screen.Home.screen,
             modifier = Modifier.padding((paddingValues))
         ) {
-            composable(Screen.Home.screen) { HomeScreen() }
+            composable(Screen.Home.screen) { HomeScreen(homeViewModel) }
             composable(Screen.RandomRecipe.screen) { RandomRecipeScreen(randomRecipeViewModel = randomRecipeViewModel) }
             composable(Screen.SaveRecipe.screen) {
                 SaveRecipeScreen(
