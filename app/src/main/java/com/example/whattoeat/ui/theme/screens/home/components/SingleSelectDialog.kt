@@ -83,7 +83,11 @@ fun SingleSelectDialog(
                             onDismissRequest.invoke(false)
                         }, shape = MaterialTheme.shapes.extraLarge
                     ) {
-                        Text(text = submitButtonText, fontFamily = FontFamily.Default, color = Color.White)
+                        Text(
+                            text = submitButtonText,
+                            fontFamily = FontFamily.Default,
+                            color = Color.White
+                        )
                     }
 
                     Button(
@@ -96,7 +100,11 @@ fun SingleSelectDialog(
                         },
                         shape = MaterialTheme.shapes.extraLarge
                     ) {
-                        Text(text = dismissButtonText, fontFamily = FontFamily.Default, color = Color.White)
+                        Text(
+                            text = dismissButtonText,
+                            fontFamily = FontFamily.Default,
+                            color = Color.White
+                        )
                     }
                 }
             }

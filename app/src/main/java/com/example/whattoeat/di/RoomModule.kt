@@ -9,7 +9,6 @@ import com.example.whattoeat.core.userDataStore.AppSettingsRepositoryImpl
 import com.example.whattoeat.data.daos.RecipeDao
 import com.example.whattoeat.data.databases.SaveRecipeDatabase
 import com.example.whattoeat.data.repositories.SaveRecipeRepository
-
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -56,5 +55,8 @@ object RoomModule {
     fun provideApplication(@ApplicationContext app: Context): WhatToEatApplication {
         return app as WhatToEatApplication
     }
+
+
+
 
 }

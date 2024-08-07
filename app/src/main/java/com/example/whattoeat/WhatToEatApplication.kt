@@ -6,13 +6,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import com.example.whattoeat.core.userDataStore.AppSettingsRepository
 import com.example.whattoeat.core.userDataStore.AppSettingsRepositoryImpl
+import com.example.whattoeat.ui.theme.screens.home.HomeViewModel
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class WhatToEatApplication: Application() {
 
     var theme = mutableStateOf("")
-    
 
 
 
