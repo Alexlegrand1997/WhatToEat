@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -15,22 +16,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.whattoeat.MainActivity
 import com.example.whattoeat.core.AlreadyLoadRandomRecipe
 import com.example.whattoeat.core.Screen
 import com.example.whattoeat.ui.theme.screens.home.HomeScreen
-import com.example.whattoeat.ui.theme.screens.home.HomeViewModel
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeScreen
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeViewModel
 import com.example.whattoeat.ui.theme.screens.saveRecipe.SaveRecipeScreen
 import com.example.whattoeat.ui.theme.screens.saveRecipe.SaveRecipeViewModel
+import com.example.whattoeat.ui.theme.screens.setting.SettingScreen
+import com.example.whattoeat.ui.theme.screens.setting.SettingViewModel
 import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeScreen
 import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeViewModel
 
@@ -38,7 +38,7 @@ import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeViewM
 
 @Composable
 fun NavigationApp(
-    homeViewModel: HomeViewModel,
+    settingViewModel: SettingViewModel,
     saveRecipeViewModel: SaveRecipeViewModel,
     randomRecipeViewModel: RandomRecipeViewModel,
     specificRecipeViewModel: SpecificRecipeViewModel
@@ -100,6 +100,21 @@ fun NavigationApp(
                         tint = if (selected.value == Icons.Default.Refresh) Color.White else Color.DarkGray
                     )
                 }
+
+                // Navigate to Setting
+                IconButton(onClick = {
+                    selected.value = Icons.Default.Settings
+                    navigationController.navigate(Screen.Setting.screen) {
+                        popUpTo(0)
+                    }
+                }, modifier = Modifier.weight(1f)) {
+                    Icon(
+                        Icons.Default.Settings,
+                        contentDescription = null,
+                        modifier = Modifier.size(26.dp),
+                        tint = if (selected.value == Icons.Default.Settings) Color.White else Color.DarkGray
+                    )
+                }
             }
         }
     ) { paddingValues ->
@@ -109,7 +124,8 @@ fun NavigationApp(
             startDestination = Screen.Home.screen,
             modifier = Modifier.padding((paddingValues))
         ) {
-            composable(Screen.Home.screen) { HomeScreen(homeViewModel) }
+            composable(Screen.Home.screen) { HomeScreen() }
+            composable(Screen.Setting.screen) { SettingScreen(settingViewModel) }
             composable(Screen.RandomRecipe.screen) { RandomRecipeScreen(randomRecipeViewModel = randomRecipeViewModel) }
             composable(Screen.SaveRecipe.screen) {
                 SaveRecipeScreen(

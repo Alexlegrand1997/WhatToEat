@@ -10,9 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.whattoeat.ui.theme.composables.NavigationApp
-import com.example.whattoeat.ui.theme.screens.home.HomeViewModel
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeViewModel
 import com.example.whattoeat.ui.theme.screens.saveRecipe.SaveRecipeViewModel
+import com.example.whattoeat.ui.theme.screens.setting.SettingViewModel
 import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeViewModel
 import com.example.whattoeat.ui.theme.theme.WhatToEatTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,25 +22,26 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
     @Inject
     lateinit var application: WhatToEatApplication
-    private val homeViewModel by viewModels<HomeViewModel>()
+    private val settingViewModel by viewModels<SettingViewModel>()
     private val randomRecipeViewModel by viewModels<RandomRecipeViewModel>()
     private val saveRecipeViewModel by viewModels<SaveRecipeViewModel>()
     private val specificRecipeViewModel by viewModels<SpecificRecipeViewModel>()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            WhatToEatTheme(
 
+            WhatToEatTheme(
                 application.theme.value
             ) {
+
+
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 )
                 {
                     NavigationApp(
-                        homeViewModel,
+                        settingViewModel,
                         saveRecipeViewModel,
                         randomRecipeViewModel,
                         specificRecipeViewModel

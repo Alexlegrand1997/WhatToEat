@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.compose.runtime.Stable
 import androidx.room.Room
 import com.example.whattoeat.WhatToEatApplication
-import com.example.whattoeat.core.userDataStore.AppSettingsRepository
-import com.example.whattoeat.core.userDataStore.AppSettingsRepositoryImpl
+import com.example.whattoeat.data.repositories.AppSettingsRepository
+import com.example.whattoeat.data.repositories.AppSettingsRepositoryImpl
 import com.example.whattoeat.data.daos.RecipeDao
 import com.example.whattoeat.data.databases.SaveRecipeDatabase
 import com.example.whattoeat.data.repositories.SaveRecipeRepository
