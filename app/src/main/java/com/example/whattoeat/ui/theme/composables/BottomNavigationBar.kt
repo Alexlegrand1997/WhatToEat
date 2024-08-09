@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.isPopupLayout
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -48,6 +49,8 @@ fun NavigationApp(
         mutableStateOf(Icons.Default.Home)
     }
 
+
+    //https://medium.com/@itsuki.enjoy/android-kotlin-jetpack-compose-popup-with-navigation-3e48cbe6bf24
     Scaffold(
         bottomBar = {
             BottomAppBar {
@@ -71,7 +74,7 @@ fun NavigationApp(
                 IconButton(onClick = {
                     selected.value = Icons.Default.Favorite
                     navigationController.navigate(Screen.SaveRecipe.screen) {
-                        popUpTo(0)
+                        popUpTo(1)
                     }
                 }, modifier = Modifier.weight(1f)) {
                     Icon(
@@ -86,12 +89,9 @@ fun NavigationApp(
                 IconButton(onClick = {
                     selected.value = Icons.Default.Refresh
 
-                    if (!AlreadyLoadRandomRecipe.getLoadedRecipeState()){
-                            randomRecipeViewModel.getRandomRecipe()
-                        }
-                        navigationController . navigate (Screen.RandomRecipe.screen) {
-                            popUpTo(0)
-                        }
+                    navigationController.navigate(Screen.RandomRecipe.screen) {
+                        popUpTo(1)
+                    }
                 }, modifier = Modifier.weight(1f)) {
                     Icon(
                         Icons.Default.Refresh,
@@ -105,7 +105,7 @@ fun NavigationApp(
                 IconButton(onClick = {
                     selected.value = Icons.Default.Settings
                     navigationController.navigate(Screen.Setting.screen) {
-                        popUpTo(0)
+                        popUpTo(1)
                     }
                 }, modifier = Modifier.weight(1f)) {
                     Icon(
@@ -125,7 +125,6 @@ fun NavigationApp(
             modifier = Modifier.padding((paddingValues))
         ) {
             composable(Screen.Home.screen) { HomeScreen() }
-            composable(Screen.Setting.screen) { SettingScreen(settingViewModel) }
             composable(Screen.RandomRecipe.screen) { RandomRecipeScreen(randomRecipeViewModel = randomRecipeViewModel) }
             composable(Screen.SaveRecipe.screen) {
                 SaveRecipeScreen(
@@ -133,13 +132,14 @@ fun NavigationApp(
                     navController = navigationController
                 )
             }
+
             composable(
                 "${Screen.SpecificRecipe.screen}/{idRecipe}",
                 arguments = listOf(navArgument("idRecipe")
                 {
                     type = NavType.StringType
                     defaultValue = ""
-                })
+                }),
             ) { backStackEntry ->
                 // TODO : Verify that the getSpecificRecipe is not trigger twice and fix it if it is the case
                 backStackEntry.arguments?.getString("idRecipe")
@@ -147,7 +147,10 @@ fun NavigationApp(
                 SpecificRecipeScreen(
                     specificRecipeViewModel = specificRecipeViewModel
                 )
+
             }
+
+            composable(Screen.Setting.screen) { SettingScreen(settingViewModel) }
         }
     }
 }

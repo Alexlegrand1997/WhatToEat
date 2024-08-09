@@ -23,7 +23,7 @@ data class Recipe(
     val sourceName:String="",
     val pricePerServing:Float =0.0f,
     val extendedIngredients:List<ExtendedIngredient> = listOf(),
-    val id: Int,
+    val id: Int =0,
     val title:String ="",
     val readyInMinutes:Int=0,
     val servings:Int=0,

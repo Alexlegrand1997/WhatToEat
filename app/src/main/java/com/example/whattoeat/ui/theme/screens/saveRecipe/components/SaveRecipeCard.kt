@@ -45,7 +45,7 @@ fun SaveRecipeCard(saveRecipe:SaveRecipeEntity, navController: NavController) {
 fun seeSpecificRecipe(idRecipe:Int, navController: NavController){
     navController.navigate("${Screen.SpecificRecipe.screen}/$idRecipe") {
         // TODO : Have to verify if this is necessary
-        popUpTo(1)
+        popUpTo(2)
     }
 
 

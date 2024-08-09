@@ -43,8 +43,6 @@ import kotlinx.coroutines.launch
 fun RandomRecipeScreen(
     randomRecipeViewModel: RandomRecipeViewModel
 ) {
-
-
     val randomRecipeUIState by randomRecipeViewModel.randomRecipeUIState.collectAsState()
 
     when (val state = randomRecipeUIState) {
