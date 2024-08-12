@@ -111,6 +111,10 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+
+// TODO : TRY THIS TO FIX THE LOADING OF THEME STATE WHEN APP OPEN
+// : https://www.youtube.com/watch?v=JAMuaaJwVjw
+
 @Composable
 fun WhatToEatTheme(
     appTheme: String?,

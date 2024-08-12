@@ -25,6 +25,8 @@ fun SettingScreen(settingViewModel: SettingViewModel) {
 
     // https://oguzhandogdu.medium.com/changing-the-application-theme-with-jetpack-datastore-c07c321fda79
     // https://tomas-repcik.medium.com/dependency-injection-with-hilt-in-android-development-e23fc636d65c
+
+    // Change Theme : https://www.youtube.com/watch?v=JAMuaaJwVjw
     var themeLocation by remember {
         mutableIntStateOf(0)
     }

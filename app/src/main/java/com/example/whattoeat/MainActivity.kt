@@ -32,6 +32,8 @@ class MainActivity : ComponentActivity() {
 
     // TODO : When theme of phone is change the nav bar is not set to the correct page when go back in app
     // TODO : When open app for first time the theme load first is the phone theme and after the app theme is load. It will be visible when phone is in dark mode and app in light mode
+    // TRY THIS : https://www.youtube.com/watch?v=JAMuaaJwVjw
+
     // TODO : When a specificRecipe is load and we check another one we can briefly see the old recipe
 
     override fun onCreate(savedInstanceState: Bundle?) {
