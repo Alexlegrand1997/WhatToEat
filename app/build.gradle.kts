@@ -122,4 +122,6 @@ dependencies {
     // Implementation for DataStore
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 
+    implementation ("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.3")
 }

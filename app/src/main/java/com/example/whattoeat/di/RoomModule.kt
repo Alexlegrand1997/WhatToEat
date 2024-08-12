@@ -56,7 +56,4 @@ object RoomModule {
         return app as WhatToEatApplication
     }
 
-
-
-
 }
