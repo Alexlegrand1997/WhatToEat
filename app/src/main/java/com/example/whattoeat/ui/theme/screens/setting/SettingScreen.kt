@@ -18,7 +18,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.whattoeat.ui.theme.composables.LoadingSpinner
-import com.example.whattoeat.ui.theme.screens.setting.components.themeChoice
+import com.example.whattoeat.ui.theme.screens.setting.components.IngredientUnitChoice
+import com.example.whattoeat.ui.theme.screens.setting.components.ThemeChoice
+
 
 @Composable
 fun SettingScreen(settingViewModel: SettingViewModel) {
@@ -42,10 +44,10 @@ fun SettingScreen(settingViewModel: SettingViewModel) {
         }
 
         is SettingUIState.Success -> {
-            themeLocation = if (state.themeValue.isNullOrEmpty()) {
+            themeLocation = if (state.appSetting.theme.isNullOrEmpty()) {
                 2
             } else {
-                themes.indexOf(state.themeValue)
+                themes.indexOf(state.appSetting.theme)
             }
             settings(themeLocation,settingViewModel)
         }
@@ -55,15 +57,24 @@ fun SettingScreen(settingViewModel: SettingViewModel) {
 @Composable
 fun settings(themeLocation:Int,settingViewModel: SettingViewModel) {
     Surface(modifier = Modifier.fillMaxSize()) {
-        Column(Modifier.fillMaxWidth().padding(start = 0.dp, top = 16.dp, end = 0.dp, bottom = 0.dp),
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(start = 0.dp, top = 16.dp, end = 0.dp, bottom = 0.dp),
             horizontalAlignment = Alignment.CenterHorizontally) {
-            themeChoice(
+            ThemeChoice(
                 modifier = Modifier,
                 optionsList = themes,
                 defaultSelected = themeLocation,
                 settingViewModel
             )
 
+            IngredientUnitChoice(
+                modifier = Modifier,
+                optionsList = ingredientUnits,
+                defaultSelected = 0,
+                settingViewModel = settingViewModel
+            )
         }
 
     }
@@ -75,9 +86,18 @@ enum class ThemeValues(val title: String) {
     DARK_MODE("Dark Mode"),
     SYSTEM_DEFAULT("System")
 }
-
 val themes = listOf(
     ThemeValues.LIGHT_MODE.title,
     ThemeValues.DARK_MODE.title,
     ThemeValues.SYSTEM_DEFAULT.title
+)
+
+enum class IngredientUnitValues(val title: String) {
+    METRIC_MODE("Metric"),
+    US_MODE("US")
+}
+
+val ingredientUnits = listOf(
+    IngredientUnitValues.US_MODE.title,
+    IngredientUnitValues.METRIC_MODE.title
 )

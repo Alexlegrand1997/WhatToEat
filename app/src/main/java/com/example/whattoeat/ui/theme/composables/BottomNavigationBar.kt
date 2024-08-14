@@ -17,13 +17,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.isPopupLayout
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.whattoeat.core.AlreadyLoadRandomRecipe
 import com.example.whattoeat.core.Screen
 import com.example.whattoeat.ui.theme.screens.home.HomeScreen
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeScreen
@@ -74,7 +72,7 @@ fun NavigationApp(
                 IconButton(onClick = {
                     selected.value = Icons.Default.Favorite
                     navigationController.navigate(Screen.SaveRecipe.screen) {
-                        popUpTo(1)
+                        popUpTo(Screen.Home.screen)
                     }
                 }, modifier = Modifier.weight(1f)) {
                     Icon(
@@ -90,7 +88,7 @@ fun NavigationApp(
                     selected.value = Icons.Default.Refresh
 
                     navigationController.navigate(Screen.RandomRecipe.screen) {
-                        popUpTo(1)
+                        popUpTo(Screen.Home.screen)
                     }
                 }, modifier = Modifier.weight(1f)) {
                     Icon(
@@ -105,7 +103,7 @@ fun NavigationApp(
                 IconButton(onClick = {
                     selected.value = Icons.Default.Settings
                     navigationController.navigate(Screen.Setting.screen) {
-                        popUpTo(1)
+                        popUpTo(Screen.Home.screen)
                     }
                 }, modifier = Modifier.weight(1f)) {
                     Icon(
@@ -141,7 +139,6 @@ fun NavigationApp(
                     defaultValue = ""
                 }),
             ) { backStackEntry ->
-                // TODO : Verify that the getSpecificRecipe is not trigger twice and fix it if it is the case
                 backStackEntry.arguments?.getString("idRecipe")
                     ?.let { specificRecipeViewModel.getSpecificRecipe(it) }
                 SpecificRecipeScreen(

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.whattoeat.WhatToEatApplication
 import com.example.whattoeat.core.DataStoreResult
+import com.example.whattoeat.data.repositories.AppSetting
 import com.example.whattoeat.data.repositories.AppSettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,51 +24,55 @@ class SettingViewModel @Inject constructor(
     val homeUIState = _settingUiState.asStateFlow()
 
     init {
-        getThemeValue()
+            getSettingUser()
     }
 
     fun handleScreenEvents(event: SettingsScreenEvent) {
         when (event) {
-            is SettingsScreenEvent.SetNewTheme -> setThemeValue(event.value)
-            is SettingsScreenEvent.ThemeChanged -> getThemeValue()
+            is SettingsScreenEvent.GetSetting -> getSettingUser()
+            is SettingsScreenEvent.SaveSetting -> saveSettingUser(event.themeValue, event.ingredientUnitValue)
         }
     }
 
-    private fun setThemeValue(value: String) {
+    private fun saveSettingUser(themeValue:String, ingredientUnitValue:String) {
+        var tempAppSetting:AppSetting = AppSetting(themeValue, ingredientUnitValue)
+
         viewModelScope.launch {
-            dataStore.putThemeStrings(key = "theme", value = value)
-            getThemeValue()
+            dataStore.saveSetting(tempAppSetting)
+            getSettingUser()
         }
     }
 
-    private fun getThemeValue() = runBlocking {
-
-        dataStore.getThemeStrings("theme").collect { dataStoreResult ->
-            when (dataStoreResult) {
-                is DataStoreResult.Error -> {
-                    _settingUiState.update {
-                        SettingUIState.Error(
-                            IllegalStateException(
-                                dataStoreResult.throwable
+    private fun getSettingUser() {
+        runBlocking {
+            dataStore.getSetting().collect { dataStoreResult ->
+                when (dataStoreResult) {
+                    is DataStoreResult.Error -> {
+                        _settingUiState.update {
+                            SettingUIState.Error(
+                                IllegalStateException(
+                                    dataStoreResult.throwable
+                                )
                             )
-                        )
+                        }
                     }
-                }
 
-                DataStoreResult.Loading -> SettingUIState.Loading
-                is DataStoreResult.Success -> _settingUiState.update {
-                    application.theme.value = dataStoreResult.data.toString()
-                    SettingUIState.Success(dataStoreResult.data)
+                    DataStoreResult.Loading -> SettingUIState.Loading
+                    is DataStoreResult.Success -> _settingUiState.update {
+                        application.theme.value = dataStoreResult.data.theme
+                        SettingUIState.Success(dataStoreResult.data)
+                    }
                 }
             }
         }
-
-
     }
+
+
+
+
 }
 
-
 sealed interface SettingsScreenEvent {
-    data class SetNewTheme(val value: String) : SettingsScreenEvent
-    data object ThemeChanged : SettingsScreenEvent
+    data object GetSetting: SettingsScreenEvent
+    data class SaveSetting(val themeValue: String="", val ingredientUnitValue: String=""): SettingsScreenEvent
 }

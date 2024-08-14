@@ -1,6 +1,5 @@
 package com.example.whattoeat.ui.theme.screens.randomRecipe
 
-import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,14 +19,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.example.whattoeat.core.AppDataStore
 import com.example.whattoeat.models.Recipe
 import com.example.whattoeat.models.Recipes
 import com.example.whattoeat.ui.theme.composables.LoadImage
@@ -35,8 +32,6 @@ import com.example.whattoeat.ui.theme.composables.LoadingSpinner
 import com.example.whattoeat.ui.theme.screens.randomRecipe.components.IngredientCard
 import com.example.whattoeat.ui.theme.screens.randomRecipe.components.InstructionInfoCardModal
 import com.example.whattoeat.ui.theme.screens.randomRecipe.components.SwitchIngredientUnitQuantity
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 
 @Composable
@@ -157,10 +152,7 @@ private fun refreshRecipe(randomRecipeViewModel: RandomRecipeViewModel) {
 }
 
 private fun saveRecipe(randomRecipeViewModel: RandomRecipeViewModel, recipe: Recipe) {
-
-//   val Like = GlobalScope.launch {
+        // TODO: MAKE IT SO SAVE AND SAVED
          randomRecipeViewModel.saveRecipe(recipe)
-//   }
-//    if(test)
 
 }

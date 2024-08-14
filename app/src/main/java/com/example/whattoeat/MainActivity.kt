@@ -1,6 +1,5 @@
 package com.example.whattoeat
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,22 +9,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.lifecycleScope
 import com.example.whattoeat.ui.theme.composables.NavigationApp
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeViewModel
 import com.example.whattoeat.ui.theme.screens.saveRecipe.SaveRecipeViewModel
 import com.example.whattoeat.ui.theme.screens.setting.SettingViewModel
 import com.example.whattoeat.ui.theme.screens.setting.SettingsScreenEvent
-import com.example.whattoeat.ui.theme.screens.setting.themes
 import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeViewModel
 import com.example.whattoeat.ui.theme.theme.WhatToEatTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
@@ -49,10 +40,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         // TODO : See if this is a good practice to load setting before app launch
-        // This is use to load the theme in datastore before the app launch so we dont see the cellphone system
+        // This is use to load the theme in datastore before the app launch so we don't see the cellphone system
         // theme load before the chosen theme of the app
         runBlocking {
-                settingViewModel.handleScreenEvents(SettingsScreenEvent.ThemeChanged)
+                settingViewModel.handleScreenEvents(SettingsScreenEvent.GetSetting)
         }
         setContent {
             WhatToEatTheme(

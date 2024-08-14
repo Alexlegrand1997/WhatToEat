@@ -21,7 +21,7 @@ class SaveRecipeRepository (private val recipeDao: RecipeDao) {
     fun getAllSaveRecipe(): Flow<List<SaveRecipeEntity>> {
         return recipeDao.getAll()
     }
-//
+
 //    fun getAllSaveRecipe(): Flow<DataStoreResult<List<SaveRecipeEntity>>> {
 //       return flow{
 //           emit(DataStoreResult.Loading)
