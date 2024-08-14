@@ -22,6 +22,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.whattoeat.WhatToEatApplication
 import com.example.whattoeat.core.Screen
 import com.example.whattoeat.ui.theme.screens.home.HomeScreen
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeScreen
@@ -36,7 +37,7 @@ import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeViewM
 //https://nameisjayant.medium.com/nested-navigation-in-jetpack-compose-597ecdc6eebb
 
 @Composable
-fun NavigationApp(
+fun NavigationApp(application: WhatToEatApplication,
     settingViewModel: SettingViewModel,
     saveRecipeViewModel: SaveRecipeViewModel,
     randomRecipeViewModel: RandomRecipeViewModel,
@@ -123,7 +124,7 @@ fun NavigationApp(
             modifier = Modifier.padding((paddingValues))
         ) {
             composable(Screen.Home.screen) { HomeScreen() }
-            composable(Screen.RandomRecipe.screen) { RandomRecipeScreen(randomRecipeViewModel = randomRecipeViewModel) }
+            composable(Screen.RandomRecipe.screen) {RandomRecipeScreen(application,randomRecipeViewModel = randomRecipeViewModel) }
             composable(Screen.SaveRecipe.screen) {
                 SaveRecipeScreen(
                     saveRecipeViewModel = saveRecipeViewModel,
@@ -141,7 +142,7 @@ fun NavigationApp(
             ) { backStackEntry ->
                 backStackEntry.arguments?.getString("idRecipe")
                     ?.let { specificRecipeViewModel.getSpecificRecipe(it) }
-                SpecificRecipeScreen(
+                SpecificRecipeScreen(application,
                     specificRecipeViewModel = specificRecipeViewModel
                 )
 

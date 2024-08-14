@@ -11,12 +11,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.whattoeat.WhatToEatApplication
 import com.example.whattoeat.models.ExtendedIngredient
 import com.example.whattoeat.ui.theme.composables.LoadImageIngredient
+import com.example.whattoeat.ui.theme.screens.setting.IngredientUnitValues
 
 
 @Composable
-fun IngredientCard(ingredient: ExtendedIngredient, typeMeasure: Int) {
+fun IngredientCard(application: WhatToEatApplication,ingredient: ExtendedIngredient) {
+
     Card(
         Modifier
             .fillMaxWidth(0.95f)
@@ -33,7 +36,7 @@ fun IngredientCard(ingredient: ExtendedIngredient, typeMeasure: Int) {
             Column(Modifier.padding(start = 8.dp)) {
                 Text(ingredient.name)
                 // True is US
-                if (typeMeasure == 1) {
+                if (application.appSetting.value.ingredientUnit == IngredientUnitValues.US_MODE.title) {
                     Text("${ingredient.measures.us.amount} ${ingredient.measures.us.unitLong}")
                 }
                 // False is Metric

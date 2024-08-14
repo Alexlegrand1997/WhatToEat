@@ -36,6 +36,8 @@ class MainActivity : ComponentActivity() {
 
     // TODO : When a specificRecipe is load and we check another one we can briefly see the old recipe
 
+    // TODO : ROUND the quantity of ingredient to 0.0f
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -53,7 +55,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize()
                 )
                 {
-                    NavigationApp(
+                    NavigationApp(application,
                         settingViewModel,
                         saveRecipeViewModel,
                         randomRecipeViewModel,

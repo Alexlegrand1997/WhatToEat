@@ -8,6 +8,5 @@ import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class WhatToEatApplication: Application() {
-
     var appSetting : MutableState<AppSetting> = mutableStateOf(AppSetting(theme = "", ingredientUnit = ""))
 }

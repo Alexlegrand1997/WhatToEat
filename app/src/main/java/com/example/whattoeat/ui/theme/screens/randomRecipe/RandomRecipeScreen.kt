@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -25,10 +26,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.whattoeat.WhatToEatApplication
 import com.example.whattoeat.models.Recipe
 import com.example.whattoeat.models.Recipes
 import com.example.whattoeat.ui.theme.composables.LoadImage
 import com.example.whattoeat.ui.theme.composables.LoadingSpinner
+import com.example.whattoeat.ui.theme.composables.RecipeInfo
 import com.example.whattoeat.ui.theme.screens.randomRecipe.components.IngredientCard
 import com.example.whattoeat.ui.theme.screens.randomRecipe.components.InstructionInfoCardModal
 import com.example.whattoeat.ui.theme.screens.randomRecipe.components.SwitchIngredientUnitQuantity
@@ -36,6 +39,7 @@ import com.example.whattoeat.ui.theme.screens.randomRecipe.components.SwitchIngr
 
 @Composable
 fun RandomRecipeScreen(
+    application: WhatToEatApplication,
     randomRecipeViewModel: RandomRecipeViewModel
 ) {
     val randomRecipeUIState by randomRecipeViewModel.randomRecipeUIState.collectAsState()
@@ -45,73 +49,42 @@ fun RandomRecipeScreen(
             LocalContext.current, state.exception.message, Toast.LENGTH_LONG
         ).show()
 
-        RandomRecipeUIState.Loading -> {LoadingSpinner()
+        RandomRecipeUIState.Loading -> {
+            LoadingSpinner()
         }
+
         is RandomRecipeUIState.Success -> {
-            RandomRecipeScreenCard(state.recipes, randomRecipeViewModel)
+            RandomRecipeScreenCard(application, state.recipes, randomRecipeViewModel)
         }
     }
 
 }
 
 @Composable
-fun RandomRecipeScreenCard(recipes: Recipes, randomRecipeViewModel: RandomRecipeViewModel) {
+fun RandomRecipeScreenCard(
+    application: WhatToEatApplication,
+    recipes: Recipes,
+    randomRecipeViewModel: RandomRecipeViewModel
+) {
     var currentRecipeInfo = remember {
         mutableStateOf(false)
     }
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
-            Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
+            Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .padding(top = 20.dp)
-                    .fillMaxWidth(0.9f)
-                    .fillMaxHeight(0.3f)
+            RecipeInfo(Modifier.weight(9f),application = application, recipe = recipes.recipes[0])
+            Row(
+                modifier = Modifier.weight(0.75f),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
-                LoadImage(
-                    url = recipes.recipes[0].image,
-                    recipes.recipes[0].title,
-                    modifier = Modifier
-                        .fillMaxHeight(0.9f)
-                        .clip(RoundedCornerShape(8.dp))
-                )
-                Text(text = recipes.recipes[0].title)
-            }
-
-            val items = remember {
-                listOf("Metric", "US")
-            }
-            var selectedIndex by remember {
-                mutableStateOf(0)
-            }
-
-            SwitchIngredientUnitQuantity(
-                selectedIndex = selectedIndex,
-                items = items,
-                onSelectionChange = {
-                    selectedIndex = it
-                })
-
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.85f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                items(recipes.recipes[0].extendedIngredients) { ingredient ->
-                    IngredientCard(ingredient, selectedIndex)
-                }
-            }
-
-
-            Row(verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.Center) {
                 Button(
                     onClick = { currentRecipeInfo.value = true },
                     Modifier
                         .padding(start = 4.dp)
                         .fillMaxWidth(1 / 3f)
+
                 ) {
                     Text("Instruction")
                 }
@@ -136,6 +109,8 @@ fun RandomRecipeScreenCard(recipes: Recipes, randomRecipeViewModel: RandomRecipe
                 }
             }
 
+
+
             if (currentRecipeInfo.value) {
                 InstructionInfoCardModal(
                     onDismissRequest = {},
@@ -152,7 +127,7 @@ private fun refreshRecipe(randomRecipeViewModel: RandomRecipeViewModel) {
 }
 
 private fun saveRecipe(randomRecipeViewModel: RandomRecipeViewModel, recipe: Recipe) {
-        // TODO: MAKE IT SO SAVE AND SAVED
-         randomRecipeViewModel.saveRecipe(recipe)
+    // TODO: MAKE IT SO SAVE AND SAVED
+    randomRecipeViewModel.saveRecipe(recipe)
 
 }
