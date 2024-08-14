@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
         }
         setContent {
             WhatToEatTheme(
-                application.theme.value
+                application.appSetting.value.theme
             ) {
                 Surface(
                     modifier = Modifier.fillMaxSize()

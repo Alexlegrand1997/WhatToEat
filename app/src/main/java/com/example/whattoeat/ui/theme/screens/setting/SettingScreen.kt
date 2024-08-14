@@ -11,12 +11,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.whattoeat.data.repositories.AppSetting
 import com.example.whattoeat.ui.theme.composables.LoadingSpinner
 import com.example.whattoeat.ui.theme.screens.setting.components.IngredientUnitChoice
 import com.example.whattoeat.ui.theme.screens.setting.components.ThemeChoice
@@ -29,8 +33,9 @@ fun SettingScreen(settingViewModel: SettingViewModel) {
     // https://tomas-repcik.medium.com/dependency-injection-with-hilt-in-android-development-e23fc636d65c
 
     // Change Theme : https://www.youtube.com/watch?v=JAMuaaJwVjw
-    var themeLocation by remember {
-        mutableIntStateOf(0)
+
+    var settingPos by remember {
+        mutableStateOf(SettingPosition(0,0))
     }
     val homeUIState by settingViewModel.homeUIState.collectAsState()
 
@@ -44,18 +49,23 @@ fun SettingScreen(settingViewModel: SettingViewModel) {
         }
 
         is SettingUIState.Success -> {
-            themeLocation = if (state.appSetting.theme.isNullOrEmpty()) {
+            settingPos.themePos = if (state.appSetting.theme.isNullOrEmpty()) {
                 2
             } else {
                 themes.indexOf(state.appSetting.theme)
             }
-            settings(themeLocation,settingViewModel)
+            settingPos.ingredientUnitPos=if (state.appSetting.ingredientUnit.isNullOrEmpty()){
+                0
+            } else {
+                ingredientUnits.indexOf(state.appSetting.ingredientUnit)
+            }
+            settings(settingPos,settingViewModel)
         }
     }
 }
 
 @Composable
-fun settings(themeLocation:Int,settingViewModel: SettingViewModel) {
+fun settings(settingPos:SettingPosition,settingViewModel: SettingViewModel) {
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
             Modifier
@@ -65,14 +75,14 @@ fun settings(themeLocation:Int,settingViewModel: SettingViewModel) {
             ThemeChoice(
                 modifier = Modifier,
                 optionsList = themes,
-                defaultSelected = themeLocation,
+                defaultSelected = settingPos.themePos,
                 settingViewModel
             )
 
             IngredientUnitChoice(
                 modifier = Modifier,
                 optionsList = ingredientUnits,
-                defaultSelected = 0,
+                defaultSelected = settingPos.ingredientUnitPos,
                 settingViewModel = settingViewModel
             )
         }
@@ -98,6 +108,11 @@ enum class IngredientUnitValues(val title: String) {
 }
 
 val ingredientUnits = listOf(
-    IngredientUnitValues.US_MODE.title,
-    IngredientUnitValues.METRIC_MODE.title
+    IngredientUnitValues.METRIC_MODE.title,
+    IngredientUnitValues.US_MODE.title
+)
+
+data class SettingPosition(
+    var themePos:Int =0,
+    var ingredientUnitPos:Int=0
 )

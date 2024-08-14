@@ -24,18 +24,21 @@ class SettingViewModel @Inject constructor(
     val homeUIState = _settingUiState.asStateFlow()
 
     init {
-            getSettingUser()
+        getSettingUser()
     }
 
     fun handleScreenEvents(event: SettingsScreenEvent) {
         when (event) {
             is SettingsScreenEvent.GetSetting -> getSettingUser()
-            is SettingsScreenEvent.SaveSetting -> saveSettingUser(event.themeValue, event.ingredientUnitValue)
+            is SettingsScreenEvent.SaveSetting -> saveSettingUser(
+                event.themeValue,
+                event.ingredientUnitValue
+            )
         }
     }
 
-    private fun saveSettingUser(themeValue:String, ingredientUnitValue:String) {
-        var tempAppSetting:AppSetting = AppSetting(themeValue, ingredientUnitValue)
+    private fun saveSettingUser(themeValue: String, ingredientUnitValue: String) {
+        var tempAppSetting: AppSetting = AppSetting(themeValue, ingredientUnitValue)
 
         viewModelScope.launch {
             dataStore.saveSetting(tempAppSetting)
@@ -59,7 +62,7 @@ class SettingViewModel @Inject constructor(
 
                     DataStoreResult.Loading -> SettingUIState.Loading
                     is DataStoreResult.Success -> _settingUiState.update {
-                        application.theme.value = dataStoreResult.data.theme
+                        application.appSetting.value = dataStoreResult.data
                         SettingUIState.Success(dataStoreResult.data)
                     }
                 }
@@ -68,11 +71,10 @@ class SettingViewModel @Inject constructor(
     }
 
 
-
-
 }
 
 sealed interface SettingsScreenEvent {
-    data object GetSetting: SettingsScreenEvent
-    data class SaveSetting(val themeValue: String="", val ingredientUnitValue: String=""): SettingsScreenEvent
+    data object GetSetting : SettingsScreenEvent
+    data class SaveSetting(val themeValue: String = "", val ingredientUnitValue: String = "") :
+        SettingsScreenEvent
 }
