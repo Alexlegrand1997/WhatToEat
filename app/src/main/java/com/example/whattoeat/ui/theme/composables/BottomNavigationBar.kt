@@ -53,7 +53,6 @@ fun NavigationApp(application: WhatToEatApplication,
     Scaffold(
         bottomBar = {
             BottomAppBar {
-
                 // Navigate to Home
                 IconButton(onClick = {
                     selected.value = Icons.Default.Home
