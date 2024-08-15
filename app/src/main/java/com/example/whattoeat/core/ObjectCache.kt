@@ -1,12 +1,15 @@
 package com.example.whattoeat.core
 
-object AlreadyLoadRandomRecipe {
-    private var loadedRecipeState:Boolean=false
+import com.example.whattoeat.models.Recipe
+import com.example.whattoeat.models.Recipes
 
-    fun setLoadedRecipeState(boolean: Boolean){
-        loadedRecipeState=boolean
+object AlreadyLoadRandomRecipe {
+    private var loadedRecipeState:Recipes = Recipes()
+
+    fun setLoadedRecipeState(recipes: Recipes){
+        loadedRecipeState=recipes
     }
-    fun getLoadedRecipeState(): Boolean{
+    fun getLoadedRecipeState(): Recipes{
         return loadedRecipeState
     }
 }

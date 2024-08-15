@@ -5,7 +5,7 @@ import com.example.whattoeat.models.Recipe
 
 
 sealed class SaveRecipeUIState {
-//    class Success(val recipe: Recipe): SaveRecipeUIState()
-//    data object Loading : SaveRecipeUIState()
-//    class Error (val exception: Exception): SaveRecipeUIState()
+    class Success(val recipes: List<SaveRecipeEntity>): SaveRecipeUIState()
+    data object Loading : SaveRecipeUIState()
+    class Error (val exception: Exception): SaveRecipeUIState()
 }

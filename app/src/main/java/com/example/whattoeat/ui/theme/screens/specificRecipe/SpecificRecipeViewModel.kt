@@ -24,7 +24,7 @@ import javax.inject.Inject
 class SpecificRecipeViewModel @Inject constructor(
     private val _saveRecipeRepository: SaveRecipeRepository,
 
-) : ViewModel() {
+    ) : ViewModel() {
     private val _specificRecipeUIState =
         MutableStateFlow<SpecificRecipeUIState>(SpecificRecipeUIState.Loading)
     val specificRecipeUIState: StateFlow<SpecificRecipeUIState> =
@@ -47,6 +47,7 @@ class SpecificRecipeViewModel @Inject constructor(
                                 )
                             }
                         }
+
                         ApiResult.Loading -> SpecificRecipeUIState.Loading
                         is ApiResult.Success -> _specificRecipeUIState.update {
                             SpecificRecipeUIState.Success(apiResult.data)
@@ -54,7 +55,6 @@ class SpecificRecipeViewModel @Inject constructor(
                     }
                 }
             }
-
         }
     }
 

@@ -25,15 +25,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.whattoeat.WhatToEatApplication
 import com.example.whattoeat.models.Recipe
 import com.example.whattoeat.ui.theme.composables.LoadImage
 import com.example.whattoeat.ui.theme.composables.LoadingSpinner
+import com.example.whattoeat.ui.theme.composables.RecipeInfo
 import com.example.whattoeat.ui.theme.screens.randomRecipe.components.IngredientCard
 import com.example.whattoeat.ui.theme.screens.randomRecipe.components.InstructionInfoCardModal
 import com.example.whattoeat.ui.theme.screens.randomRecipe.components.SwitchIngredientUnitQuantity
 
 @Composable
-fun SpecificRecipeScreen(specificRecipeViewModel: SpecificRecipeViewModel) {
+fun SpecificRecipeScreen(
+    application: WhatToEatApplication,
+    specificRecipeViewModel: SpecificRecipeViewModel
+) {
 
     val specificRecipeUIState by specificRecipeViewModel.specificRecipeUIState.collectAsState()
 
@@ -44,13 +49,17 @@ fun SpecificRecipeScreen(specificRecipeViewModel: SpecificRecipeViewModel) {
 
         SpecificRecipeUIState.Loading -> LoadingSpinner()
         is SpecificRecipeUIState.Success -> {
-            SpecificRecipeScreenCard(state.recipe, specificRecipeViewModel)
+            SpecificRecipeScreenCard(application, state.recipe, specificRecipeViewModel)
         }
     }
 }
 
 @Composable
-fun SpecificRecipeScreenCard(recipe: Recipe, specificRecipeViewModel: SpecificRecipeViewModel) {
+fun SpecificRecipeScreenCard(
+    application: WhatToEatApplication,
+    recipe: Recipe,
+    specificRecipeViewModel: SpecificRecipeViewModel
+) {
     var currentRecipeInfo = remember {
         mutableStateOf(false)
     }
@@ -58,50 +67,13 @@ fun SpecificRecipeScreenCard(recipe: Recipe, specificRecipeViewModel: SpecificRe
         Column(
             Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .padding(top = 20.dp)
-                    .fillMaxWidth(0.9f)
-                    .fillMaxHeight(0.3f)
+            RecipeInfo(modifier = Modifier.weight(9f), application = application, recipe = recipe)
+
+            Row(
+                Modifier.weight(0.75f),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
-                LoadImage(
-                    url = recipe.image,
-                    recipe.title,
-                    modifier = Modifier
-                        .fillMaxHeight(0.9f)
-                        .clip(RoundedCornerShape(8.dp))
-                )
-                Text(text = recipe.title)
-            }
-
-            val items = remember {
-                listOf("Metric", "US")
-            }
-            var selectedIndex by remember {
-                mutableStateOf(0)
-            }
-
-            SwitchIngredientUnitQuantity(
-                selectedIndex = selectedIndex,
-                items = items,
-                onSelectionChange = {
-                    selectedIndex = it
-                })
-
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.85f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                items(recipe.extendedIngredients) { ingredient ->
-                    IngredientCard(ingredient, selectedIndex)
-                }
-            }
-
-
-            Row(verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.Center) {
                 Button(
                     onClick = { currentRecipeInfo.value = true },
                     Modifier

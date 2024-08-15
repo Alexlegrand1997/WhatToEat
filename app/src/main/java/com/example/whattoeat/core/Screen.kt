@@ -7,4 +7,5 @@ sealed class Screen (val screen: String) {
         data object SaveRecipe : Screen("SaveRecipeScreen")
         data object RandomRecipe : Screen("RandomRecipeScreen")
         data object SpecificRecipe : Screen("SpecificRecipeScreen")
+        data object Setting : Screen("SettingScreen")
 }

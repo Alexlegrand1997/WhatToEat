@@ -27,8 +27,17 @@ class RandomRecipeViewModel @Inject constructor(private val _saveRecipeRepositor
 
     private val _randomRecipeRepository = RandomRecipeRepository()
 
+    init {
+        if (AlreadyLoadRandomRecipe.getLoadedRecipeState() !=null) {
+            getRandomRecipe()
+        }
+        else{
+            RandomRecipeUIState.Success(AlreadyLoadRandomRecipe.getLoadedRecipeState())
+        }
+    }
 
     fun getRandomRecipe() {
+
         viewModelScope.launch {
             _randomRecipeRepository.retrieveOne().collect { apiResult ->
                 when (apiResult) {
@@ -45,7 +54,7 @@ class RandomRecipeViewModel @Inject constructor(private val _saveRecipeRepositor
                     ApiResult.Loading -> RandomRecipeUIState.Loading
                     is ApiResult.Success -> {
                         _randomRecipeUIState.update {
-                            AlreadyLoadRandomRecipe.setLoadedRecipeState(true)
+                            AlreadyLoadRandomRecipe.setLoadedRecipeState(apiResult.data)
                             RandomRecipeUIState.Success(apiResult.data)
                         }
                     }

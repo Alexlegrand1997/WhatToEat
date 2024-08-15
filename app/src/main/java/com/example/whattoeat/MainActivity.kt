@@ -4,72 +4,73 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.whattoeat.data.repositories.SaveRecipeRepository
 import com.example.whattoeat.ui.theme.composables.NavigationApp
-import com.example.whattoeat.ui.theme.screens.home.HomeScreen
-import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeScreen
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeViewModel
-import com.example.whattoeat.ui.theme.screens.saveRecipe.SaveRecipeScreen
 import com.example.whattoeat.ui.theme.screens.saveRecipe.SaveRecipeViewModel
+import com.example.whattoeat.ui.theme.screens.setting.SettingViewModel
+import com.example.whattoeat.ui.theme.screens.setting.SettingsScreenEvent
 import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeViewModel
 import com.example.whattoeat.ui.theme.theme.WhatToEatTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-
+    @Inject
+    lateinit var application: WhatToEatApplication
+    private val settingViewModel by viewModels<SettingViewModel>()
     private val randomRecipeViewModel by viewModels<RandomRecipeViewModel>()
     private val saveRecipeViewModel by viewModels<SaveRecipeViewModel>()
     private val specificRecipeViewModel by viewModels<SpecificRecipeViewModel>()
 
 
+    // TODO : When theme of phone is change the nav bar is not set to the correct page when go back in app
+
+    // TODO : When a specificRecipe is load and we check another one we can briefly see the old recipe
+
+    // TODO : ROUND the quantity of ingredient to 0.0f
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // TODO : See if this is a good practice to load setting before app launch
+        // This is use to load the theme in datastore before the app launch so we don't see the cellphone system
+        // theme load before the chosen theme of the app
+        runBlocking {
+                settingViewModel.handleScreenEvents(SettingsScreenEvent.GetSetting)
+        }
         setContent {
-            WhatToEatTheme {
+            WhatToEatTheme(
+                application.appSetting.value.theme
+            ) {
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 )
                 {
-                    NavigationApp(saveRecipeViewModel,randomRecipeViewModel,specificRecipeViewModel)
+                    NavigationApp(application,
+                        settingViewModel,
+                        saveRecipeViewModel,
+                        randomRecipeViewModel,
+                        specificRecipeViewModel
+                    )
                 }
             }
         }
+
     }
 }
 
 @Preview
 @Composable
 fun NavBarPreview() {
-    WhatToEatTheme {
-//        NavigationApp(saveRecipeViewModel)
-    }
+//    WhatToEatTheme {
+////        NavigationApp(saveRecipeViewModel)
+//    }
 }
 
