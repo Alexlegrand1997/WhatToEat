@@ -26,14 +26,15 @@ interface AppSettingsRepository {
     suspend fun saveSetting(appSetting: AppSetting)
 }
 
+private val Context.settingDataStore: androidx.datastore.core.DataStore<Preferences> by preferencesDataStore(
+    SETTING_DATASTORE
+)
+
 class AppSettingsRepositoryImpl @Inject constructor(
     private val context: Context,
 ) : AppSettingsRepository {
 
 
-    private val Context.settingDataStore: androidx.datastore.core.DataStore<Preferences> by preferencesDataStore(
-        SETTING_DATASTORE
-    )
 
     companion object {
         val THEME = stringPreferencesKey(THEME_KEY)

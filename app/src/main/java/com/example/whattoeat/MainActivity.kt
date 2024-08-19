@@ -9,7 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.whattoeat.ui.theme.composables.NavigationApp
+import com.example.whattoeat.ui.theme.composables.testNavigation.BottomNavBar
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeViewModel
 import com.example.whattoeat.ui.theme.screens.saveRecipe.SaveRecipeViewModel
 import com.example.whattoeat.ui.theme.screens.setting.SettingViewModel
@@ -36,6 +36,7 @@ class MainActivity : ComponentActivity() {
 
     // TODO : ROUND the quantity of ingredient to 0.0f
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -53,12 +54,18 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize()
                 )
                 {
-                    NavigationApp(application,
+//                    NavigationApp(application,
+//                        settingViewModel,
+//                        saveRecipeViewModel,
+//                        randomRecipeViewModel,
+//                        specificRecipeViewModel
+//                    )
+
+                    BottomNavBar(application,
                         settingViewModel,
                         saveRecipeViewModel,
                         randomRecipeViewModel,
-                        specificRecipeViewModel
-                    )
+                        specificRecipeViewModel)
                 }
             }
         }

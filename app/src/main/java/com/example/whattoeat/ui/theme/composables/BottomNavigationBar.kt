@@ -1,5 +1,6 @@
 package com.example.whattoeat.ui.theme.composables
 
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -10,6 +11,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -52,7 +54,11 @@ fun NavigationApp(application: WhatToEatApplication,
     //https://medium.com/@itsuki.enjoy/android-kotlin-jetpack-compose-popup-with-navigation-3e48cbe6bf24
     Scaffold(
         bottomBar = {
-            BottomAppBar {
+            BottomAppBar(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.primary
+            ) {
+
                 // Navigate to Home
                 IconButton(onClick = {
                     selected.value = Icons.Default.Home
@@ -73,7 +79,9 @@ fun NavigationApp(application: WhatToEatApplication,
                     selected.value = Icons.Default.Favorite
                     navigationController.navigate(Screen.SaveRecipe.screen) {
                         popUpTo(Screen.Home.screen)
+                        navigationController.popBackStack()
                     }
+
                 }, modifier = Modifier.weight(1f)) {
                     Icon(
                         Icons.Default.Favorite,
@@ -127,6 +135,7 @@ fun NavigationApp(application: WhatToEatApplication,
             composable(Screen.SaveRecipe.screen) {
                 SaveRecipeScreen(
                     saveRecipeViewModel = saveRecipeViewModel,
+                    // TODO NOT A GOOD PRACTICE TO GIVE NAVCONTROLLER. SHOULD EXPOSE AN EVENT : https://developer.android.com/guide/navigation/use-graph/navigate?hl=fr
                     navController = navigationController
                 )
             }
