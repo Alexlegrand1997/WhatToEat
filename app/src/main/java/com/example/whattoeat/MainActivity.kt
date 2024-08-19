@@ -54,13 +54,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize()
                 )
                 {
-//                    NavigationApp(application,
-//                        settingViewModel,
-//                        saveRecipeViewModel,
-//                        randomRecipeViewModel,
-//                        specificRecipeViewModel
-//                    )
-
                     BottomNavBar(application,
                         settingViewModel,
                         saveRecipeViewModel,

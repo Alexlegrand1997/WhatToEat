@@ -1,5 +1,6 @@
 package com.example.whattoeat.ui.theme.composables.testNavigation
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -51,12 +52,7 @@ fun BottomNavBar(
         NavigationItem.Setting
     )
 
-    var navigationSelectedItem by remember {
-        mutableIntStateOf(0)
-    }
-
     val navController = rememberNavController()
-    val backStackEntry = navController.currentBackStackEntryAsState()
 
     Scaffold(
         bottomBar = {
@@ -64,13 +60,13 @@ fun BottomNavBar(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.primary
             ) {
-//                val navBackStackEntry by navController.currentBackStackEntryAsState()
-//                val currentRoute = navBackStackEntry?.destination?.route
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
 
                 bottomNavItems.forEachIndexed { index, item ->
                     NavigationBarItem(
-                        selected = index == navigationSelectedItem,
-                        onClick = { navigationSelectedItem = index
+                        selected = currentRoute == item.route,
+                        onClick = {
                                   navController.navigate(item.route){
                                       popUpTo(navController.graph.findStartDestination().id){
                                           saveState =true
@@ -78,6 +74,7 @@ fun BottomNavBar(
                                       launchSingleTop=true
                                       restoreState = true
                                   }},
+
                         icon = { Icon(imageVector = item.icon, contentDescription = item.title) })
                 }
 
