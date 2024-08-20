@@ -9,7 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.whattoeat.ui.theme.composables.NavigationApp
+import com.example.whattoeat.ui.theme.composables.testNavigation.BottomNavBar
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeViewModel
 import com.example.whattoeat.ui.theme.screens.saveRecipe.SaveRecipeViewModel
 import com.example.whattoeat.ui.theme.screens.setting.SettingViewModel
@@ -30,11 +30,12 @@ class MainActivity : ComponentActivity() {
     private val specificRecipeViewModel by viewModels<SpecificRecipeViewModel>()
 
 
-    // TODO : When theme of phone is change the nav bar is not set to the correct page when go back in app
+    // TODO : Check how to show user that when he is looking at a recipe he can back
 
     // TODO : When a specificRecipe is load and we check another one we can briefly see the old recipe
 
-    // TODO : ROUND the quantity of ingredient to 0.0f
+    // TODO : Think about how to adjust precision of measure so the user can read and it is nice to read
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,12 +54,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize()
                 )
                 {
-                    NavigationApp(application,
+                    BottomNavBar(application,
                         settingViewModel,
                         saveRecipeViewModel,
                         randomRecipeViewModel,
-                        specificRecipeViewModel
-                    )
+                        specificRecipeViewModel)
                 }
             }
         }

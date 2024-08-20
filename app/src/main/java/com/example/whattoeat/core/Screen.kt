@@ -1,5 +1,13 @@
 package com.example.whattoeat.core
 
+import android.graphics.drawable.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.ui.graphics.vector.ImageVector
+import com.example.whattoeat.R
 import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeScreen
 
 sealed class Screen (val screen: String) {
