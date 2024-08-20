@@ -30,11 +30,11 @@ class MainActivity : ComponentActivity() {
     private val specificRecipeViewModel by viewModels<SpecificRecipeViewModel>()
 
 
-    // TODO : When theme of phone is change the nav bar is not set to the correct page when go back in app
+    // TODO : Check how to show user that when he is looking at a recipe he can back
 
     // TODO : When a specificRecipe is load and we check another one we can briefly see the old recipe
 
-    // TODO : ROUND the quantity of ingredient to 0.0f
+    // TODO : Think about how to adjust precision of measure so the user can read and it is nice to read
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
