@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.whattoeat.data.entities.SaveRecipeEntity
 import com.example.whattoeat.ui.theme.composables.LoadingSpinner
@@ -23,7 +24,7 @@ import com.example.whattoeat.ui.theme.screens.saveRecipe.components.SaveRecipeCa
 
 @Composable
 fun SaveRecipeScreen(
-    saveRecipeViewModel: SaveRecipeViewModel,
+    saveRecipeViewModel: SaveRecipeViewModel = hiltViewModel(),
     navController: NavController
 ) {
 

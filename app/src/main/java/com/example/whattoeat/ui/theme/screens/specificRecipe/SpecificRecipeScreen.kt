@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.whattoeat.WhatToEatApplication
 import com.example.whattoeat.models.Recipe
 import com.example.whattoeat.ui.theme.composables.LoadImage
@@ -38,7 +39,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 @Composable
 fun SpecificRecipeScreen(
     application: WhatToEatApplication,
-    specificRecipeViewModel: SpecificRecipeViewModel
+    specificRecipeViewModel: SpecificRecipeViewModel = hiltViewModel()
 ) {
 
     val specificRecipeUIState by specificRecipeViewModel.specificRecipeUIState.collectAsState()

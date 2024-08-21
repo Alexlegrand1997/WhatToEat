@@ -43,7 +43,7 @@ import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeViewM
 fun BottomNavBar(
     application: WhatToEatApplication,
     settingViewModel: SettingViewModel,
-    saveRecipeViewModel: SaveRecipeViewModel,
+//    saveRecipeViewModel: SaveRecipeViewModel,
     randomRecipeViewModel: RandomRecipeViewModel,
     specificRecipeViewModel: SpecificRecipeViewModel
 ) {
@@ -98,7 +98,7 @@ fun BottomNavBar(
                 }
                 composable(Screen.SaveRecipe.screen) {
                     SaveRecipeScreen(
-                        saveRecipeViewModel = saveRecipeViewModel,
+//                        saveRecipeViewModel = saveRecipeViewModel,
                         // TODO NOT A GOOD PRACTICE TO GIVE NAVCONTROLLER. SHOULD EXPOSE AN EVENT : https://developer.android.com/guide/navigation/use-graph/navigate?hl=fr
                         navController = navController
                     )
