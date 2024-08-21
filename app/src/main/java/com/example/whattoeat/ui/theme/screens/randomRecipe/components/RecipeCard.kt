@@ -31,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.whattoeat.core.CurrentSpecificRandomRecipe
 import com.example.whattoeat.core.Screen
 import com.example.whattoeat.models.Recipe
 import com.example.whattoeat.ui.theme.composables.LoadImage
@@ -123,6 +124,7 @@ fun RecipeCard(recipe: Recipe, navController: NavController) {
 
 fun seeSpecificRandomRecipe(recipe: Recipe, navController: NavController){
 
+    CurrentSpecificRandomRecipe.setSpecificRandomRecipe(recipe)
     navController.navigate(Screen.SpecificRandomRecipe.screen) {
         // TODO : Have to verify if this is necessary
         popUpTo(2)

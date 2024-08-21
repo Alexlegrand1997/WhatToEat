@@ -39,7 +39,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 @Composable
 fun SpecificRecipeScreen(
     application: WhatToEatApplication,
-    specificRecipeViewModel: SpecificRecipeViewModel = hiltViewModel()
+    specificRecipeViewModel: SpecificRecipeViewModel
 ) {
 
     val specificRecipeUIState by specificRecipeViewModel.specificRecipeUIState.collectAsState()
