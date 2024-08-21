@@ -33,6 +33,7 @@ import com.example.whattoeat.ui.theme.composables.RecipeInfo
 import com.example.whattoeat.ui.theme.screens.randomRecipe.components.IngredientCard
 import com.example.whattoeat.ui.theme.screens.randomRecipe.components.InstructionInfoCardModal
 import com.example.whattoeat.ui.theme.screens.randomRecipe.components.SwitchIngredientUnitQuantity
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 @Composable
 fun SpecificRecipeScreen(

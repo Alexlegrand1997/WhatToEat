@@ -23,6 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.whattoeat.WhatToEatApplication
 import com.example.whattoeat.core.Screen
+import com.example.whattoeat.models.Recipe
 import com.example.whattoeat.ui.theme.screens.home.HomeScreen
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeScreen
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeViewModel
@@ -30,6 +31,7 @@ import com.example.whattoeat.ui.theme.screens.saveRecipe.SaveRecipeScreen
 import com.example.whattoeat.ui.theme.screens.saveRecipe.SaveRecipeViewModel
 import com.example.whattoeat.ui.theme.screens.setting.SettingScreen
 import com.example.whattoeat.ui.theme.screens.setting.SettingViewModel
+import com.example.whattoeat.ui.theme.screens.specificRandomRecipe.SpecificRandomRecipeScreen
 import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeScreen
 import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeViewModel
 
@@ -90,7 +92,8 @@ fun BottomNavBar(
                 composable(Screen.RandomRecipe.screen) {
                     RandomRecipeScreen(
                         application,
-                        randomRecipeViewModel = randomRecipeViewModel
+                        randomRecipeViewModel = randomRecipeViewModel,
+                        navController = navController
                     )
                 }
                 composable(Screen.SaveRecipe.screen) {
@@ -119,6 +122,11 @@ fun BottomNavBar(
                 }
 
                 composable(Screen.Setting.screen) { SettingScreen(settingViewModel) }
+
+                composable(Screen.SpecificRandomRecipe.screen){
+
+                    SpecificRandomRecipeScreen()
+                }
             }
         }
     )

@@ -47,6 +47,4 @@ fun seeSpecificRecipe(idRecipe:Int, navController: NavController){
         // TODO : Have to verify if this is necessary
         popUpTo(2)
     }
-
-
 }
