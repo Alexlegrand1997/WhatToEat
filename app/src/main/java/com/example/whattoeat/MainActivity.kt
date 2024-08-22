@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
                 )
                 {
                     BottomNavBar(application,
-                        settingViewModel,
+//                        settingViewModel,
 //                        saveRecipeViewModel,
                         randomRecipeViewModel,
                         specificRecipeViewModel)

@@ -36,7 +36,7 @@ import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeViewM
 @Composable
 fun BottomNavBar(
     application: WhatToEatApplication,
-    settingViewModel: SettingViewModel,
+//    settingViewModel: SettingViewModel,
 //    saveRecipeViewModel: SaveRecipeViewModel,
     randomRecipeViewModel: RandomRecipeViewModel,
     specificRecipeViewModel: SpecificRecipeViewModel
@@ -117,7 +117,7 @@ fun BottomNavBar(
 
                 }
 
-                composable(Screen.Setting.screen) { SettingScreen(settingViewModel) }
+                composable(Screen.Setting.screen) { SettingScreen() }
 
                 // TODO : Find a better way to pass the recipe than saving it in a data object
                 composable(Screen.SpecificRandomRecipe.screen) {

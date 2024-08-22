@@ -18,13 +18,16 @@ interface RecipeDao {
     @Query("SELECT * FROM ${Constants.SAVE_RECIPE_DB}")
     fun getAll(): Flow<List<SaveRecipeEntity>>
 
-//    @Query("SELECT * FROM ${Constants.SAVE_RECIPE_DB} WHERE idRecipe = :idRecipe")
-//    fun getOne(idRecipe: Int): Flow<Recipe>
+    @Query("SELECT * FROM ${Constants.SAVE_RECIPE_DB} WHERE idRecipe = :idRecipe")
+    fun getOne(idRecipe: Int): Flow<SaveRecipeEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg saveRecipeEntity: SaveRecipeEntity)
 
-    @Delete
-    suspend fun delete(saveRecipeEntity: SaveRecipeEntity)
+    @Query("DELETE FROM ${Constants.SAVE_RECIPE_DB} WHERE idRecipe =:idRecipe")
+    suspend fun delete(idRecipe: Int)
+
+    @Query("SELECT COUNT(*) FROM ${Constants.SAVE_RECIPE_DB} WHERE idRecipe =:idRecipe")
+    fun isSaveRecipe(idRecipe: Int) : Flow<Boolean>
 
 }

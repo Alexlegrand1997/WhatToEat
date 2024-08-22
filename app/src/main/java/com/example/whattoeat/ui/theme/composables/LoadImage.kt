@@ -24,16 +24,16 @@ import coil.compose.SubcomposeAsyncImage
 import com.example.whattoeat.R
 
 @Composable
-fun LoadImage(url: String, title: String = "", modifier: Modifier = Modifier) {
+fun LoadImage(url: String, title: String = "", modifier: Modifier = Modifier, contentScale: ContentScale =ContentScale.Fit) {
     SubcomposeAsyncImage(
         model = url,
-        contentScale = ContentScale.Fit,
+        contentScale = contentScale,
         modifier = modifier,
         contentDescription = title,
         filterQuality = FilterQuality.High,
         loading = {
             Box(
-                contentAlignment = Alignment.Center, modifier = Modifier.height(225.dp)
+                contentAlignment = Alignment.Center, modifier = Modifier.fillMaxHeight()
             ) {
                 CircularProgressIndicator(modifier = Modifier.size(60.dp))
             }

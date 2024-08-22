@@ -7,3 +7,9 @@ sealed class SpecificRandomRecipeUIState {
     data object Loading : SpecificRandomRecipeUIState()
     class Error(val exception: Exception) : SpecificRandomRecipeUIState()
 }
+
+sealed class IsSaveRecipeUIState {
+    class Success(val isSave: Boolean): IsSaveRecipeUIState()
+    data object Loading: IsSaveRecipeUIState()
+    class Error(val exception: Exception) :IsSaveRecipeUIState()
+}

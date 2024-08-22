@@ -1,8 +1,10 @@
 package com.example.whattoeat.ui.theme.screens.specificRandomRecipe
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -10,6 +12,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -22,6 +25,7 @@ import com.example.whattoeat.core.CurrentSpecificRandomRecipe
 import com.example.whattoeat.models.Recipe
 import com.example.whattoeat.ui.theme.composables.RecipeInfo
 import com.example.whattoeat.ui.theme.screens.randomRecipe.components.InstructionInfoCardModal
+import kotlinx.coroutines.flow.first
 
 @Composable
 fun SpecificRandomRecipeScreen(
@@ -46,6 +50,11 @@ fun RandomRecipeScreenCard(
     var currentRecipeInfo = remember {
         mutableStateOf(false)
     }
+
+    var isSaveRecipe = remember {
+        mutableStateOf(false)
+    }
+
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
             Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
@@ -55,6 +64,7 @@ fun RandomRecipeScreenCard(
                 modifier = Modifier.weight(0.75f),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
+
             ) {
                 Button(
                     onClick = { currentRecipeInfo.value = true },
@@ -63,7 +73,11 @@ fun RandomRecipeScreenCard(
                         .fillMaxWidth(1 / 3f)
 
                 ) {
+
+
                     Text("Instruction")
+
+
                 }
                 // Context use for the ROOM db
                 val context = LocalContext.current
@@ -74,7 +88,9 @@ fun RandomRecipeScreenCard(
                         .padding(start = 4.dp, end = 4.dp)
                         .fillMaxWidth(0.5f)
                 ) {
+
                     Text("Save")
+
                 }
             }
 
@@ -96,5 +112,12 @@ private fun saveRecipe(
 ) {
     // TODO: MAKE IT SO SAVE AND SAVED
     specificRandomRecipeViewModel.saveRecipe(recipe)
+}
+
+private suspend fun isSaveRecipe(
+    specificRandomRecipeViewModel: SpecificRandomRecipeViewModel,
+    recipe: Recipe
+): Boolean {
+    return specificRandomRecipeViewModel.isSaveRecipe(recipe)
 
 }

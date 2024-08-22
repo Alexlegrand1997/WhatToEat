@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -100,7 +101,7 @@ fun RecipeCard(recipe: Recipe, navController: NavController) {
                 .background(MaterialTheme.colorScheme.outline)
         ) {
             Column(Modifier.weight(1.2f).background(MaterialTheme.colorScheme.onBackground)) {
-                LoadImage(recipe.image, recipe.title,Modifier.align(Alignment.CenterHorizontally).fillMaxSize())
+                LoadImage(recipe.image, recipe.title,Modifier.align(Alignment.CenterHorizontally).fillMaxSize(), contentScale = ContentScale.FillBounds)
             }
             Column(
                 Modifier.weight(2f)
