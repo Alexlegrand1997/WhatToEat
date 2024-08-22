@@ -18,8 +18,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.whattoeat.R
 import com.example.whattoeat.WhatToEatApplication
 import com.example.whattoeat.core.CurrentSpecificRandomRecipe
 import com.example.whattoeat.models.Recipe
@@ -34,6 +36,12 @@ fun SpecificRandomRecipeScreen(
 ) {
     val recipe: Recipe = CurrentSpecificRandomRecipe.getSpecificRandomRecipe()
 
+    LaunchedEffect(recipe) {
+        if (recipe.id!=0){
+            isSaveRecipe(specificRandomRecipeViewModel,recipe)
+        }
+    }
+
     RandomRecipeScreenCard(
         application = application,
         recipe = recipe,
@@ -47,13 +55,11 @@ fun RandomRecipeScreenCard(
     recipe: Recipe,
     specificRandomRecipeViewModel: SpecificRandomRecipeViewModel
 ) {
+
     var currentRecipeInfo = remember {
         mutableStateOf(false)
     }
 
-    var isSaveRecipe = remember {
-        mutableStateOf(false)
-    }
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -73,11 +79,7 @@ fun RandomRecipeScreenCard(
                         .fillMaxWidth(1 / 3f)
 
                 ) {
-
-
                     Text("Instruction")
-
-
                 }
                 // Context use for the ROOM db
                 val context = LocalContext.current
@@ -88,9 +90,10 @@ fun RandomRecipeScreenCard(
                         .padding(start = 4.dp, end = 4.dp)
                         .fillMaxWidth(0.5f)
                 ) {
-
-                    Text("Save")
-
+                    if (specificRandomRecipeViewModel.isRecipeSave)
+                        Text(stringResource(R.string.Remove))
+                    else
+                        Text(stringResource(R.string.Save))
                 }
             }
 
@@ -110,14 +113,12 @@ private fun saveRecipe(
     specificRandomRecipeViewModel: SpecificRandomRecipeViewModel,
     recipe: Recipe
 ) {
-    // TODO: MAKE IT SO SAVE AND SAVED
     specificRandomRecipeViewModel.saveRecipe(recipe)
 }
 
-private suspend fun isSaveRecipe(
+private fun isSaveRecipe(
     specificRandomRecipeViewModel: SpecificRandomRecipeViewModel,
     recipe: Recipe
-): Boolean {
-    return specificRandomRecipeViewModel.isSaveRecipe(recipe)
-
+) {
+    specificRandomRecipeViewModel.isSaveRecipe(recipe)
 }

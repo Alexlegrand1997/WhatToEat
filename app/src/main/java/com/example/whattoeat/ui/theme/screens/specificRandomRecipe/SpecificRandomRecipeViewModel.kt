@@ -1,6 +1,9 @@
 package com.example.whattoeat.ui.theme.screens.specificRandomRecipe
 
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.whattoeat.core.DataStoreResult
@@ -14,6 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.system.exitProcess
@@ -22,9 +26,9 @@ import kotlin.system.exitProcess
 class SpecificRandomRecipeViewModel @Inject constructor(private val _saveRecipeRepository: SaveRecipeRepository) :
     ViewModel() {
 
-    private val _isSaveRecipeUIState =
-        MutableStateFlow<IsSaveRecipeUIState>(IsSaveRecipeUIState.Loading)
-    val randomRecipeUIState: StateFlow<IsSaveRecipeUIState> = _isSaveRecipeUIState.asStateFlow()
+
+    var isRecipeSave by mutableStateOf(false)
+        private set
 
 
     fun saveRecipe(recipe: Recipe) = viewModelScope.launch {
@@ -33,19 +37,17 @@ class SpecificRandomRecipeViewModel @Inject constructor(private val _saveRecipeR
 
         if (_saveRecipeRepository.isSaveRecipe(recipe.id).first()) {
             _saveRecipeRepository.deleteOneSaveRecipe(recipe.id)
+            isRecipeSave = false
         } else {
             _saveRecipeRepository.insertOneRecipe(saveRecipe)
+            isRecipeSave = true
         }
     }
 
-//        fun isSaveRecipe(recipe: Recipe) {
-//        viewModelScope.launch {
-////            _saveRecipeRepository.isSaveRecipe(recipe.id).first { dataStoreResult ->
-////
-////            }
-//
-//        }
-//    }
-    suspend fun isSaveRecipe(recipe: Recipe) = _saveRecipeRepository.isSaveRecipe(recipe.id).first()
+    fun isSaveRecipe(recipe: Recipe) {
+        viewModelScope.launch {
+            isRecipeSave = _saveRecipeRepository.isSaveRecipe(recipe.id).first()
+        }
 
+    }
 }

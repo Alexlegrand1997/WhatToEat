@@ -15,6 +15,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,8 +25,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.whattoeat.R
 import com.example.whattoeat.WhatToEatApplication
 import com.example.whattoeat.models.Recipe
 import com.example.whattoeat.ui.theme.composables.LoadImage
@@ -51,6 +54,7 @@ fun SpecificRecipeScreen(
 
         SpecificRecipeUIState.Loading -> LoadingSpinner()
         is SpecificRecipeUIState.Success -> {
+            specificRecipeViewModel.isSaveRecipe(state.recipe)
             SpecificRecipeScreenCard(application, state.recipe, specificRecipeViewModel)
         }
     }
@@ -93,7 +97,10 @@ fun SpecificRecipeScreenCard(
                         .padding(start = 4.dp, end = 4.dp)
                         .fillMaxWidth(0.5f)
                 ) {
-                    Text("Save")
+                    if (specificRecipeViewModel.isRecipeSave)
+                        Text(stringResource(R.string.Remove))
+                    else
+                        Text(stringResource(R.string.Save))
                 }
             }
 
