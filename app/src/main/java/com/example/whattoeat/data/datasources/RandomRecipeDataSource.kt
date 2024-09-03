@@ -15,7 +15,7 @@ class RandomRecipeDataSource {
     private val json = Json { coerceInputValues=true; ignoreUnknownKeys = true }
 
     fun getOne(): Recipes {
-        val(_,_,result) = Constants.RANDOM_RECIPE.httpGet().appendHeader("x-api-key",
+        val(_,_,result) = Constants.RANDOM_RECIPE.httpGet(listOf("number" to 10)).appendHeader("x-api-key",
             SPOONACULAR_API_KEY
         ).responseJson()
 

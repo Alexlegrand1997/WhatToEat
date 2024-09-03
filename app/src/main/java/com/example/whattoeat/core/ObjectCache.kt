@@ -24,3 +24,13 @@ object CurrentSpecificRecipe {
     }
 
 }
+
+object CurrentSpecificRandomRecipe {
+    private var currentRandomRecipe:Recipe=Recipe()
+    fun setSpecificRandomRecipe(recipe: Recipe){
+        currentRandomRecipe=recipe
+    }
+    fun getSpecificRandomRecipe():Recipe{
+        return currentRandomRecipe
+    }
+}

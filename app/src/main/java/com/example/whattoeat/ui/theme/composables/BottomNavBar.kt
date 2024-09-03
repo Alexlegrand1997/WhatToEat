@@ -1,7 +1,11 @@
-package com.example.whattoeat.ui.theme.composables.testNavigation
+package com.example.whattoeat.ui.theme.composables
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -9,11 +13,8 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -27,9 +28,8 @@ import com.example.whattoeat.ui.theme.screens.home.HomeScreen
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeScreen
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeViewModel
 import com.example.whattoeat.ui.theme.screens.saveRecipe.SaveRecipeScreen
-import com.example.whattoeat.ui.theme.screens.saveRecipe.SaveRecipeViewModel
 import com.example.whattoeat.ui.theme.screens.setting.SettingScreen
-import com.example.whattoeat.ui.theme.screens.setting.SettingViewModel
+import com.example.whattoeat.ui.theme.screens.specificRandomRecipe.SpecificRandomRecipeScreen
 import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeScreen
 import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeViewModel
 
@@ -40,8 +40,8 @@ import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeViewM
 @Composable
 fun BottomNavBar(
     application: WhatToEatApplication,
-    settingViewModel: SettingViewModel,
-    saveRecipeViewModel: SaveRecipeViewModel,
+//    settingViewModel: SettingViewModel,
+//    saveRecipeViewModel: SaveRecipeViewModel,
     randomRecipeViewModel: RandomRecipeViewModel,
     specificRecipeViewModel: SpecificRecipeViewModel
 ) {
@@ -67,13 +67,14 @@ fun BottomNavBar(
                     NavigationBarItem(
                         selected = currentRoute == item.route,
                         onClick = {
-                                  navController.navigate(item.route){
-                                      popUpTo(navController.graph.findStartDestination().id){
-                                          saveState =true
-                                      }
-                                      launchSingleTop=true
-                                      restoreState = true
-                                  }},
+                            navController.navigate(item.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        },
 
                         icon = { Icon(imageVector = item.icon, contentDescription = item.title) })
                 }
@@ -90,12 +91,13 @@ fun BottomNavBar(
                 composable(Screen.RandomRecipe.screen) {
                     RandomRecipeScreen(
                         application,
-                        randomRecipeViewModel = randomRecipeViewModel
+                        randomRecipeViewModel = randomRecipeViewModel,
+                        navController = navController
                     )
                 }
                 composable(Screen.SaveRecipe.screen) {
                     SaveRecipeScreen(
-                        saveRecipeViewModel = saveRecipeViewModel,
+//                        saveRecipeViewModel = saveRecipeViewModel,
                         // TODO NOT A GOOD PRACTICE TO GIVE NAVCONTROLLER. SHOULD EXPOSE AN EVENT : https://developer.android.com/guide/navigation/use-graph/navigate?hl=fr
                         navController = navController
                     )
@@ -118,8 +120,22 @@ fun BottomNavBar(
 
                 }
 
-                composable(Screen.Setting.screen) { SettingScreen(settingViewModel) }
+                composable(Screen.Setting.screen) { SettingScreen() }
+
+                // TODO : Find a better way to pass the recipe than saving it in a data object
+                composable(Screen.SpecificRandomRecipe.screen) {
+                    SpecificRandomRecipeScreen(application)
+                }
             }
         }
     )
+}
+
+
+
+sealed class NavigationItem(var route:String, var icon: ImageVector, var title: String){
+    data object Home : NavigationItem("HomeScreen", Icons.Default.Home,"Home")
+    data object SaveRecipe : NavigationItem("SaveRecipeScreen", Icons.Default.Favorite,"SaveRecipe")
+    data object RandomRecipe : NavigationItem("RandomRecipeScreen", Icons.Default.Refresh,"RandomRecipe")
+    data object Setting : NavigationItem("SettingScreen", Icons.Default.Settings,"Setting")
 }

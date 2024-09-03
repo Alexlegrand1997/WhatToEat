@@ -11,18 +11,16 @@ import kotlinx.coroutines.flow.flowOn
 
 class RandomRecipeRepository {
 
-    private val _randomRecipeDataSource =RandomRecipeDataSource()
+    private val _randomRecipeDataSource = RandomRecipeDataSource()
 
-    fun retrieveOne() : Flow<ApiResult<Recipes>>{
-        return flow{
+    fun retrieveOne(): Flow<ApiResult<Recipes>> {
+        return flow {
             emit(ApiResult.Loading)
-            try{
+            try {
                 emit(ApiResult.Success(_randomRecipeDataSource.getOne()))
-            }
-            catch (ex:Exception){
+            } catch (ex: Exception) {
                 emit(ApiResult.Error(ex))
             }
         }.flowOn(Dispatchers.IO)
     }
-
 }

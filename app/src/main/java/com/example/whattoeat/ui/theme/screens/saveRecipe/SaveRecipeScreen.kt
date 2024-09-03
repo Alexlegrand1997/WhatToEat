@@ -1,9 +1,12 @@
 package com.example.whattoeat.ui.theme.screens.saveRecipe
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Surface
@@ -14,6 +17,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.whattoeat.data.entities.SaveRecipeEntity
 import com.example.whattoeat.ui.theme.composables.LoadingSpinner
@@ -23,7 +28,7 @@ import com.example.whattoeat.ui.theme.screens.saveRecipe.components.SaveRecipeCa
 
 @Composable
 fun SaveRecipeScreen(
-    saveRecipeViewModel: SaveRecipeViewModel,
+    saveRecipeViewModel: SaveRecipeViewModel = hiltViewModel(),
     navController: NavController
 ) {
 
@@ -39,28 +44,27 @@ fun SaveRecipeScreen(
 //    }
 
 
-
-
-
-    if (saveRecipes.isNotEmpty()){
-        test(saveRecipes,navController)
+    if (saveRecipes.isNotEmpty()) {
+        SaveRecipeList(saveRecipes, navController)
     }
 }
 
 
 @Composable
-fun test(saveRecipes: List<SaveRecipeEntity>, navController: NavController) {
+fun SaveRecipeList(saveRecipes: List<SaveRecipeEntity>, navController: NavController) {
     Surface(modifier = Modifier.fillMaxSize()) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth(0.95f)
-              ,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            items(saveRecipes) { recipe ->
-                SaveRecipeCard(saveRecipe = recipe, navController)
+        Column {
+            LazyColumn(
+                modifier = Modifier
+                    .padding(8.dp)
+                   ,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(saveRecipes) { recipe ->
+                    SaveRecipeCard(saveRecipe = recipe, navController)
+                }
             }
         }
-
     }
 }

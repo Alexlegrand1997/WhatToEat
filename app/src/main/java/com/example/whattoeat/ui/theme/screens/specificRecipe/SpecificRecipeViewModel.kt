@@ -16,6 +16,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,6 +32,8 @@ class SpecificRecipeViewModel @Inject constructor(
         _specificRecipeUIState.asStateFlow()
 
     private val _specificRecipeRepository = SpecificRecipeRepository()
+    var isRecipeSave by mutableStateOf(false)
+        private set
 
     fun getSpecificRecipe(idRecipe: String) {
         if (!idRecipe.isNullOrEmpty() && idRecipe != CurrentSpecificRecipe.getRecipeId()) {
@@ -61,7 +64,23 @@ class SpecificRecipeViewModel @Inject constructor(
     fun saveRecipe(recipe: Recipe) = viewModelScope.launch {
         val saveRecipe =
             SaveRecipeEntity(idRecipe = recipe.id, title = recipe.title, image = recipe.image)
-        _saveRecipeRepository.insertOneRecipe(saveRecipe)
+
+        if (_saveRecipeRepository.isSaveRecipe(recipe.id).first()) {
+            _saveRecipeRepository.deleteOneSaveRecipe(recipe.id)
+            isRecipeSave = false
+        } else {
+            _saveRecipeRepository.insertOneRecipe(saveRecipe)
+            isRecipeSave = true
+        }
     }
+
+
+    fun isSaveRecipe(recipe: Recipe) {
+        viewModelScope.launch {
+            isRecipeSave = _saveRecipeRepository.isSaveRecipe(recipe.id).first()
+        }
+
+    }
+
 
 }

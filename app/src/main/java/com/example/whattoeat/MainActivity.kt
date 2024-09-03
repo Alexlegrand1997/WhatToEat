@@ -9,9 +9,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.whattoeat.ui.theme.composables.testNavigation.BottomNavBar
+import com.example.whattoeat.ui.theme.composables.BottomNavBar
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeViewModel
-import com.example.whattoeat.ui.theme.screens.saveRecipe.SaveRecipeViewModel
 import com.example.whattoeat.ui.theme.screens.setting.SettingViewModel
 import com.example.whattoeat.ui.theme.screens.setting.SettingsScreenEvent
 import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeViewModel
@@ -26,7 +25,7 @@ class MainActivity : ComponentActivity() {
     lateinit var application: WhatToEatApplication
     private val settingViewModel by viewModels<SettingViewModel>()
     private val randomRecipeViewModel by viewModels<RandomRecipeViewModel>()
-    private val saveRecipeViewModel by viewModels<SaveRecipeViewModel>()
+//    private val saveRecipeViewModel by viewModels<SaveRecipeViewModel>()
     private val specificRecipeViewModel by viewModels<SpecificRecipeViewModel>()
 
 
@@ -55,10 +54,11 @@ class MainActivity : ComponentActivity() {
                 )
                 {
                     BottomNavBar(application,
-                        settingViewModel,
-                        saveRecipeViewModel,
+//                        settingViewModel,
+//                        saveRecipeViewModel,
                         randomRecipeViewModel,
-                        specificRecipeViewModel)
+                        specificRecipeViewModel
+                    )
                 }
             }
         }

@@ -22,10 +22,10 @@ import com.example.whattoeat.core.Constants
 import com.example.whattoeat.models.ExtendedIngredient
 
 @Composable
-fun LoadImageIngredient(ingredient: ExtendedIngredient) {
+fun LoadImageIngredient(ingredient: ExtendedIngredient, contentScale: ContentScale = ContentScale.Fit, modifier: Modifier = Modifier) {
     SubcomposeAsyncImage(model = Constants.URL_CDN_INGREDIENT + ingredient.image,
-        contentScale = ContentScale.FillHeight,
-        modifier = Modifier
+        contentScale = contentScale,
+        modifier = modifier
             .clip(RoundedCornerShape(8.dp))
             .fillMaxHeight(0.8f),
         contentDescription = ingredient.name,

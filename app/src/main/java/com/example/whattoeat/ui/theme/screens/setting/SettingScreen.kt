@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.whattoeat.data.repositories.AppSetting
 import com.example.whattoeat.ui.theme.composables.LoadingSpinner
 import com.example.whattoeat.ui.theme.screens.setting.components.IngredientUnitChoice
@@ -27,7 +28,7 @@ import com.example.whattoeat.ui.theme.screens.setting.components.ThemeChoice
 
 
 @Composable
-fun SettingScreen(settingViewModel: SettingViewModel) {
+fun SettingScreen(settingViewModel: SettingViewModel = hiltViewModel()) {
 
     // https://oguzhandogdu.medium.com/changing-the-application-theme-with-jetpack-datastore-c07c321fda79
     // https://tomas-repcik.medium.com/dependency-injection-with-hilt-in-android-development-e23fc636d65c
