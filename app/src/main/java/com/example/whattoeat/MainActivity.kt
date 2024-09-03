@@ -9,9 +9,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.whattoeat.ui.theme.composables.testNavigation.BottomNavBar
+import com.example.whattoeat.ui.theme.composables.BottomNavBar
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeViewModel
-import com.example.whattoeat.ui.theme.screens.saveRecipe.SaveRecipeViewModel
 import com.example.whattoeat.ui.theme.screens.setting.SettingViewModel
 import com.example.whattoeat.ui.theme.screens.setting.SettingsScreenEvent
 import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeViewModel

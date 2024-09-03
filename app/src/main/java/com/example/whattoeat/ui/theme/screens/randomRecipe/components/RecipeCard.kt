@@ -37,53 +37,6 @@ import com.example.whattoeat.core.Screen
 import com.example.whattoeat.models.Recipe
 import com.example.whattoeat.ui.theme.composables.LoadImage
 
-//@Composable
-//fun RecipeCard(recipe: Recipe, navController: NavController) {
-//
-//
-//    // Fix card not same height https://stackoverflow.com/questions/70325468/how-to-level-the-height-of-items-in-lazyverticalgrid
-//    Card(
-//        Modifier
-//            .fillMaxWidth(),
-//        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
-//    ) {
-//
-//        val density = LocalDensity.current.density
-//        Column(
-//            Modifier
-//                .height(128.dp)
-//                .background(MaterialTheme.colorScheme.outline)
-//        ) {
-//            LoadImage(recipe.image, recipe.title)
-//        }
-//        Column(
-//            Modifier
-////                .height(64.dp)
-//                .padding(8.dp),
-//            verticalArrangement = Arrangement.Top,
-//            horizontalAlignment = Alignment.Start
-//        ) {
-//
-//            var padding by remember { mutableStateOf(0.dp) }
-//            Text(
-//                text = recipe.title,
-//                color = MaterialTheme.colorScheme.background,
-//                fontWeight = FontWeight.Bold,
-//                fontSize = 18.sp,
-//                onTextLayout = {
-//                    val lineCount = it.lineCount
-//                    val height = (it.size.height / density).dp
-//                    padding = if (lineCount > 1) 0.dp else height
-//                }
-//            )
-//
-//        }
-//
-//
-//    }
-//
-//}
-
 
 @Composable
 fun RecipeCard(recipe: Recipe, navController: NavController) {
