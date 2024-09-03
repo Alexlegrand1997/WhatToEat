@@ -1,6 +1,11 @@
-package com.example.whattoeat.ui.theme.composables.testNavigation
+package com.example.whattoeat.ui.theme.composables
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -9,6 +14,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -18,13 +24,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.whattoeat.WhatToEatApplication
 import com.example.whattoeat.core.Screen
-import com.example.whattoeat.models.Recipe
 import com.example.whattoeat.ui.theme.screens.home.HomeScreen
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeScreen
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeViewModel
 import com.example.whattoeat.ui.theme.screens.saveRecipe.SaveRecipeScreen
 import com.example.whattoeat.ui.theme.screens.setting.SettingScreen
-import com.example.whattoeat.ui.theme.screens.setting.SettingViewModel
 import com.example.whattoeat.ui.theme.screens.specificRandomRecipe.SpecificRandomRecipeScreen
 import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeScreen
 import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeViewModel
@@ -126,4 +130,13 @@ fun BottomNavBar(
             }
         }
     )
+}
+
+
+
+sealed class NavigationItem(var route:String, var icon: ImageVector, var title: String){
+    data object Home : NavigationItem("HomeScreen", Icons.Default.Home,"Home")
+    data object SaveRecipe : NavigationItem("SaveRecipeScreen", Icons.Default.Favorite,"SaveRecipe")
+    data object RandomRecipe : NavigationItem("RandomRecipeScreen", Icons.Default.Refresh,"RandomRecipe")
+    data object Setting : NavigationItem("SettingScreen", Icons.Default.Settings,"Setting")
 }
