@@ -24,7 +24,12 @@ import coil.compose.SubcomposeAsyncImage
 import com.example.whattoeat.R
 
 @Composable
-fun LoadImage(url: String, title: String = "", modifier: Modifier = Modifier, contentScale: ContentScale =ContentScale.Fit) {
+fun LoadImage(
+    url: String,
+    title: String = "",
+    modifier: Modifier = Modifier,
+    contentScale: ContentScale = ContentScale.Fit
+) {
     SubcomposeAsyncImage(
         model = url,
         contentScale = contentScale,
@@ -39,16 +44,13 @@ fun LoadImage(url: String, title: String = "", modifier: Modifier = Modifier, co
             }
         },
         error = {
-            // A picture for recipe from spoonacular is 556px X 370px
-            val pxValue = with(LocalDensity.current) { 556.toDp() }
-            val pyValue = with(LocalDensity.current) { 370.toDp() }
             Image(
                 modifier = modifier,
                 contentScale = ContentScale.Fit,
                 painter = painterResource(id = R.drawable.placeholder),
                 contentDescription = stringResource(id = R.string.picture_unavailable),
 
-            )
+                )
 
         })
 }
