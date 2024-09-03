@@ -57,7 +57,8 @@ class MainActivity : ComponentActivity() {
 //                        settingViewModel,
 //                        saveRecipeViewModel,
                         randomRecipeViewModel,
-                        specificRecipeViewModel)
+                        specificRecipeViewModel
+                    )
                 }
             }
         }

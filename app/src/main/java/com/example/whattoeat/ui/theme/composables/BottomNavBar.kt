@@ -52,7 +52,6 @@ fun BottomNavBar(
         NavigationItem.Setting
     )
 
-
     val navController = rememberNavController()
 
     Scaffold(

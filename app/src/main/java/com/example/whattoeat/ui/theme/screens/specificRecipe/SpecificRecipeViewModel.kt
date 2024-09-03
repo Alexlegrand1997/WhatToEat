@@ -75,15 +75,12 @@ class SpecificRecipeViewModel @Inject constructor(
     }
 
 
-
     fun isSaveRecipe(recipe: Recipe) {
         viewModelScope.launch {
             isRecipeSave = _saveRecipeRepository.isSaveRecipe(recipe.id).first()
         }
 
     }
-
-
 
 
 }

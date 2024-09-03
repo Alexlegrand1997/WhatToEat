@@ -25,6 +25,7 @@ import com.example.whattoeat.WhatToEatApplication
 import com.example.whattoeat.models.Recipe
 import com.example.whattoeat.ui.theme.composables.LoadingSpinner
 import com.example.whattoeat.ui.theme.composables.RecipeInfo
+import com.example.whattoeat.ui.theme.composables.RecipeScreenCard
 import com.example.whattoeat.ui.theme.screens.randomRecipe.components.InstructionInfoCardModal
 
 @Composable
@@ -43,67 +44,9 @@ fun SpecificRecipeScreen(
         SpecificRecipeUIState.Loading -> LoadingSpinner()
         is SpecificRecipeUIState.Success -> {
             specificRecipeViewModel.isSaveRecipe(state.recipe)
-            SpecificRecipeScreenCard(application, state.recipe, specificRecipeViewModel)
+            RecipeScreenCard(
+                application, state.recipe, specificRecipeViewModel
+            )
         }
     }
-}
-
-@Composable
-fun SpecificRecipeScreenCard(
-    application: WhatToEatApplication,
-    recipe: Recipe,
-    specificRecipeViewModel: SpecificRecipeViewModel
-) {
-    var currentRecipeInfo = remember {
-        mutableStateOf(false)
-    }
-    Surface(modifier = Modifier.fillMaxSize()) {
-        Column(
-            Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            RecipeInfo(modifier = Modifier.weight(9f), application = application, recipe = recipe)
-
-            Row(
-                Modifier.weight(0.75f),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Button(
-                    onClick = { currentRecipeInfo.value = true },
-                    Modifier
-                        .padding(start = 4.dp)
-                        .fillMaxWidth(1 / 3f)
-                ) {
-                    Text("Instruction")
-                }
-                // Context use for the ROOM db
-                val context = LocalContext.current
-                //TODO : Have to change state of button to save or removeFromSave if the recipe is in the save list of the user
-                Button(
-                    onClick = { saveRecipe(specificRecipeViewModel, recipe) },
-                    Modifier
-                        .padding(start = 4.dp, end = 4.dp)
-                        .fillMaxWidth(0.5f)
-                ) {
-                    if (specificRecipeViewModel.isRecipeSave)
-                        Text(stringResource(R.string.Remove))
-                    else
-                        Text(stringResource(R.string.Save))
-                }
-            }
-
-            if (currentRecipeInfo.value) {
-                InstructionInfoCardModal(
-                    onDismissRequest = {},
-                    recipe.analyzedInstructions[0].steps,
-                    currentRecipeInfo
-                )
-            }
-        }
-    }
-}
-
-
-private fun saveRecipe(specificRecipeViewModel: SpecificRecipeViewModel, recipe: Recipe) {
-    specificRecipeViewModel.saveRecipe(recipe)
 }
