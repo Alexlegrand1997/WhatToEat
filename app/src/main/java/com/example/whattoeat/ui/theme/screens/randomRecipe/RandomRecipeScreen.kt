@@ -54,7 +54,6 @@ fun RandomRecipeScreen(
 
         is RandomRecipeUIState.Success -> {
             RandomRecipeList(
-                application = application,
                 recipes = state.recipes.recipes,
                 randomRecipeViewModel = randomRecipeViewModel,
                 navController
@@ -65,25 +64,21 @@ fun RandomRecipeScreen(
 }
 
 
-
 @Composable
 fun RandomRecipeList(
-    application: WhatToEatApplication,
     recipes: List<Recipe>,
     randomRecipeViewModel: RandomRecipeViewModel,
     navController: NavController
 ) {
     Surface(modifier = Modifier.fillMaxSize()) {
-
         Column {
             LazyColumn(
                 modifier = Modifier
                     .padding(8.dp)
                     .weight(0.8f),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
-
                 ) {
-                items(recipes){recipe->
+                items(recipes) { recipe ->
                     RecipeCard(recipe = recipe, navController = navController)
                 }
 
