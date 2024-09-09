@@ -8,6 +8,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.example.whattoeat.core.Constants.INGREDIENT_UNIT_KEY
 import com.example.whattoeat.core.Constants.SETTING_DATASTORE
 import com.example.whattoeat.core.Constants.THEME_KEY
+import com.example.whattoeat.core.Constants.USERNAME_KEY
 import com.example.whattoeat.core.DataStoreResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -35,10 +36,10 @@ class AppSettingsRepositoryImpl @Inject constructor(
 ) : AppSettingsRepository {
 
 
-
     companion object {
         val THEME = stringPreferencesKey(THEME_KEY)
         val INGREDIENT_UNIT = stringPreferencesKey(INGREDIENT_UNIT_KEY)
+        val USERNAME = stringPreferencesKey(USERNAME_KEY)
     }
 
     override suspend fun getSetting(): Flow<DataStoreResult<AppSetting>> {
@@ -46,10 +47,12 @@ class AppSettingsRepositoryImpl @Inject constructor(
             emit(DataStoreResult.Loading)
             val themeKey = stringPreferencesKey(THEME_KEY)
             val ingredientUnitKey = stringPreferencesKey(INGREDIENT_UNIT_KEY)
+            val usernameKey = stringPreferencesKey(USERNAME_KEY)
             val preference = context.settingDataStore.data.map {
                 AppSetting(
                     theme = it[themeKey] ?: "",
-                    ingredientUnit = it[ingredientUnitKey] ?: ""
+                    ingredientUnit = it[ingredientUnitKey] ?: "",
+                    username = it[usernameKey] ?: ""
                 )
             }.first()
             try {
@@ -68,7 +71,9 @@ class AppSettingsRepositoryImpl @Inject constructor(
             }
             if (appSetting.ingredientUnit.isNotBlank()) {
                 it[INGREDIENT_UNIT] = appSetting.ingredientUnit
-
+            }
+            if(appSetting.username.isNotBlank()){
+                it[USERNAME] = appSetting.username
             }
         }
     }
@@ -77,7 +82,8 @@ class AppSettingsRepositoryImpl @Inject constructor(
 
 data class AppSetting(
     val theme: String,
-    val ingredientUnit: String
+    val ingredientUnit: String,
+    val username: String
 )
 
 

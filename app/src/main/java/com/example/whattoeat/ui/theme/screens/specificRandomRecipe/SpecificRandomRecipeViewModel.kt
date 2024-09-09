@@ -26,28 +26,4 @@ import kotlin.system.exitProcess
 class SpecificRandomRecipeViewModel @Inject constructor(private val _saveRecipeRepository: SaveRecipeRepository) :
     ViewModel() {
 
-//
-//    var isRecipeSave by mutableStateOf(false)
-//        private set
-//
-//
-//    fun saveRecipe(recipe: Recipe) = viewModelScope.launch {
-//        val saveRecipe =
-//            SaveRecipeEntity(idRecipe = recipe.id, title = recipe.title, image = recipe.image)
-//
-//        if (_saveRecipeRepository.isSaveRecipe(recipe.id).first()) {
-//            _saveRecipeRepository.deleteOneSaveRecipe(recipe.id)
-//            isRecipeSave = false
-//        } else {
-//            _saveRecipeRepository.insertOneRecipe(saveRecipe)
-//            isRecipeSave = true
-//        }
-//    }
-//
-//    fun isSaveRecipe(recipe: Recipe) {
-//        viewModelScope.launch {
-//            isRecipeSave = _saveRecipeRepository.isSaveRecipe(recipe.id).first()
-//        }
-//
-//    }
 }

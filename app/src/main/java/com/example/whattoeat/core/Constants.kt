@@ -12,6 +12,8 @@ object Constants {
 
     const val THEME_KEY ="theme"
     const val INGREDIENT_UNIT_KEY="ingredient_unit"
+    const val USERNAME_KEY="username"
+
 
 
 }

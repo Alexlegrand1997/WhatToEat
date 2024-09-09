@@ -8,4 +8,5 @@
     <string name="cancel">Cancel</string>
     <string name="Remove">Remove</string>
     <string name="Save">Save</string>
+    <string name="new_recipe">New Recipe</string>
 </resources>
