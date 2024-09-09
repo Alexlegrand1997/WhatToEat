@@ -3,10 +3,11 @@
     <string name="picture_unavailable">Picture unavailable</string>
     <string name="close">close</string>
     <string name="no_instruction">No Instruction Found</string>
-    <string name="choise_theme">Theme Selection</string>
+    <string name="choice_theme">Theme Selection</string>
     <string name="ok">ok</string>
     <string name="cancel">Cancel</string>
     <string name="Remove">Remove</string>
     <string name="Save">Save</string>
     <string name="new_recipe">New Recipe</string>
+    <string name="pts_left">Number of point left :</string>
 </resources>

@@ -11,6 +11,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,22 +20,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.whattoeat.R
+import com.example.whattoeat.data.repositories.AppSetting
 import com.example.whattoeat.ui.theme.composables.LoadingSpinner
 import com.example.whattoeat.ui.theme.screens.setting.SettingUIState
 import com.example.whattoeat.ui.theme.screens.setting.SettingViewModel
 import com.example.whattoeat.ui.theme.screens.setting.SettingsScreenEvent
-import com.example.whattoeat.ui.theme.screens.setting.ingredientUnits
-import com.example.whattoeat.ui.theme.screens.setting.settings
-import com.example.whattoeat.ui.theme.screens.setting.themes
 
 @Composable
 fun HomeScreen(settingViewModel: SettingViewModel = hiltViewModel()) {
 
     val homeUIState by settingViewModel.homeUIState.collectAsState()
-
+    LaunchedEffect({}) {
+        settingViewModel.handleScreenEvents(
+            SettingsScreenEvent.GetSetting
+        )
+    }
     when (val state = homeUIState) {
         is SettingUIState.Error -> Toast.makeText(
             LocalContext.current, state.exception.message, Toast.LENGTH_LONG
@@ -45,19 +49,19 @@ fun HomeScreen(settingViewModel: SettingViewModel = hiltViewModel()) {
         }
 
         is SettingUIState.Success -> {
-            homeWelcomeScreen(state.appSetting.username, settingViewModel)
+            homeWelcomeScreen(state.appSetting, settingViewModel)
         }
     }
 }
 
 
 @Composable
-fun homeWelcomeScreen(CurrentUsername: String = "", settingViewModel: SettingViewModel) {
+fun homeWelcomeScreen(appSetting: AppSetting, settingViewModel: SettingViewModel) {
     var currentUsernameSetting = remember {
         mutableStateOf(false)
     }
     var username by remember {
-        mutableStateOf(CurrentUsername)
+        mutableStateOf(appSetting.username)
     }
 
     Surface(Modifier.fillMaxSize()) {
@@ -77,7 +81,6 @@ fun homeWelcomeScreen(CurrentUsername: String = "", settingViewModel: SettingVie
                         if (!currentUsernameSetting.value && username.isNotBlank()) {
                             settingViewModel.handleScreenEvents(
                                 SettingsScreenEvent.SaveSetting(
-
                                     username=username
                                 )
                             )
@@ -87,6 +90,10 @@ fun homeWelcomeScreen(CurrentUsername: String = "", settingViewModel: SettingVie
                     contentDescription = ""
                 )
             }
+
+
+            Text(text = stringResource(R.string.pts_left))
+            Text(text = appSetting.pointLeft.toString())
 
         }
     }

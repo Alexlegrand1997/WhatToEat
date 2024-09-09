@@ -7,10 +7,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
 
-class SpecificRecipeRepository {
+class SpecificRecipeRepository @Inject constructor(
+    private val _specificRecipeDataSource: SpecificRecipeDataSource
 
-    private val _specificRecipeDataSource= SpecificRecipeDataSource()
+) {
+
 
     fun getOneRecipe(idRecipe :String): Flow<ApiResult<Recipe>> {
         return flow{

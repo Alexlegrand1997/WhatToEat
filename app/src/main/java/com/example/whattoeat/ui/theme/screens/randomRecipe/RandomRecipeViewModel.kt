@@ -19,13 +19,15 @@ import java.nio.file.Files.copy
 import javax.inject.Inject
 
 @HiltViewModel
-class RandomRecipeViewModel @Inject constructor(private val _saveRecipeRepository: SaveRecipeRepository) :
+class RandomRecipeViewModel @Inject constructor(private val _saveRecipeRepository: SaveRecipeRepository,
+    private val _randomRecipeRepository: RandomRecipeRepository
+
+    ) :
     ViewModel() {
     private val _randomRecipeUIState =
         MutableStateFlow<RandomRecipeUIState>(RandomRecipeUIState.Loading)
     val randomRecipeUIState: StateFlow<RandomRecipeUIState> = _randomRecipeUIState.asStateFlow()
 
-    private val _randomRecipeRepository = RandomRecipeRepository()
 
     init {
         if (AlreadyLoadRandomRecipe.getLoadedRecipeState() !=null) {
