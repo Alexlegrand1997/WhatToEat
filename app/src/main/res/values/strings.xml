@@ -9,6 +9,6 @@
     <string name="Remove">Remove</string>
     <string name="Save">Save</string>
     <string name="new_recipe">New Recipe</string>
-    <string name="pts_left">Number of point left :</string>
+    <string name="pts_left">Number of points left :</string>
     <string name="pts">pts</string>
 </resources>

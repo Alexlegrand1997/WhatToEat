@@ -76,7 +76,7 @@ fun RandomRecipeList(
         Column {
             LazyColumn(
                 modifier = Modifier
-                    .padding(8.dp)
+                    .padding(12.dp)
                     .weight(0.8f),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {

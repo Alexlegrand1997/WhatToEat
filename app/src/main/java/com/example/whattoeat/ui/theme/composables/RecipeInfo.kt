@@ -1,5 +1,6 @@
 package com.example.whattoeat.ui.theme.composables
 
+import androidx.annotation.FloatRange
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.whattoeat.R
@@ -79,15 +81,18 @@ fun RecipeInfo(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(0.dp, 4.dp)
-                .fillMaxHeight(0.1f),
+                .fillMaxHeight(0.12f),
+            maxLines = 2,
+            overflow = TextOverflow.Clip,
             textAlign = TextAlign.Center
         )
 
         LazyColumn(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(0.95f)
                 .fillMaxHeight(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             items(recipe.extendedIngredients) { ingredient ->
                 IngredientCard(application, ingredient)

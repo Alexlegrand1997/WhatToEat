@@ -22,9 +22,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.whattoeat.WhatToEatApplication
 import com.example.whattoeat.core.Screen
 import com.example.whattoeat.data.entities.SaveRecipeEntity
 import com.example.whattoeat.ui.theme.composables.LoadImage
+import com.example.whattoeat.ui.theme.theme.Typography
 
 @Composable
 fun SaveRecipeCard(saveRecipe:SaveRecipeEntity, navController: NavController) {
@@ -52,8 +54,8 @@ fun SaveRecipeCard(saveRecipe:SaveRecipeEntity, navController: NavController) {
                 Text(
                     text = saveRecipe.title,
                     color = MaterialTheme.colorScheme.background,
+                    style = Typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp,
                 )
 
             }

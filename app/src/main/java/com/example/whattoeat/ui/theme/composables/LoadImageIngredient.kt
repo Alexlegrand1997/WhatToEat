@@ -22,23 +22,28 @@ import com.example.whattoeat.core.Constants
 import com.example.whattoeat.models.ExtendedIngredient
 
 @Composable
-fun LoadImageIngredient(ingredient: ExtendedIngredient, contentScale: ContentScale = ContentScale.Fit, modifier: Modifier = Modifier) {
-    SubcomposeAsyncImage(model = Constants.URL_CDN_INGREDIENT + ingredient.image,
+fun LoadImageIngredient(
+    ingredient: ExtendedIngredient,
+    contentScale: ContentScale = ContentScale.Fit,
+    modifier: Modifier = Modifier
+) {
+    SubcomposeAsyncImage(
+        model = Constants.URL_CDN_INGREDIENT + ingredient.image,
         contentScale = contentScale,
-        modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
-            .fillMaxHeight(0.8f),
+        modifier = modifier,
         contentDescription = ingredient.name,
         filterQuality = FilterQuality.High,
         loading = {
             Box(
-                contentAlignment = Alignment.Center, modifier = Modifier.height(225.dp)
+                contentAlignment = Alignment.Center, modifier = Modifier.fillMaxHeight()
             ) {
                 CircularProgressIndicator(modifier = Modifier.size(60.dp))
             }
         },
         error = {
             Image(
+                modifier = modifier,
+                contentScale = ContentScale.Fit,
                 painter = painterResource(id = R.drawable.placeholder),
                 contentDescription = stringResource(id = R.string.picture_unavailable)
             )
