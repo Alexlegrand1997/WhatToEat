@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.whattoeat.R
 import com.example.whattoeat.WhatToEatApplication
 import com.example.whattoeat.models.Recipe
@@ -27,7 +28,8 @@ import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeViewM
 fun RecipeScreenCard(
     application: WhatToEatApplication,
     recipe: Recipe,
-    specificRecipeViewModel: SpecificRecipeViewModel
+    specificRecipeViewModel: SpecificRecipeViewModel,
+    navController: NavController
 ) {
 
     var currentRecipeInfo = remember {
@@ -39,7 +41,12 @@ fun RecipeScreenCard(
         Column(
             Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            RecipeInfo(Modifier.weight(9f), application = application, recipe = recipe)
+            RecipeInfo(
+                Modifier.weight(9f),
+                application = application,
+                recipe = recipe,
+                navController
+            )
             Row(
                 modifier = Modifier.weight(0.75f),
                 verticalAlignment = Alignment.CenterVertically,
