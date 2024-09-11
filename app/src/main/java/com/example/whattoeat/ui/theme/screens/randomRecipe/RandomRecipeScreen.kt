@@ -24,8 +24,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.whattoeat.R
 import com.example.whattoeat.WhatToEatApplication
 import com.example.whattoeat.models.Recipe
 import com.example.whattoeat.models.Recipes
@@ -74,7 +76,7 @@ fun RandomRecipeList(
         Column {
             LazyColumn(
                 modifier = Modifier
-                    .padding(8.dp)
+                    .padding(12.dp)
                     .weight(0.8f),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
@@ -91,7 +93,7 @@ fun RandomRecipeList(
                     .weight(0.05f)
                     .fillMaxWidth()
             ) {
-                Text(text = "New Recipe")
+                Text(text = stringResource(R.string.new_recipe))
             }
             Spacer(modifier = Modifier.weight(0.01f))
 

@@ -115,7 +115,8 @@ fun BottomNavBar(
                         ?.let { specificRecipeViewModel.getSpecificRecipe(it) }
                     SpecificRecipeScreen(
                         application,
-                        specificRecipeViewModel = specificRecipeViewModel
+                        specificRecipeViewModel = specificRecipeViewModel,
+                        navController = navController
                     )
 
                 }
@@ -124,7 +125,7 @@ fun BottomNavBar(
 
                 // TODO : Find a better way to pass the recipe than saving it in a data object
                 composable(Screen.SpecificRandomRecipe.screen) {
-                    SpecificRandomRecipeScreen(application)
+                    SpecificRandomRecipeScreen(application, navController = navController)
                 }
             }
         }

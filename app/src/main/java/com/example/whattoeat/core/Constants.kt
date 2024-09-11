@@ -12,7 +12,11 @@ object Constants {
 
     const val THEME_KEY ="theme"
     const val INGREDIENT_UNIT_KEY="ingredient_unit"
+    const val USERNAME_KEY="username"
+    const val POINT_LEFT_KEY="points_left"
 
+    const val COST_POINT_SAVE_RECIPE=1.01
+    const val COST_POINT_RANDOM_RECIPE_REFRESH=1.10
 
 }
 

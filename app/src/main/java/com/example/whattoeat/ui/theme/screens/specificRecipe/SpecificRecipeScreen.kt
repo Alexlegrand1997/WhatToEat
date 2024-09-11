@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.whattoeat.R
 import com.example.whattoeat.WhatToEatApplication
 import com.example.whattoeat.models.Recipe
@@ -31,7 +32,8 @@ import com.example.whattoeat.ui.theme.screens.randomRecipe.components.Instructio
 @Composable
 fun SpecificRecipeScreen(
     application: WhatToEatApplication,
-    specificRecipeViewModel: SpecificRecipeViewModel
+    specificRecipeViewModel: SpecificRecipeViewModel,
+    navController: NavController
 ) {
 
     val specificRecipeUIState by specificRecipeViewModel.specificRecipeUIState.collectAsState()
@@ -45,7 +47,8 @@ fun SpecificRecipeScreen(
         is SpecificRecipeUIState.Success -> {
             specificRecipeViewModel.isSaveRecipe(state.recipe)
             RecipeScreenCard(
-                application, state.recipe, specificRecipeViewModel
+                application, state.recipe, specificRecipeViewModel,
+                navController = navController
             )
         }
     }

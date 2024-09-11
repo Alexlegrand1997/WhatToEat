@@ -36,6 +36,7 @@ import com.example.whattoeat.core.CurrentSpecificRandomRecipe
 import com.example.whattoeat.core.Screen
 import com.example.whattoeat.models.Recipe
 import com.example.whattoeat.ui.theme.composables.LoadImage
+import com.example.whattoeat.ui.theme.theme.Typography
 
 
 @Composable
@@ -43,7 +44,7 @@ fun RecipeCard(recipe: Recipe, navController: NavController) {
 
     // Fix card not same height https://stackoverflow.com/questions/70325468/how-to-level-the-height-of-items-in-lazyverticalgrid
     Card(
-        onClick = {seeSpecificRandomRecipe(recipe,navController)},
+        onClick = { seeSpecificRandomRecipe(recipe, navController) },
         Modifier
             .fillMaxWidth()
             .height(96.dp),
@@ -53,11 +54,22 @@ fun RecipeCard(recipe: Recipe, navController: NavController) {
             Modifier
                 .background(MaterialTheme.colorScheme.outline)
         ) {
-            Column(Modifier.weight(1.2f).background(MaterialTheme.colorScheme.onBackground)) {
-                LoadImage(recipe.image, recipe.title,Modifier.align(Alignment.CenterHorizontally).fillMaxSize(), contentScale = ContentScale.FillBounds)
+            Column(
+                Modifier
+                    .weight(1.2f)
+                    .background(MaterialTheme.colorScheme.onBackground)) {
+                LoadImage(
+                    recipe.image,
+                    recipe.title,
+                    Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .fillMaxSize(),
+                    contentScale = ContentScale.FillBounds
+                )
             }
             Column(
-                Modifier.weight(2f)
+                Modifier
+                    .weight(2f)
                     .padding(8.dp)
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -66,8 +78,9 @@ fun RecipeCard(recipe: Recipe, navController: NavController) {
                 Text(
                     text = recipe.title,
                     color = MaterialTheme.colorScheme.background,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp,
+                    style = Typography.titleMedium,
+                                        fontWeight = FontWeight.Bold,
+//                    fontSize = 18.sp,
                 )
 
             }
@@ -76,7 +89,7 @@ fun RecipeCard(recipe: Recipe, navController: NavController) {
 
 }
 
-fun seeSpecificRandomRecipe(recipe: Recipe, navController: NavController){
+fun seeSpecificRandomRecipe(recipe: Recipe, navController: NavController) {
 
     CurrentSpecificRandomRecipe.setSpecificRandomRecipe(recipe)
     navController.navigate(Screen.SpecificRandomRecipe.screen) {

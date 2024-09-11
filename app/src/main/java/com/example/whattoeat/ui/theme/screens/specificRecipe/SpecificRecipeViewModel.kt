@@ -24,14 +24,14 @@ import javax.inject.Inject
 @HiltViewModel
 class SpecificRecipeViewModel @Inject constructor(
     private val _saveRecipeRepository: SaveRecipeRepository,
-
+    private val _specificRecipeRepository: SpecificRecipeRepository
     ) : ViewModel() {
     private val _specificRecipeUIState =
         MutableStateFlow<SpecificRecipeUIState>(SpecificRecipeUIState.Loading)
     val specificRecipeUIState: StateFlow<SpecificRecipeUIState> =
         _specificRecipeUIState.asStateFlow()
 
-    private val _specificRecipeRepository = SpecificRecipeRepository()
+
     var isRecipeSave by mutableStateOf(false)
         private set
 

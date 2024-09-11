@@ -2,12 +2,15 @@ package com.example.whattoeat.data.repositories
 
 import android.content.Context
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.whattoeat.core.Constants.INGREDIENT_UNIT_KEY
+import com.example.whattoeat.core.Constants.POINT_LEFT_KEY
 import com.example.whattoeat.core.Constants.SETTING_DATASTORE
 import com.example.whattoeat.core.Constants.THEME_KEY
+import com.example.whattoeat.core.Constants.USERNAME_KEY
 import com.example.whattoeat.core.DataStoreResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -35,10 +38,11 @@ class AppSettingsRepositoryImpl @Inject constructor(
 ) : AppSettingsRepository {
 
 
-
     companion object {
         val THEME = stringPreferencesKey(THEME_KEY)
         val INGREDIENT_UNIT = stringPreferencesKey(INGREDIENT_UNIT_KEY)
+        val USERNAME = stringPreferencesKey(USERNAME_KEY)
+        val POINT_LEFT = doublePreferencesKey(POINT_LEFT_KEY)
     }
 
     override suspend fun getSetting(): Flow<DataStoreResult<AppSetting>> {
@@ -46,10 +50,14 @@ class AppSettingsRepositoryImpl @Inject constructor(
             emit(DataStoreResult.Loading)
             val themeKey = stringPreferencesKey(THEME_KEY)
             val ingredientUnitKey = stringPreferencesKey(INGREDIENT_UNIT_KEY)
+            val usernameKey = stringPreferencesKey(USERNAME_KEY)
+            val pointLeftKey = doublePreferencesKey(POINT_LEFT_KEY)
             val preference = context.settingDataStore.data.map {
                 AppSetting(
                     theme = it[themeKey] ?: "",
-                    ingredientUnit = it[ingredientUnitKey] ?: ""
+                    ingredientUnit = it[ingredientUnitKey] ?: "",
+                    username = it[usernameKey] ?: "",
+                    pointLeft=it[pointLeftKey]?: Double.NaN
                 )
             }.first()
             try {
@@ -68,7 +76,12 @@ class AppSettingsRepositoryImpl @Inject constructor(
             }
             if (appSetting.ingredientUnit.isNotBlank()) {
                 it[INGREDIENT_UNIT] = appSetting.ingredientUnit
-
+            }
+            if(appSetting.username.isNotBlank()){
+                it[USERNAME] = appSetting.username
+            }
+            if(!appSetting.pointLeft.isNaN()){
+                it[POINT_LEFT] = appSetting.pointLeft
             }
         }
     }
@@ -76,8 +89,10 @@ class AppSettingsRepositoryImpl @Inject constructor(
 }
 
 data class AppSetting(
-    val theme: String,
-    val ingredientUnit: String
+    val theme: String="",
+    val ingredientUnit: String="",
+    val username: String="",
+    val pointLeft: Double= Double.NaN
 )
 
 
