@@ -59,7 +59,7 @@ fun RecipeInfo(
 
                 Icon(
                     painter = painterResource(R.drawable.baseline_arrow_back_24),
-                    contentDescription = "Back",
+                    contentDescription = "${R.string.back}",
                     modifier = Modifier.clickable { navController.popBackStack() }.align(Alignment.TopStart))
 
                 LoadImage(

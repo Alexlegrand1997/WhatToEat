@@ -35,30 +35,6 @@ class SaveRecipeViewModel @Inject constructor(private val _saveRecipeRepository:
     fun getAllRecipeSave()= viewModelScope.launch {
         _saveRecipeRepository.getAllSaveRecipe()
     }
-//
-//    init {
-//        getAllSaveRecipe()
-//    }
 
-
-//    private fun getAllSaveRecipe() = viewModelScope.launch {
-//        _saveRecipeRepository.getAllSaveRecipe().collect { dataStoreResult ->
-//
-//            when (dataStoreResult) {
-//                is DataStoreResult.Error -> _saveRecipeUIState.update {
-//                    SaveRecipeUIState.Error(
-//                        IllegalStateException(
-//                            dataStoreResult.throwable
-//                        )
-//                    )
-//                }
-//
-//                DataStoreResult.Loading -> SaveRecipeUIState.Loading
-//                is DataStoreResult.Success -> _saveRecipeUIState.update {
-//                    SaveRecipeUIState.Success(dataStoreResult.data)
-//                }
-//            }
-//        }
-//    }
 }
 

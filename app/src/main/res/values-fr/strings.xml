@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WhatToEat</string>
+    <string name="picture_unavailable">Image invalide</string>
+    <string name="close">fermer</string>
+    <string name="no_instruction">Aucune instruction</string>
+    <string name="choice_theme">Selection du theme</string>
+    <string name="ok">ok</string>
+    <string name="cancel">Annuler</string>
+    <string name="Remove">Retirer</string>
+    <string name="Save">Sauvegarder</string>
+    <string name="new_recipe">Nouvelle recette</string>
+    <string name="pts_left">Nombre de points restant : </string>
+    <string name="pts">pts</string>
+    <string name="back">retour</string>
+    <string name="instruction">Instruction</string>
+    <string name="save_recipe_pts">Recette sauvegardé : %1$s pts</string>
+    <string name="refresh_random_recipe_pts">Rafraichissement des recettes aléatoires : %1$s pts</string>
+    <string name="point_cost_per_request">Coût en point par requête</string>
+    <string name="welcome">"Bienvenue : "</string>
+</resources>

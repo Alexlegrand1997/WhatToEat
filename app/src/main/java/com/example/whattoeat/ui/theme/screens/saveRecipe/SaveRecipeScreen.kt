@@ -33,16 +33,6 @@ fun SaveRecipeScreen(
 ) {
 
     val saveRecipes by saveRecipeViewModel.getAllSaveRecipe.collectAsState(initial = emptyList())
-    val saveRecipeUIState by saveRecipeViewModel.saveRecipeUIState.collectAsState()
-
-//    when (val state = saveRecipeUIState){
-//        is SaveRecipeUIState.Error -> Toast.makeText(
-//            LocalContext.current, state.exception.message, Toast.LENGTH_LONG
-//        ).show()
-//        SaveRecipeUIState.Loading -> LoadingSpinner()
-//        is SaveRecipeUIState.Success -> test(state.recipes,navController)
-//    }
-
 
     if (saveRecipes.isNotEmpty()) {
         SaveRecipeList(saveRecipes, navController)

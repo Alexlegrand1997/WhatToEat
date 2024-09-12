@@ -24,17 +24,6 @@ class SaveRecipeRepository (private val recipeDao: RecipeDao) {
         return recipeDao.getAll()
     }
 
-//    fun getAllSaveRecipe(): Flow<DataStoreResult<List<SaveRecipeEntity>>> {
-//       return flow{
-//           emit(DataStoreResult.Loading)
-//           try{
-//               emit(DataStoreResult.Success(recipeDao.getAll()))
-//           }
-//           catch (ex:Exception){
-//               emit(DataStoreResult.Error(ex))
-//           }
-//       }.flowOn(Dispatchers.IO)
-//    }
 
     // TODO HAVE TO AJUST IF ERROR
     fun getOneSaveRecipe(idRecipe: Int): Flow<SaveRecipeEntity>{
