@@ -18,4 +18,9 @@
     <string name="refresh_random_recipe_pts">Rafraichissement des recettes aléatoires : %1$s pts</string>
     <string name="point_cost_per_request">Coût en point par requête</string>
     <string name="welcome">"Bienvenue : "</string>
+    <string name="light_mode">Mode Clair</string>
+    <string name="dark_mode">Mode Sombre</string>
+    <string name="system">Système</string>
+    <string name="metric">Métrique</string>
+    <string name="us">US</string>
 </resources>

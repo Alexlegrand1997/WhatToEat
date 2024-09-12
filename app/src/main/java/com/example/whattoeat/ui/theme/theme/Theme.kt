@@ -117,14 +117,14 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun WhatToEatTheme(
-    appTheme: String?,
+    appTheme: Int?,
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when(appTheme) {
-        ThemeValues.SYSTEM_DEFAULT.title -> {
+        ThemeValues.SYSTEM_DEFAULT.pos -> {
             if (darkTheme) {
                 DarkColorScheme
             } else {
@@ -132,11 +132,11 @@ fun WhatToEatTheme(
             }
         }
 
-        ThemeValues.LIGHT_MODE.title -> {
+        ThemeValues.LIGHT_MODE.pos -> {
             LightColorScheme
         }
 
-        ThemeValues.DARK_MODE.title -> {
+        ThemeValues.DARK_MODE.pos -> {
             DarkColorScheme
         }
 

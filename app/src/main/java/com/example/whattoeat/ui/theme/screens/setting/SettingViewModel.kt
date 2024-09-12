@@ -3,6 +3,8 @@ package com.example.whattoeat.ui.theme.screens.setting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.whattoeat.WhatToEatApplication
+import com.example.whattoeat.core.Constants.DEFAULT_INGREDIENT_UNIT_VALUE
+import com.example.whattoeat.core.Constants.DEFAULT_THEME_VALUE
 import com.example.whattoeat.core.DataStoreResult
 import com.example.whattoeat.data.repositories.AppSetting
 import com.example.whattoeat.data.repositories.AppSettingsRepository
@@ -39,7 +41,7 @@ class SettingViewModel @Inject constructor(
         }
     }
 
-    private fun saveSettingUser(themeValue: String, ingredientUnitValue: String,username:String,pointLeft:Double) {
+    private fun saveSettingUser(themeValue: Int?, ingredientUnitValue: Int?,username:String,pointLeft:Double) {
         var tempAppSetting: AppSetting = AppSetting(themeValue, ingredientUnitValue,username, pointLeft)
 
         viewModelScope.launch {
@@ -75,6 +77,6 @@ class SettingViewModel @Inject constructor(
 
 sealed interface SettingsScreenEvent {
     data object GetSetting : SettingsScreenEvent
-    data class SaveSetting(val themeValue: String = "", val ingredientUnitValue: String = "", val username: String="", val pointLeft: Double= Double.NaN) :
+    data class SaveSetting(val themeValue: Int ?= null, val ingredientUnitValue: Int ?= null, val username: String="", val pointLeft: Double= Double.NaN) :
         SettingsScreenEvent
 }

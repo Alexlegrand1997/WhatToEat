@@ -16,22 +16,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.whattoeat.ui.theme.screens.setting.SettingViewModel
 import com.example.whattoeat.ui.theme.screens.setting.SettingsScreenEvent
+import com.example.whattoeat.ui.theme.screens.setting.ThemeValues
 import com.example.whattoeat.ui.theme.screens.setting.themes
 
 
 @Composable
 fun ThemeChoice(
     modifier: Modifier,
-    optionsList: List<String>,
+    optionsList: List<ThemeValues>,
     defaultSelected: Int,
     settingViewModel: SettingViewModel
 ) {
     var selectedOption by remember {
         mutableIntStateOf(defaultSelected)
     }
+    val context = LocalContext.current
 
     Column(
         modifier
@@ -52,11 +55,14 @@ fun ThemeChoice(
                     modifier = Modifier
                         .height(48.dp)
                         .fillParentMaxWidth(1 / 3f),
-                    it,
-                    optionsList[selectedOption]
-                ) { selectedValue ->
-                    selectedOption = optionsList.indexOf(selectedValue)
-                    settingViewModel.handleScreenEvents(SettingsScreenEvent.SaveSetting(themeValue = themes[selectedOption]))
+                   text = it.getText(LocalContext.current),
+                   selectedValue = optionsList[selectedOption].getText(context)
+                ) {
+                    selectedValue ->
+                        selectedOption = optionsList.find { themeValues -> themeValues.getText(
+                            context) == selectedValue }!!.pos
+
+                    settingViewModel.handleScreenEvents(SettingsScreenEvent.SaveSetting(themeValue = themes[selectedOption].pos))
 
                 }
             }
