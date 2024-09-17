@@ -29,7 +29,7 @@ class RandomRecipeDataSource @Inject constructor(
                 SPOONACULAR_API_KEY
             ).responseJson()
 
-        var pointLeft =response.headers.entries.toTypedArray()[20].value.toTypedArray()[0].toDouble()
+        var pointLeft = response.headers.entries.toTypedArray()[20].value.toTypedArray()[0].toDouble()
          dataStore.saveSetting(appSetting = AppSetting(pointLeft = pointLeft))
 
 
