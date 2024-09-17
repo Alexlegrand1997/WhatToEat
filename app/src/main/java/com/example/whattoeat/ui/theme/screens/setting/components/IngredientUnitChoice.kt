@@ -16,22 +16,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.whattoeat.ui.theme.screens.setting.IngredientUnitValues
 import com.example.whattoeat.ui.theme.screens.setting.SettingViewModel
 import com.example.whattoeat.ui.theme.screens.setting.SettingsScreenEvent
 import com.example.whattoeat.ui.theme.screens.setting.ingredientUnits
-import com.example.whattoeat.ui.theme.screens.setting.themes
 
 @Composable
 fun IngredientUnitChoice(
     modifier: Modifier,
-    optionsList: List<String>,
+    optionsList: List<IngredientUnitValues>,
     defaultSelected: Int,
     settingViewModel: SettingViewModel
 ) {
     var selectedOption by remember {
         mutableIntStateOf(defaultSelected)
     }
+    val context = LocalContext.current
 
     Column(
         modifier
@@ -52,13 +54,14 @@ fun IngredientUnitChoice(
                     modifier = Modifier
                         .height(48.dp)
                         .fillParentMaxWidth(1 / 2f),
-                    it,
-                    optionsList[selectedOption]
+                    it.getText(context),
+                    optionsList[selectedOption].getText(context)
                 ) { selectedValue ->
-                    selectedOption = optionsList.indexOf(selectedValue)
+                    selectedOption = optionsList.find{it.getText(context) == selectedValue}!!.pos
+
                     settingViewModel.handleScreenEvents(
                         SettingsScreenEvent.SaveSetting(
-                            ingredientUnitValue = ingredientUnits[selectedOption]
+                            ingredientUnitValue = ingredientUnits[selectedOption].pos
                         )
                     )
                 }

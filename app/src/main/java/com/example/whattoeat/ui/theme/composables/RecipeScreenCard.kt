@@ -60,7 +60,7 @@ fun RecipeScreenCard(
                         .fillMaxWidth(1 / 3f)
 
                 ) {
-                    Text("Instruction")
+                    Text(stringResource(R.string.instruction))
                 }
                 // Context use for the ROOM db
                 val context = LocalContext.current

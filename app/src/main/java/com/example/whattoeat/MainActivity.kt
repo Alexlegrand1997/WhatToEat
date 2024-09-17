@@ -25,7 +25,6 @@ class MainActivity : ComponentActivity() {
     lateinit var application: WhatToEatApplication
     private val settingViewModel by viewModels<SettingViewModel>()
     private val randomRecipeViewModel by viewModels<RandomRecipeViewModel>()
-//    private val saveRecipeViewModel by viewModels<SaveRecipeViewModel>()
     private val specificRecipeViewModel by viewModels<SpecificRecipeViewModel>()
 
 
@@ -56,8 +55,6 @@ class MainActivity : ComponentActivity() {
                 )
                 {
                     BottomNavBar(application,
-//                        settingViewModel,
-//                        saveRecipeViewModel,
                         randomRecipeViewModel,
                         specificRecipeViewModel
                     )

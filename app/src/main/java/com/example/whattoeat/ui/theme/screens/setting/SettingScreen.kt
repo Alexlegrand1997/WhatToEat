@@ -1,5 +1,7 @@
 package com.example.whattoeat.ui.theme.screens.setting
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.widget.Toast
 
 import androidx.compose.foundation.layout.Column
@@ -10,9 +12,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -21,7 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.whattoeat.data.repositories.AppSetting
+import com.example.whattoeat.R
+import com.example.whattoeat.core.Constants.DEFAULT_INGREDIENT_UNIT_VALUE
+import com.example.whattoeat.core.Constants.DEFAULT_THEME_VALUE
 import com.example.whattoeat.ui.theme.composables.LoadingSpinner
 import com.example.whattoeat.ui.theme.screens.setting.components.IngredientUnitChoice
 import com.example.whattoeat.ui.theme.screens.setting.components.ThemeChoice
@@ -36,7 +37,7 @@ fun SettingScreen(settingViewModel: SettingViewModel = hiltViewModel()) {
     // Change Theme : https://www.youtube.com/watch?v=JAMuaaJwVjw
 
     var settingPos by remember {
-        mutableStateOf(SettingPosition(0,0))
+        mutableStateOf(SettingPosition(0, 0))
     }
     val homeUIState by settingViewModel.homeUIState.collectAsState()
 
@@ -50,29 +51,22 @@ fun SettingScreen(settingViewModel: SettingViewModel = hiltViewModel()) {
         }
 
         is SettingUIState.Success -> {
-            settingPos.themePos = if (state.appSetting.theme.isNullOrEmpty()) {
-                2
-            } else {
-                themes.indexOf(state.appSetting.theme)
-            }
-            settingPos.ingredientUnitPos=if (state.appSetting.ingredientUnit.isNullOrEmpty()){
-                0
-            } else {
-                ingredientUnits.indexOf(state.appSetting.ingredientUnit)
-            }
-            settings(settingPos,settingViewModel)
+            settingPos.themePos = themes.find { it.pos == state.appSetting.theme }!!.pos
+            settingPos.ingredientUnitPos = ingredientUnits.find {it.pos == state.appSetting.ingredientUnit}!!.pos
+            settings(settingPos, settingViewModel)
         }
     }
 }
 
 @Composable
-fun settings(settingPos:SettingPosition,settingViewModel: SettingViewModel) {
+fun settings(settingPos: SettingPosition, settingViewModel: SettingViewModel) {
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
             Modifier
                 .fillMaxWidth()
                 .padding(start = 0.dp, top = 16.dp, end = 0.dp, bottom = 0.dp),
-            horizontalAlignment = Alignment.CenterHorizontally) {
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             ThemeChoice(
                 modifier = Modifier,
                 optionsList = themes,
@@ -92,28 +86,39 @@ fun settings(settingPos:SettingPosition,settingViewModel: SettingViewModel) {
 }
 
 
-enum class ThemeValues(val title: String) {
-    LIGHT_MODE("Light Mode"),
-    DARK_MODE("Dark Mode"),
-    SYSTEM_DEFAULT("System")
+@SuppressLint("StaticFieldLeak")
+public enum class ThemeValues(val title: Int, val pos: Int) {
+    LIGHT_MODE(R.string.light_mode, 0),
+    DARK_MODE(R.string.dark_mode, 1),
+    SYSTEM_DEFAULT(R.string.system, 2);
+
+    fun getText(context: Context): String {
+        return context.getString(this.title)
+    }
 }
+
 val themes = listOf(
-    ThemeValues.LIGHT_MODE.title,
-    ThemeValues.DARK_MODE.title,
-    ThemeValues.SYSTEM_DEFAULT.title
+    ThemeValues.valueOf("LIGHT_MODE"),
+    ThemeValues.valueOf("DARK_MODE"),
+    ThemeValues.valueOf("SYSTEM_DEFAULT")
 )
 
-enum class IngredientUnitValues(val title: String) {
-    METRIC_MODE("Metric"),
-    US_MODE("US")
+enum class IngredientUnitValues(val title: Int, val pos:Int) {
+
+    METRIC_MODE(R.string.metric,0),
+    US_MODE(R.string.us,1);
+
+    fun getText(context: Context): String {
+        return context.getString(this.title)
+    }
 }
 
 val ingredientUnits = listOf(
-    IngredientUnitValues.METRIC_MODE.title,
-    IngredientUnitValues.US_MODE.title
+    IngredientUnitValues.valueOf("METRIC_MODE"),
+    IngredientUnitValues.valueOf("US_MODE")
 )
 
 data class SettingPosition(
-    var themePos:Int =0,
-    var ingredientUnitPos:Int=0
+    var themePos: Int = DEFAULT_THEME_VALUE,
+    var ingredientUnitPos: Int = DEFAULT_INGREDIENT_UNIT_VALUE
 )

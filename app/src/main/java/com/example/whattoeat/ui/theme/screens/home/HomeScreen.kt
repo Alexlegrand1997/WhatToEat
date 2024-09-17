@@ -88,7 +88,7 @@ fun homeWelcomeScreen(appSetting: AppSetting, settingViewModel: SettingViewModel
                 horizontalArrangement = Arrangement.Start
             ) {
                 Text(
-                    text = "Welcome : ",
+                    text = stringResource(R.string.welcome),
                     style = Typography.headlineLarge,
                     modifier = Modifier.fillMaxWidth(0.45f)
                 )
@@ -151,12 +151,15 @@ fun homeWelcomeScreen(appSetting: AppSetting, settingViewModel: SettingViewModel
 
 
             Column(horizontalAlignment = Alignment.Start) {
-                Text("Point Cost per request", style = Typography.titleMedium)
+                Text(stringResource(R.string.point_cost_per_request), style = Typography.titleMedium)
                 Spacer(modifier = Modifier.padding(4.dp))
 
-                Text("Save recipe : $COST_POINT_SAVE_RECIPE pts", style = Typography.titleSmall)
+                Text(stringResource(R.string.save_recipe_pts, COST_POINT_SAVE_RECIPE), style = Typography.titleSmall)
                 Text(
-                    "Refresh random recipe : $COST_POINT_RANDOM_RECIPE_REFRESH pts",
+                    stringResource(
+                        R.string.refresh_random_recipe_pts,
+                        COST_POINT_RANDOM_RECIPE_REFRESH
+                    ),
                     style = Typography.titleSmall
                 )
             }

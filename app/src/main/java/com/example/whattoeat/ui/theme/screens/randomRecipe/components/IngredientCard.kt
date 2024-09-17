@@ -63,7 +63,7 @@ fun IngredientCard(application: WhatToEatApplication, ingredient: ExtendedIngred
                     fontWeight = FontWeight.Bold,)
                 // True is US
                 if (application.appSetting.value.ingredientUnit ==
-                    IngredientUnitValues.US_MODE.title
+                    IngredientUnitValues.US_MODE.pos
                 ) {
                     Text(
                         "${ingredient.measures.us.amount} ${ingredient.measures.us.unitLong}",
