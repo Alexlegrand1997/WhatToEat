@@ -5,6 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +29,7 @@ import com.example.whattoeat.ui.theme.screens.home.HomeScreen
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeScreen
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeViewModel
 import com.example.whattoeat.ui.theme.screens.saveRecipe.SaveRecipeScreen
+import com.example.whattoeat.ui.theme.screens.search.SearchScreen
 import com.example.whattoeat.ui.theme.screens.setting.SettingScreen
 import com.example.whattoeat.ui.theme.screens.specificRandomRecipe.SpecificRandomRecipeScreen
 import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeScreen
@@ -45,9 +47,11 @@ fun BottomNavBar(
     randomRecipeViewModel: RandomRecipeViewModel,
     specificRecipeViewModel: SpecificRecipeViewModel
 ) {
+    // Will dictate the order of the element in the navbar
     val bottomNavItems = listOf(
         NavigationItem.Home,
         NavigationItem.SaveRecipe,
+        NavigationItem.Search,
         NavigationItem.RandomRecipe,
         NavigationItem.Setting
     )
@@ -127,6 +131,11 @@ fun BottomNavBar(
                 composable(Screen.SpecificRandomRecipe.screen) {
                     SpecificRandomRecipeScreen(application, navController = navController)
                 }
+
+                composable(Screen.Search.screen){
+                    SearchScreen()
+                }
+
             }
         }
     )
@@ -137,6 +146,7 @@ fun BottomNavBar(
 sealed class NavigationItem(var route:String, var icon: ImageVector, var title: String){
     data object Home : NavigationItem("HomeScreen", Icons.Default.Home,"Home")
     data object SaveRecipe : NavigationItem("SaveRecipeScreen", Icons.Default.Favorite,"SaveRecipe")
+    data object Search : NavigationItem("SearchScreen", Icons.Default.Search,"Search")
     data object RandomRecipe : NavigationItem("RandomRecipeScreen", Icons.Default.Refresh,"RandomRecipe")
     data object Setting : NavigationItem("SettingScreen", Icons.Default.Settings,"Setting")
 }

@@ -13,6 +13,7 @@ import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeScree
 sealed class Screen (val screen: String) {
         data object Home : Screen("HomeScreen")
         data object SaveRecipe : Screen("SaveRecipeScreen")
+        data object Search : Screen("SearchScreen")
         data object RandomRecipe : Screen("RandomRecipeScreen")
         data object SpecificRecipe : Screen("SpecificRecipeScreen")
         data object Setting : Screen("SettingScreen")
