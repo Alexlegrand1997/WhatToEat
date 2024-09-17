@@ -18,6 +18,7 @@ object Constants {
 
     const val COST_POINT_SAVE_RECIPE=1.01
     const val COST_POINT_RANDOM_RECIPE_REFRESH=1.10
+    const val COST_POINT_SEARCH_RECIPE=1.60
 
     const val DEFAULT_THEME_VALUE = 2 // 0 =Light mode ,  1 = dark mode , 2 = system mode
     const val DEFAULT_INGREDIENT_UNIT_VALUE = 0 // 0 = Metric ,  1 = US

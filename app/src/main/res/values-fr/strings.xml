@@ -23,4 +23,6 @@
     <string name="system">Système</string>
     <string name="metric">Métrique</string>
     <string name="us">US</string>
+    <string name="search">Rechercher</string>
+    <string name="search_recipe_pts">Recherche de recette par texte : %1$s pts</string>
 </resources>

@@ -22,4 +22,6 @@
     <string name="system">System</string>
     <string name="metric">Metric</string>
     <string name="us">US</string>
+    <string name="search">Search</string>
+    <string name="search_recipe_pts">Search recipe by text : %1$s pts</string>
 </resources>

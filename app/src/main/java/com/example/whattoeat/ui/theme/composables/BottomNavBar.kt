@@ -30,6 +30,7 @@ import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeScreen
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeViewModel
 import com.example.whattoeat.ui.theme.screens.saveRecipe.SaveRecipeScreen
 import com.example.whattoeat.ui.theme.screens.search.SearchScreen
+import com.example.whattoeat.ui.theme.screens.search.SearchViewModel
 import com.example.whattoeat.ui.theme.screens.setting.SettingScreen
 import com.example.whattoeat.ui.theme.screens.specificRandomRecipe.SpecificRandomRecipeScreen
 import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeScreen
@@ -45,7 +46,8 @@ fun BottomNavBar(
 //    settingViewModel: SettingViewModel,
 //    saveRecipeViewModel: SaveRecipeViewModel,
     randomRecipeViewModel: RandomRecipeViewModel,
-    specificRecipeViewModel: SpecificRecipeViewModel
+    specificRecipeViewModel: SpecificRecipeViewModel,
+    searchViewModel: SearchViewModel
 ) {
     // Will dictate the order of the element in the navbar
     val bottomNavItems = listOf(
@@ -133,7 +135,7 @@ fun BottomNavBar(
                 }
 
                 composable(Screen.Search.screen){
-                    SearchScreen()
+                    SearchScreen(searchViewModel =  searchViewModel, navController = navController)
                 }
 
             }

@@ -2,6 +2,7 @@ package com.example.whattoeat.core
 
 import com.example.whattoeat.models.Recipe
 import com.example.whattoeat.models.Recipes
+import com.example.whattoeat.models.Results
 
 object AlreadyLoadRandomRecipe {
     private var loadedRecipeState:Recipes = Recipes()
@@ -10,6 +11,18 @@ object AlreadyLoadRandomRecipe {
         loadedRecipeState=recipes
     }
     fun getLoadedRecipeState(): Recipes{
+        return loadedRecipeState
+    }
+}
+
+
+object AlreadyLoadSearchRecipe {
+    private var loadedRecipeState:Results = Results()
+
+    fun setLoadedRecipeState(recipes: Results){
+        loadedRecipeState=recipes
+    }
+    fun getLoadedRecipeState(): Results{
         return loadedRecipeState
     }
 }

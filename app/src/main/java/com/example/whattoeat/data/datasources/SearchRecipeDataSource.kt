@@ -5,6 +5,7 @@ import com.example.whattoeat.core.Constants
 import com.example.whattoeat.data.repositories.AppSetting
 import com.example.whattoeat.data.repositories.AppSettingsRepository
 import com.example.whattoeat.models.Recipes
+import com.example.whattoeat.models.Results
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.json.responseJson
 import com.github.kittinunf.result.Result
@@ -18,10 +19,12 @@ class SearchRecipeDataSource @Inject constructor(
 ) {
     private val json = Json { coerceInputValues = true; ignoreUnknownKeys = true }
 
-    suspend fun getSearchWithoutIngredientList(): Recipes {
+    suspend fun getSearchWithoutIngredientList(search:String): Results {
         val (_, response, result) = Constants.SEARCH_RECIPE.httpGet(
             listOf(
+                "query" to search,
                 "number" to 10,
+                "fillIngredients" to true,
                 "addRecipeInstructions" to true,
                 "addRecipeInformation" to true
             )
@@ -44,12 +47,15 @@ class SearchRecipeDataSource @Inject constructor(
 
 
     suspend fun getSearchWithIngredientList(
+        search:String,
         includeIngredient: String,
         excludeIngredient: String
-    ): Recipes {
+    ): Results {
         val (_, response, result) = Constants.SEARCH_RECIPE.httpGet(
             listOf(
+                "query" to search,
                 "number" to 10,
+                "fillIngredients" to true,
                 "addRecipeInstructions" to true,
                 "addRecipeInformation" to true,
                 "includeIngredients" to includeIngredient,

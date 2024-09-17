@@ -12,11 +12,8 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class RandomRecipeRepository @Inject constructor(
-
     private val _randomRecipeDataSource: RandomRecipeDataSource
 ) {
-
-
     fun retrieveOne(): Flow<ApiResult<Recipes>> {
         return flow {
             emit(ApiResult.Loading)
