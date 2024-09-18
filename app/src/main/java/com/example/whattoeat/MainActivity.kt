@@ -31,13 +31,10 @@ class MainActivity : ComponentActivity() {
     private val searchViewModel by viewModels<SearchViewModel>()
 
 
-    // TODO : ADD PAGE CONNECT USER : https://spoonacular.com/food-api/docs#Connect-User
-
-    // TODO : Check how to show user that when he is looking at a recipe he can back
 
     // TODO : When a specificRecipe is load and we check another one we can briefly see the old recipe
 
-    // TODO : Think about how to adjust precision of measure so the user can read and it is nice to read
+    // TODO : Make a template for button like : BUTTON(text, onclick)...
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

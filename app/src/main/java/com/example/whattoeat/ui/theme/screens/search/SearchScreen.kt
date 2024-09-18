@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -50,7 +51,8 @@ fun SearchScreen(
                 onValueChange = { newText ->
                     searchValue = newText.trimStart { it == '0' }
                 },
-
+                singleLine = true,
+                placeholder = { Text(text = stringResource(id = R.string.search)) },
                 label = { Text(text = stringResource(R.string.search)) }
             )
 
@@ -61,46 +63,60 @@ fun SearchScreen(
                 ).show()
 
                 SearchUiState.Loading -> {
-                    Text(text = "No Recipe")
+                    Text(text = stringResource(R.string.no_recipe))
                 }
 
-                is SearchUiState.Success -> LazyColumn(
-                    modifier = Modifier
-                        .padding(12.dp)
-                        .fillMaxHeight(0.9f),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                ) {
-                    items(state.recipes.results) { recipe ->
-                        RecipeCard(recipe = recipe, navController = navController)
+                is SearchUiState.Success ->
+                    if (state.recipes.results.isNotEmpty()) {
+                        LazyColumn(
+                            modifier = Modifier
+                                .padding(12.dp)
+                                .fillMaxHeight(0.9f),
+                            verticalArrangement = Arrangement.spacedBy(16.dp),
+                        ) {
+                            items(state.recipes.results) { recipe ->
+                                RecipeCard(recipe = recipe, navController = navController)
+                            }
+                        }
+                    } else {
+                        Text(text = stringResource(R.string.no_recipe_found))
                     }
-                }
             }
 
-            Row(Modifier.fillMaxHeight()) {
-                Button(onClick = {
-                    currentSearch = searchValue
-                    search(
-                        searchValue,
-                        "",
-                        "",
-                        searchViewModel,
-                        newSearch = true
-                    )
-                }) {
-                    Text(text = stringResource(R.string.search))
-                }
-                if (currentSearch == searchValue && searchValue != "" && searchViewModel.recipes.offset+ searchViewModel.recipes.number < searchViewModel.recipes.totalResults) {
-                    Button(onClick = {
+            Row(
+                Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Absolute.SpaceAround
+            ) {
+                Button(
+
+                    onClick = {
+                        currentSearch = searchValue
                         search(
                             searchValue,
                             "",
                             "",
                             searchViewModel,
-                            searchViewModel.recipes.offset + searchViewModel.recipes.number,
-                            false
+                            newSearch = true
                         )
                     }) {
-                        Text(text = "More")
+                    Text(text = stringResource(R.string.search))
+                }
+                if (currentSearch == searchValue && searchValue != "" && searchViewModel.recipes.offset + searchViewModel.recipes.number < searchViewModel.recipes.totalResults) {
+                    Button(
+
+                        onClick = {
+                            search(
+                                searchValue,
+                                "",
+                                "",
+                                searchViewModel,
+                                searchViewModel.recipes.offset + searchViewModel.recipes.number,
+                                false
+                            )
+                        }) {
+                        Text(text = stringResource(R.string.more))
                     }
                 }
             }

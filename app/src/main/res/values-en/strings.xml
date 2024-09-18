@@ -25,4 +25,7 @@
     <string name="us">US</string>
     <string name="search">Search</string>
     <string name="search_recipe_pts">Search recipe by text : %1$s pts</string>
+    <string name="no_recipe_found">No Recipe Found</string>
+    <string name="no_recipe">No Recipe</string>
+    <string name="more">More</string>
 </resources>
