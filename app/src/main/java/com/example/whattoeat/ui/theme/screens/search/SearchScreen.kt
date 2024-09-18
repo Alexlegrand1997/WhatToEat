@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -19,7 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,8 +27,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.whattoeat.R
-import com.example.whattoeat.models.Recipe
-import com.example.whattoeat.ui.theme.composables.LoadingSpinner
 import com.example.whattoeat.ui.theme.screens.randomRecipe.components.RecipeCard
 
 @Composable
@@ -38,12 +35,11 @@ fun SearchScreen(
     navController: NavController
 ) {
 
-
-    var searchValue by remember {
+    var currentSearch by rememberSaveable {
         mutableStateOf("")
     }
-    var newSearch by remember {
-        mutableStateOf(false)
+    var searchValue by rememberSaveable {
+        mutableStateOf("")
     }
 
 
@@ -51,10 +47,10 @@ fun SearchScreen(
         Column(Modifier.padding(12.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             TextField(
                 value = searchValue,
-                onValueChange = {
-                    searchValue = it;
-                    newSearch != newSearch
+                onValueChange = { newText ->
+                    searchValue = newText.trimStart { it == '0' }
                 },
+
                 label = { Text(text = stringResource(R.string.search)) }
             )
 
@@ -80,24 +76,35 @@ fun SearchScreen(
                 }
             }
 
-
             Row(Modifier.fillMaxHeight()) {
-                Button(onClick = { search(searchValue, "", "", searchViewModel, newSearch = true) }) {
-                    Text(text = stringResource(R.string.search))
-                }
                 Button(onClick = {
+                    currentSearch = searchValue
                     search(
                         searchValue,
                         "",
                         "",
                         searchViewModel,
-                        searchViewModel.recipes.offset + searchViewModel.recipes.number,
-                        false
+                        newSearch = true
                     )
                 }) {
-                    Text(text = "More")
+                    Text(text = stringResource(R.string.search))
+                }
+                if (currentSearch == searchValue && searchValue != "" && searchViewModel.recipes.offset+ searchViewModel.recipes.number < searchViewModel.recipes.totalResults) {
+                    Button(onClick = {
+                        search(
+                            searchValue,
+                            "",
+                            "",
+                            searchViewModel,
+                            searchViewModel.recipes.offset + searchViewModel.recipes.number,
+                            false
+                        )
+                    }) {
+                        Text(text = "More")
+                    }
                 }
             }
+
         }
     }
 
@@ -110,7 +117,7 @@ fun search(
     excludeIngredient: String,
     searchViewModel: SearchViewModel,
     offset: Int = 0,
-    newSearch:Boolean=true
+    newSearch: Boolean = true
 ) {
     searchViewModel.search(search, includeIngredient, excludeIngredient, offset, newSearch)
 }
