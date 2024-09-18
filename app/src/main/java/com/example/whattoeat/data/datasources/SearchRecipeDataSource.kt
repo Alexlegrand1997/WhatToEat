@@ -19,14 +19,15 @@ class SearchRecipeDataSource @Inject constructor(
 ) {
     private val json = Json { coerceInputValues = true; ignoreUnknownKeys = true }
 
-    suspend fun getSearchWithoutIngredientList(search:String): Results {
+    suspend fun getSearchWithoutIngredientList(search:String,offset:Int): Results {
         val (_, response, result) = Constants.SEARCH_RECIPE.httpGet(
             listOf(
                 "query" to search,
                 "number" to 10,
                 "fillIngredients" to true,
                 "addRecipeInstructions" to true,
-                "addRecipeInformation" to true
+                "addRecipeInformation" to true,
+                "offset" to offset
             )
         )
             .appendHeader(
@@ -49,7 +50,8 @@ class SearchRecipeDataSource @Inject constructor(
     suspend fun getSearchWithIngredientList(
         search:String,
         includeIngredient: String,
-        excludeIngredient: String
+        excludeIngredient: String,
+        offset: Int
     ): Results {
         val (_, response, result) = Constants.SEARCH_RECIPE.httpGet(
             listOf(
@@ -59,7 +61,8 @@ class SearchRecipeDataSource @Inject constructor(
                 "addRecipeInstructions" to true,
                 "addRecipeInformation" to true,
                 "includeIngredients" to includeIngredient,
-                "excludeIngredients" to excludeIngredient
+                "excludeIngredients" to excludeIngredient,
+                "offset" to offset
             )
         )
             .appendHeader(

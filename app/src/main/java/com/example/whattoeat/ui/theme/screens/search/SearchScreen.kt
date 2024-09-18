@@ -42,16 +42,19 @@ fun SearchScreen(
     var searchValue by remember {
         mutableStateOf("")
     }
-//    var recipes by remember {
-//        mutableStateOf(searchViewModel.recipes.recipes)
-//    }
+    var newSearch by remember {
+        mutableStateOf(false)
+    }
 
 
     Surface(Modifier.fillMaxSize()) {
         Column(Modifier.padding(12.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             TextField(
                 value = searchValue,
-                onValueChange = { searchValue = it },
+                onValueChange = {
+                    searchValue = it;
+                    newSearch != newSearch
+                },
                 label = { Text(text = stringResource(R.string.search)) }
             )
 
@@ -79,10 +82,19 @@ fun SearchScreen(
 
 
             Row(Modifier.fillMaxHeight()) {
-                Button(onClick = { search(searchValue, "", "", searchViewModel) }) {
+                Button(onClick = { search(searchValue, "", "", searchViewModel, newSearch = true) }) {
                     Text(text = stringResource(R.string.search))
                 }
-                Button(onClick = { /*TODO*/ }) {
+                Button(onClick = {
+                    search(
+                        searchValue,
+                        "",
+                        "",
+                        searchViewModel,
+                        searchViewModel.recipes.offset + searchViewModel.recipes.number,
+                        false
+                    )
+                }) {
                     Text(text = "More")
                 }
             }
@@ -96,7 +108,9 @@ fun search(
     search: String,
     includeIngredient: String,
     excludeIngredient: String,
-    searchViewModel: SearchViewModel
+    searchViewModel: SearchViewModel,
+    offset: Int = 0,
+    newSearch:Boolean=true
 ) {
-    searchViewModel.search(search, includeIngredient, excludeIngredient)
+    searchViewModel.search(search, includeIngredient, excludeIngredient, offset, newSearch)
 }

@@ -13,22 +13,22 @@ import javax.inject.Inject
 class SearchRecipeRepository @Inject constructor(
     private val _searchRecipeDataSource: SearchRecipeDataSource
 ) {
-    fun retrieveRecipeWithoutIngredientList(search:String): Flow<ApiResult<Results>> {
+    fun retrieveRecipeWithoutIngredientList(search:String,offset:Int): Flow<ApiResult<Results>> {
         return flow {
             emit(ApiResult.Loading)
             try {
-                emit(ApiResult.Success(_searchRecipeDataSource.getSearchWithoutIngredientList(search)))
+                emit(ApiResult.Success(_searchRecipeDataSource.getSearchWithoutIngredientList(search,offset)))
             } catch (ex: Exception) {
                 emit(ApiResult.Error(ex))
             }
         }.flowOn(Dispatchers.IO)
     }
 
-    fun retrieveRecipeWithIngredientList(search:String,includeIngredient:String="", excludeIngredient:String=""): Flow<ApiResult<Results>> {
+    fun retrieveRecipeWithIngredientList(search:String,includeIngredient:String="", excludeIngredient:String="",offset:Int): Flow<ApiResult<Results>> {
         return flow {
             emit(ApiResult.Loading)
             try {
-                emit(ApiResult.Success(_searchRecipeDataSource.getSearchWithIngredientList(search, includeIngredient,excludeIngredient)))
+                emit(ApiResult.Success(_searchRecipeDataSource.getSearchWithIngredientList(search, includeIngredient,excludeIngredient,offset)))
             } catch (ex: Exception) {
                 emit(ApiResult.Error(ex))
             }

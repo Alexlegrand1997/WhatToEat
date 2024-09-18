@@ -1,5 +1,6 @@
 package com.example.whattoeat.ui.theme.screens.search
 
+import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.whattoeat.core.AlreadyLoadRandomRecipe
@@ -27,16 +28,16 @@ class SearchViewModel @Inject constructor(
 
     var recipes: Results = Results()
 
-    fun search(search: String, includeIngredient: String = "", excludeIngredient: String = "") {
+    fun search(search: String, includeIngredient: String = "", excludeIngredient: String = "",offset: Int=0, newSearch:Boolean=true) {
         viewModelScope.launch {
-            if (includeIngredient.isBlank() && excludeIngredient.isBlank()) withoutIngredient(search)
-            else withIngredient(search, includeIngredient, excludeIngredient)
+            if (includeIngredient.isBlank() && excludeIngredient.isBlank()) withoutIngredient(search,offset,newSearch)
+            else withIngredient(search, includeIngredient, excludeIngredient,offset,newSearch)
 
         }
     }
 
-    private suspend fun withoutIngredient(search: String) {
-        _searchRecipeRepository.retrieveRecipeWithoutIngredientList(search).collect { apiResult ->
+    private suspend fun withoutIngredient(search: String,offset: Int,newSearch: Boolean) {
+        _searchRecipeRepository.retrieveRecipeWithoutIngredientList(search,offset).collect { apiResult ->
             when (apiResult) {
                 is ApiResult.Error -> _searchRecipeUiState.update {
                     SearchUiState.Error(
@@ -49,8 +50,8 @@ class SearchViewModel @Inject constructor(
                 ApiResult.Loading -> SearchUiState.Loading
                 is ApiResult.Success -> _searchRecipeUiState.update {
                     AlreadyLoadSearchRecipe.setLoadedRecipeState(apiResult.data)
-                    recipes = apiResult.data
-                    SearchUiState.Success(apiResult.data)
+                    setResult(apiResult.data,newSearch)
+                    SearchUiState.Success(recipes)
                 }
             }
 
@@ -60,10 +61,10 @@ class SearchViewModel @Inject constructor(
 
 
     private suspend fun withIngredient(
-        search: String, includeIngredient: String, excludeIngredient: String
+        search: String, includeIngredient: String, excludeIngredient: String,offset: Int,newSearch: Boolean
     ) {
         _searchRecipeRepository.retrieveRecipeWithIngredientList(
-            search, includeIngredient, excludeIngredient
+            search, includeIngredient, excludeIngredient,offset
         ).collect { apiResult ->
             when (apiResult) {
                 is ApiResult.Error -> _searchRecipeUiState.update {
@@ -77,10 +78,22 @@ class SearchViewModel @Inject constructor(
                 ApiResult.Loading -> SearchUiState.Loading
                 is ApiResult.Success -> _searchRecipeUiState.update {
                     AlreadyLoadSearchRecipe.setLoadedRecipeState(apiResult.data)
-                    SearchUiState.Success(apiResult.data)
+                    setResult(apiResult.data,newSearch)
+                    SearchUiState.Success(recipes)
                 }
             }
 
+        }
+    }
+
+    private fun setResult(results: Results,newSearch: Boolean){
+        if (newSearch){
+            recipes = results
+        }else{
+            recipes.results += results.results
+            recipes.offset = results.offset
+            recipes.totalResults = results.totalResults
+            recipes.number += results.number
         }
     }
 }
