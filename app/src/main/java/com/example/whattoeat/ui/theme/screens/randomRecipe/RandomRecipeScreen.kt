@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.whattoeat.R
 import com.example.whattoeat.WhatToEatApplication
+import com.example.whattoeat.core.Constants.KEY_RANDOM_RECIPE
 import com.example.whattoeat.models.Recipe
 import com.example.whattoeat.models.Recipes
 import com.example.whattoeat.ui.theme.composables.LoadingSpinner
@@ -81,7 +82,7 @@ fun RandomRecipeList(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                 items(recipes) { recipe ->
-                    RecipeCard(recipe = recipe, navController = navController)
+                    RecipeCard(recipe = recipe, navController = navController,KEY_RANDOM_RECIPE)
                 }
 
 

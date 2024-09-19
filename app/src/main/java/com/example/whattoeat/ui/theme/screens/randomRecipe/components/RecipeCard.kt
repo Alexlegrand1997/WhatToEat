@@ -32,7 +32,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
+import com.example.whattoeat.core.Constants.KEY_RANDOM_RECIPE
 import com.example.whattoeat.core.CurrentSpecificRandomRecipe
+import com.example.whattoeat.core.CurrentSpecificRecipe
+import com.example.whattoeat.core.CurrentSpecificSearchRecipe
 import com.example.whattoeat.core.Screen
 import com.example.whattoeat.models.Recipe
 import com.example.whattoeat.ui.theme.composables.LoadImage
@@ -40,11 +44,11 @@ import com.example.whattoeat.ui.theme.theme.Typography
 
 
 @Composable
-fun RecipeCard(recipe: Recipe, navController: NavController) {
+fun RecipeCard(recipe: Recipe, navController: NavController, key: String) {
 
     // Fix card not same height https://stackoverflow.com/questions/70325468/how-to-level-the-height-of-items-in-lazyverticalgrid
     Card(
-        onClick = { seeSpecificRandomRecipe(recipe, navController) },
+        onClick = { seeSpecificRandomRecipe(recipe, navController, key) },
         Modifier
             .fillMaxWidth()
             .height(96.dp),
@@ -57,7 +61,8 @@ fun RecipeCard(recipe: Recipe, navController: NavController) {
             Column(
                 Modifier
                     .weight(1.2f)
-                    .background(MaterialTheme.colorScheme.onBackground)) {
+                    .background(MaterialTheme.colorScheme.onBackground)
+            ) {
                 LoadImage(
                     recipe.image,
                     recipe.title,
@@ -79,7 +84,7 @@ fun RecipeCard(recipe: Recipe, navController: NavController) {
                     text = recipe.title,
                     color = MaterialTheme.colorScheme.background,
                     style = Typography.titleMedium,
-                                        fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Bold,
 //                    fontSize = 18.sp,
                 )
 
@@ -89,11 +94,15 @@ fun RecipeCard(recipe: Recipe, navController: NavController) {
 
 }
 
-fun seeSpecificRandomRecipe(recipe: Recipe, navController: NavController) {
+fun seeSpecificRandomRecipe(recipe: Recipe, navController: NavController, key: String) {
 
-    CurrentSpecificRandomRecipe.setSpecificRandomRecipe(recipe)
-    navController.navigate(Screen.SpecificRandomRecipe.screen) {
+    if (key == KEY_RANDOM_RECIPE)
+        CurrentSpecificRandomRecipe.setSpecificRandomRecipe(recipe)
+    else
+        CurrentSpecificSearchRecipe.setSpecificSearchRecipe(recipe)
+
+    navController.navigate("${Screen.SpecificRandomRecipe.screen}/$key") {
         // TODO : Have to verify if this is necessary
-        popUpTo(2)
+//        popUpTo(2)
     }
 }

@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -130,12 +131,25 @@ fun BottomNavBar(
                 composable(Screen.Setting.screen) { SettingScreen() }
 
                 // TODO : Find a better way to pass the recipe than saving it in a data object
-                composable(Screen.SpecificRandomRecipe.screen) {
-                    SpecificRandomRecipeScreen(application, navController = navController)
+                // TODO : RandomRecipeScreen and SearchScreen use this route. So find a way to pass the data and make sure the 2 page are load separately
+                composable(
+                    "${Screen.SpecificRandomRecipe.screen}/{key}",
+                    arguments = listOf(navArgument("key")
+                    {
+                        type = NavType.StringType
+                        defaultValue = ""
+                    }),
+                ) {backStackEntry ->
+                    var key:String = backStackEntry.arguments?.getString("key").toString()
+                    SpecificRandomRecipeScreen(
+                        key,
+                        application,
+                        navController = navController
+                    )
                 }
 
-                composable(Screen.Search.screen){
-                    SearchScreen(searchViewModel =  searchViewModel, navController = navController)
+                composable(Screen.Search.screen) {
+                    SearchScreen(searchViewModel = searchViewModel, navController = navController)
                 }
 
             }
@@ -144,11 +158,14 @@ fun BottomNavBar(
 }
 
 
+sealed class NavigationItem(var route: String, var icon: ImageVector, var title: String) {
+    data object Home : NavigationItem("HomeScreen", Icons.Default.Home, "Home")
+    data object SaveRecipe :
+        NavigationItem("SaveRecipeScreen", Icons.Default.Favorite, "SaveRecipe")
 
-sealed class NavigationItem(var route:String, var icon: ImageVector, var title: String){
-    data object Home : NavigationItem("HomeScreen", Icons.Default.Home,"Home")
-    data object SaveRecipe : NavigationItem("SaveRecipeScreen", Icons.Default.Favorite,"SaveRecipe")
-    data object Search : NavigationItem("SearchScreen", Icons.Default.Search,"Search")
-    data object RandomRecipe : NavigationItem("RandomRecipeScreen", Icons.Default.Refresh,"RandomRecipe")
-    data object Setting : NavigationItem("SettingScreen", Icons.Default.Settings,"Setting")
+    data object Search : NavigationItem("SearchScreen", Icons.Default.Search, "Search")
+    data object RandomRecipe :
+        NavigationItem("RandomRecipeScreen", Icons.Default.Refresh, "RandomRecipe")
+
+    data object Setting : NavigationItem("SettingScreen", Icons.Default.Settings, "Setting")
 }

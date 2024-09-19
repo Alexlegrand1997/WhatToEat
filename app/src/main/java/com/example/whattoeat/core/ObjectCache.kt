@@ -47,3 +47,12 @@ object CurrentSpecificRandomRecipe {
         return currentRandomRecipe
     }
 }
+object CurrentSpecificSearchRecipe {
+    private var currentSearchRecipe:Recipe=Recipe()
+    fun setSpecificSearchRecipe(recipe: Recipe){
+        currentSearchRecipe=recipe
+    }
+    fun getSpecificSearchRecipe():Recipe{
+        return currentSearchRecipe
+    }
+}

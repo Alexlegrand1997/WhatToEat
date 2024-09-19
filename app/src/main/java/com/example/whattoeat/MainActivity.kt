@@ -32,6 +32,7 @@ class MainActivity : ComponentActivity() {
 
 
 
+
     // TODO : When a specificRecipe is load and we check another one we can briefly see the old recipe
 
     // TODO : Make a template for button like : BUTTON(text, onclick)...

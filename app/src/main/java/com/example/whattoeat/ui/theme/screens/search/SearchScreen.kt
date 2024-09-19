@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.whattoeat.R
+import com.example.whattoeat.core.Constants.KEY_SEARCH_RECIPE
 import com.example.whattoeat.ui.theme.screens.randomRecipe.components.RecipeCard
 
 @Composable
@@ -45,7 +46,7 @@ fun SearchScreen(
 
 
     Surface(Modifier.fillMaxSize()) {
-        Column(Modifier.padding(12.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column( horizontalAlignment = Alignment.CenterHorizontally) {
             TextField(
                 value = searchValue,
                 onValueChange = { newText ->
@@ -70,12 +71,13 @@ fun SearchScreen(
                     if (state.recipes.results.isNotEmpty()) {
                         LazyColumn(
                             modifier = Modifier
-                                .padding(12.dp)
-                                .fillMaxHeight(0.9f),
+//                                .padding(12.dp)
+//                                .fillMaxHeight(0.9f),
+                                    ,
                             verticalArrangement = Arrangement.spacedBy(16.dp),
                         ) {
                             items(state.recipes.results) { recipe ->
-                                RecipeCard(recipe = recipe, navController = navController)
+                                RecipeCard(recipe = recipe, navController = navController,KEY_SEARCH_RECIPE)
                             }
                         }
                     } else {
