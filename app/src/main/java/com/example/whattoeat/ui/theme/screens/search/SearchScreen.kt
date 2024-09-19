@@ -31,8 +31,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -65,11 +68,12 @@ fun SearchScreen(
     var currentIncludeIngredientValue by remember {
         mutableStateOf("")
     }
-    var includeIngredient by rememberSaveable {
+    var includeIngredientPossible by rememberSaveable {
         mutableStateOf(listOf<IngredientSearch>())
     }
-    var listIncludeIngredient = mutableListOf("")
-
+    var listIncludeIngredient by rememberSaveable {
+        mutableStateOf(listOf<IngredientSearch>())
+    }
     var includeIngredientExpanded by remember {
         mutableStateOf(false)
     }
@@ -145,8 +149,8 @@ fun SearchScreen(
                     }
 
                     is SearchIngredientUiState.Success -> {
-                        includeIngredient = state.ingredients
-                        if (includeIngredient.isNotEmpty()) {
+                        includeIngredientPossible = state.ingredients
+                        if (includeIngredientPossible.isNotEmpty()) {
                             DropdownMenu(
                                 modifier = Modifier
                                     .background(MaterialTheme.colorScheme.background)
@@ -154,13 +158,13 @@ fun SearchScreen(
                                 properties = PopupProperties(focusable = false),
                                 expanded = includeIngredientExpanded,
                                 onDismissRequest = { includeIngredientExpanded = false }) {
-                                includeIngredient.forEach { selectionOption ->
+                                includeIngredientPossible.forEach { selectionOption ->
                                     DropdownMenuItem(
                                         text = { Text(text = selectionOption.name) },
                                         onClick = {
                                             currentIncludeIngredientValue =
                                                 selectionOption.name;
-                                            listIncludeIngredient.add(currentIncludeIngredientValue)
+                                            listIncludeIngredient += selectionOption
                                             includeIngredientExpanded =
                                                 false
                                         },
@@ -176,6 +180,10 @@ fun SearchScreen(
 
             }
 
+            listIncludeIngredient.forEach { ingredient ->
+                Text(text = ingredient.name)
+            }
+            
 
             val searchUiState by searchViewModel.searchUiState.collectAsState()
             when (val state = searchUiState) {
@@ -220,7 +228,7 @@ fun SearchScreen(
                         currentSearch = searchValue
                         search(
                             searchValue,
-                            includeIngredient = transformToString(listIncludeIngredient),
+                            includeIngredient = transformToString(listIncludeIngredient.toMutableStateList()),
                             "",
                             searchViewModel,
                             newSearch = true
@@ -251,10 +259,10 @@ fun SearchScreen(
 
 }
 
-fun transformToString(listIncludeIngredient: MutableList<String>): String {
+fun transformToString(listIncludeIngredient: MutableList<IngredientSearch>): String {
     var stringForApi = ""
     listIncludeIngredient.forEach { ingredient ->
-        stringForApi += ",${ingredient}"
+        stringForApi += ",${ingredient.name}"
     }
     return stringForApi
 }
@@ -270,3 +278,18 @@ fun search(
 ) {
     searchViewModel.search(search, includeIngredient, excludeIngredient, offset, newSearch)
 }
+
+
+//https://stackoverflow.com/questions/68885154/using-remembersaveable-with-mutablestatelistof
+
+@Composable
+fun <T: Any> rememberMutableStateListOf(vararg elements: T): SnapshotStateList<T> {
+    return rememberSaveable(saver = snapshotStateListSaver()) {
+        elements.toList().toMutableStateList()
+    }
+}
+
+private fun <T : Any> snapshotStateListSaver() = listSaver<SnapshotStateList<T>, T>(
+    save = { stateList -> stateList.toList() },
+    restore = { it.toMutableStateList() },
+)
