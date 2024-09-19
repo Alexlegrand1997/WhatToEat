@@ -44,9 +44,13 @@ fun SearchScreen(
         mutableStateOf("")
     }
 
-
+    // TODO : FIX THE SIZE PICTURE THAT IS NOT THE SAME FROM the multiple instance of specificRecipeScreen and SpecificRandomRecipeScreen
+    // Reason is that url to the picture is not always the same. EX:
+    // https://img.spoonacular.com/recipes/664359-312x231.jpg
+    // https://img.spoonacular.com/recipes/664359-556x370.jpg
+    // Gotta try to find a way to change size or always get the good size
     Surface(Modifier.fillMaxSize()) {
-        Column( horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(Modifier.padding(12.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             TextField(
                 value = searchValue,
                 onValueChange = { newText ->
@@ -71,9 +75,8 @@ fun SearchScreen(
                     if (state.recipes.results.isNotEmpty()) {
                         LazyColumn(
                             modifier = Modifier
-//                                .padding(12.dp)
-//                                .fillMaxHeight(0.9f),
-                                    ,
+                                .padding(12.dp)
+                                .fillMaxHeight(0.9f),
                             verticalArrangement = Arrangement.spacedBy(16.dp),
                         ) {
                             items(state.recipes.results) { recipe ->
