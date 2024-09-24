@@ -35,9 +35,7 @@ class SearchRecipeDataSource @Inject constructor(
                 SPOONACULAR_API_KEY
             ).responseJson()
 
-        val pointLeft =
-            response.headers.entries.toTypedArray()[20].value.toTypedArray()[0].toDouble()
-        dataStore.saveSetting(appSetting = AppSetting(pointLeft = pointLeft))
+        getPointsLeft(dataStore, response)
 
 
         when (result) {
@@ -70,6 +68,7 @@ class SearchRecipeDataSource @Inject constructor(
                 SPOONACULAR_API_KEY
             ).responseJson()
 
+        // 20 to respect the return from the api
         val pointLeft =
             response.headers.entries.toTypedArray()[20].value.toTypedArray()[0].toDouble()
         dataStore.saveSetting(appSetting = AppSetting(pointLeft = pointLeft))

@@ -26,11 +26,7 @@ class IngredientDataSource @Inject constructor(
                 SPOONACULAR_API_KEY
             ).responseJson()
 
-        // TODO : FUTURPROOF the 21 that could change if spoonacular change there api
-        val pointLeft =
-            response.headers.entries.toTypedArray()[21].value.toTypedArray()[0].toDouble()
-        dataStore.saveSetting(appSetting = AppSetting(pointLeft = pointLeft))
-
+        getPointsLeft(dataStore, response)
 
         when (result) {
             is Result.Success -> return json.decodeFromString(result.value.content)

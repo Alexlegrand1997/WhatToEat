@@ -183,7 +183,7 @@ fun SearchScreen(
             listIncludeIngredient.forEach { ingredient ->
                 Text(text = ingredient.name)
             }
-            
+
 
             val searchUiState by searchViewModel.searchUiState.collectAsState()
             when (val state = searchUiState) {

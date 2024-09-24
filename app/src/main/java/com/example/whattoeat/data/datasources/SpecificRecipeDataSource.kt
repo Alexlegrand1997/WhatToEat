@@ -1,5 +1,6 @@
 package com.example.whattoeat.data.datasources
 
+import androidx.compose.runtime.key
 import com.example.whattoeat.BuildConfig.SPOONACULAR_API_KEY
 import com.example.whattoeat.core.CalculatedConstant
 import com.example.whattoeat.core.Constants
@@ -12,6 +13,9 @@ import com.github.kittinunf.fuel.json.responseJson
 import com.github.kittinunf.result.Result
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import org.json.JSONObject
+import java.lang.Double
+import java.util.Map
 import javax.inject.Inject
 
 class SpecificRecipeDataSource @Inject constructor(
@@ -28,9 +32,7 @@ class SpecificRecipeDataSource @Inject constructor(
             SPOONACULAR_API_KEY
         ).responseJson()
 
-        var pointLeft =
-            response.headers.entries.toTypedArray()[20].value.toTypedArray()[0].toDouble()
-        dataStore.saveSetting(appSetting = AppSetting(pointLeft = pointLeft))
+        getPointsLeft(dataStore, response)
 
         when (result) {
             is Result.Success -> return json.decodeFromString(result.value.content)
