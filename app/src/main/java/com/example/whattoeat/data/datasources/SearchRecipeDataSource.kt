@@ -68,11 +68,7 @@ class SearchRecipeDataSource @Inject constructor(
                 SPOONACULAR_API_KEY
             ).responseJson()
 
-        // 20 to respect the return from the api
-        val pointLeft =
-            response.headers.entries.toTypedArray()[20].value.toTypedArray()[0].toDouble()
-        dataStore.saveSetting(appSetting = AppSetting(pointLeft = pointLeft))
-
+        getPointsLeft(dataStore, response)
 
         when (result) {
             is Result.Success -> return json.decodeFromString(result.value.content)
