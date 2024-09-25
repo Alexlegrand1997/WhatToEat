@@ -28,4 +28,6 @@
     <string name="no_recipe_found">No Recipe Found</string>
     <string name="no_recipe">No Recipe</string>
     <string name="more">More</string>
+    <string name="include_ingredients">Include Ingredients</string>
+    <string name="exclude_ingredients">Exclude Ingredients</string>
 </resources>

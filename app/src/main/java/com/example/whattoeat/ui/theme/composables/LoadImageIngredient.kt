@@ -49,3 +49,33 @@ fun LoadImageIngredient(
             )
         })
 }
+
+@Composable
+fun LoadImageIngredient(
+    ingredientName: String,
+    ingredientImage: String,
+    contentScale: ContentScale = ContentScale.Fit,
+    modifier: Modifier = Modifier
+) {
+    SubcomposeAsyncImage(
+        model = Constants.URL_CDN_INGREDIENT + ingredientImage,
+        contentScale = contentScale,
+        modifier = modifier,
+        contentDescription = ingredientName,
+        filterQuality = FilterQuality.High,
+        loading = {
+            Box(
+                contentAlignment = Alignment.Center, modifier = Modifier.fillMaxHeight()
+            ) {
+                CircularProgressIndicator(modifier = Modifier.size(60.dp))
+            }
+        },
+        error = {
+            Image(
+                modifier = modifier,
+                contentScale = ContentScale.Fit,
+                painter = painterResource(id = R.drawable.placeholder),
+                contentDescription = stringResource(id = R.string.picture_unavailable)
+            )
+        })
+}
