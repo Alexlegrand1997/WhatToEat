@@ -30,4 +30,5 @@
     <string name="more">Plus</string>
     <string name="include_ingredients">Ingredients incluent</string>
     <string name="exclude_ingredients">Ingredients Excluent</string>
+    <string name="filter">Filtre</string>
 </resources>
