@@ -64,6 +64,7 @@ import com.example.whattoeat.core.Constants.KEY_SEARCH_RECIPE
 import com.example.whattoeat.models.IngredientSearch
 import com.example.whattoeat.ui.theme.screens.search.components.IngredientCard
 import com.example.whattoeat.ui.theme.screens.randomRecipe.components.RecipeCard
+import com.example.whattoeat.ui.theme.screens.search.components.TopNavigationButton
 import com.example.whattoeat.ui.theme.theme.backgroundLight
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,20 +80,16 @@ fun SearchScreen(
         mutableStateOf("")
     }
 
-
     var currentIncludeIngredientValue by remember {
         mutableStateOf("")
     }
     var includeIngredientPossible by rememberSaveable {
         mutableStateOf(listOf<IngredientSearch>())
     }
-
     var listIncludeIngredient = rememberMutableStateListOf<IngredientSearch>()
-
     var includeIngredientExpanded by remember {
         mutableStateOf(false)
     }
-
 
     var currentExcludeIngredientValue by remember {
         mutableStateOf("")
@@ -101,10 +98,10 @@ fun SearchScreen(
         mutableStateOf(listOf<IngredientSearch>())
     }
     var listExcludeIngredient = rememberMutableStateListOf<IngredientSearch>()
-
     var excludeIngredientExpanded by rememberSaveable {
         mutableStateOf(false)
     }
+
     var leftScreen by remember {
         mutableStateOf(true)
     }
@@ -117,40 +114,23 @@ fun SearchScreen(
 // Gotta try to find a way to change size or always get the good size
     Surface(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
+            // Control of the top navigation
             Row(
-                Modifier.fillMaxHeight(0.075f), verticalAlignment = Alignment.CenterVertically
+                Modifier
+                    .fillMaxHeight(0.075f)
+                    .fillMaxWidth()
+                    .fillMaxSize(), verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = stringResource(id = R.string.search),
-                    Modifier
-                        .clickable { leftScreen = true }
-                        .fillMaxWidth(0.5f)
-                        .fillMaxHeight()
-                        .background(
-                            if (leftScreen) {
-                                MaterialTheme.colorScheme.primaryContainer
-                            } else {
-                                MaterialTheme.colorScheme.outline
-                            }
-                        )
-                        .wrapContentHeight(align = Alignment.CenterVertically),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleLarge
-                )
-                Text(text = stringResource(R.string.filter),
-                    Modifier
-                        .clickable { leftScreen = false }
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                        .background(
-                            if (!leftScreen) {
-                                MaterialTheme.colorScheme.primaryContainer
-                            } else {
-                                MaterialTheme.colorScheme.outline
-                            }
-                        )
-                        .wrapContentHeight(align = Alignment.CenterVertically),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleLarge)
+                TopNavigationButton(
+                    text = stringResource(id = R.string.search),
+                    modifier = Modifier.fillMaxWidth(0.5f),
+                    leftScreenValue = leftScreen,
+                    onMutableValueChange = { leftScreen = it })
+                TopNavigationButton(
+                    text = stringResource(id = R.string.filter),
+                    modifier = Modifier.fillMaxWidth(),
+                    leftScreenValue = !leftScreen,
+                    onMutableValueChange = { leftScreen = !it })
             }
             Column(
                 Modifier
@@ -191,11 +171,7 @@ fun SearchScreen(
                             label = { Text(text = stringResource(R.string.include_ingredients)) },
                             trailingIcon = {
                                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = includeIngredientExpanded)
-                            },
-//                    colors = ExposedDropdownMenuDefaults.textFieldColors(
-//                        focusedContainerColor = MaterialTheme.colorScheme.background, // TODO : FIX COLOR
-//                        unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary, // TODO : FIX COLOR
-//                    ),
+                            }
                         )
 
 
@@ -280,11 +256,7 @@ fun SearchScreen(
                             label = { Text(text = stringResource(R.string.exclude_ingredients)) },
                             trailingIcon = {
                                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = excludeIngredientExpanded)
-                            },
-//                    colors = ExposedDropdownMenuDefaults.textFieldColors(
-//                        focusedContainerColor = MaterialTheme.colorScheme.background, // TODO : FIX COLOR
-//                        unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary, // TODO : FIX COLOR
-//                    ),
+                            }
                         )
 
 
