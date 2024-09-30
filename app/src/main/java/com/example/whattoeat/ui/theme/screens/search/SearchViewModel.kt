@@ -1,6 +1,7 @@
 package com.example.whattoeat.ui.theme.screens.search
 
 import androidx.compose.ui.geometry.Offset
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.whattoeat.core.AlreadyLoadRandomRecipe
@@ -8,6 +9,7 @@ import com.example.whattoeat.core.AlreadyLoadSearchRecipe
 import com.example.whattoeat.core.ApiResult
 import com.example.whattoeat.data.repositories.IngredientRepository
 import com.example.whattoeat.data.repositories.SearchRecipeRepository
+import com.example.whattoeat.models.IngredientSearch
 import com.example.whattoeat.models.Recipe
 import com.example.whattoeat.models.Recipes
 import com.example.whattoeat.models.Results
@@ -35,6 +37,9 @@ class SearchViewModel @Inject constructor(
         _searchIngredientUiState.asStateFlow()
 
     var recipes: Results = Results()
+//    var listIncludeIngredient: List<IngredientSearch> =  listOf()
+    var listIncludeIngredient: MutableLiveData<List<IngredientSearch>> =  MutableLiveData<List<IngredientSearch>>(listOf())
+
 
     fun search(
         search: String,
@@ -108,7 +113,7 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    suspend fun searchIngredient(ingredient: String) {
+    suspend fun searchIngredient(ingredient: String, isInclude: Boolean) {
         viewModelScope.launch {
             _ingredientRepository.getMultipleIngredientSuggestion(ingredient).collect { apiResult ->
                 when (apiResult) {
