@@ -145,8 +145,6 @@ fun SearchScreen(
                             currentIncludeIngredientValue = it
                         },
                         searchViewModel = searchViewModel,
-//                        includeIngredientPossible = includeIngredientPossible,
-//                        onMutableIncludeIngredientPossible = { includeIngredientPossible = it },
                         listIncludeIngredient = listIncludeIngredient,
                         listExcludeIngredient = listExcludeIngredient,
 
@@ -158,269 +156,9 @@ fun SearchScreen(
                         onMutableCurrentExcludeIngredientValueChange = {
                             currentExcludeIngredientValue = it
                         },
-//                        excludeIngredientPossible = excludeIngredientPossible,
-//                        onMutableExcludeIngredientPossibleChange = {
-//                            excludeIngredientPossible = it
-//                        }
-                    )
-                }
-                /*
-                //               if (leftScreen) {
-                //                    TextField(modifier = Modifier.fillMaxWidth(),
-                //                        value = searchValue,
-                //                        onValueChange = { newText ->
-                //                            searchValue = newText.trimStart { it == '0' }
-                //                        },
-                //                        singleLine = true,
-                //                        placeholder = { Text(text = stringResource(id = R.string.search)) },
-                //                        label = { Text(text = stringResource(R.string.search)) })
-                //
-                //                    Spacer(modifier = Modifier.padding(12.dp))
-                //                }
-                //                if (!leftScreen) {
-                //                    // https://stackoverflow.com/questions/76039608/editable-dynamic-exposeddropdownmenubox-in-jetpack-compose
-                //                    ExposedDropdownMenuBox(
-                //                        expanded = includeIngredientExpanded,
-                //                        onExpandedChange = {
-                //                            includeIngredientExpanded = !includeIngredientExpanded
-                //                        }) {
-                //
-                //                        TextField(
-                //                            modifier = Modifier
-                //                                .menuAnchor()
-                //                                .fillMaxWidth(),
-                //                            value = currentIncludeIngredientValue,
-                //                            singleLine = true,
-                //                            onValueChange = { newText ->
-                //                                currentIncludeIngredientValue = newText.trimStart { it == '0' }
-                //                            },
-                //                            label = { Text(text = stringResource(R.string.include_ingredients)) },
-                //                            trailingIcon = {
-                //                                ExposedDropdownMenuDefaults.TrailingIcon(expanded = includeIngredientExpanded)
-                //                            }
-                //                        )
-                //
-                //
-                //                        LaunchedEffect(currentIncludeIngredientValue) {
-                //                            if (currentIncludeIngredientValue.isNotBlank()) searchViewModel.searchIngredient(
-                //                                currentIncludeIngredientValue
-                //                            )
-                //
-                //                        }
-                //
-                //                        val searchIngredientUiState by searchViewModel.searchIngredientUiState.collectAsState()
-                //                        when (val state = searchIngredientUiState) {
-                //                            is SearchIngredientUiState.Error -> Toast.makeText(
-                //                                LocalContext.current, state.exception.message, Toast.LENGTH_LONG
-                //                            ).show()
-                //
-                //                            SearchIngredientUiState.Loading -> {}
-                //
-                //                            is SearchIngredientUiState.Success -> {
-                //                                includeIngredientPossible = state.ingredients
-                //                                if (includeIngredientPossible.isNotEmpty()) {
-                //                                    DropdownMenu(modifier = Modifier
-                //                                        .background(MaterialTheme.colorScheme.background)
-                //                                        .exposedDropdownSize(true),
-                //                                        properties = PopupProperties(focusable = false),
-                //                                        expanded = includeIngredientExpanded,
-                //                                        onDismissRequest = {
-                //                                            includeIngredientExpanded = false
-                //                                        }) {
-                //                                        includeIngredientPossible.forEach { selectionOption ->
-                //                                            DropdownMenuItem(
-                //                                                text = { Text(text = selectionOption.name) },
-                //                                                onClick = {
-                //                                                    currentIncludeIngredientValue =
-                //                                                        selectionOption.name;
-                //                                                    listIncludeIngredient += selectionOption
-                //                                                    includeIngredientExpanded = false
-                //                                                },
-                //                                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-                //
-                //                                            )
-                //                                        }
-                //                                    }
-                //                                }
-                //                            }
-                //
-                //                        }
-                //
-                //                    }
-                //                    LazyVerticalGrid(
-                //                        columns = GridCells.Fixed(2),
-                //                        Modifier.fillMaxWidth(),
-                //                        contentPadding = PaddingValues(8.dp),
-                //                    ) {
-                //                        items(listIncludeIngredient.toList()) { ingredient ->
-                //                            IngredientCard(
-                //                                listIncludeIngredient = listIncludeIngredient,
-                //                                ingredient = ingredient
-                //                            )
-                //                        }
-                //
-                //                    }
-                //
-                //
-                //
-                //
-                //                    ExposedDropdownMenuBox(
-                //                        expanded = excludeIngredientExpanded,
-                //                        onExpandedChange = {
-                //                            excludeIngredientExpanded = !excludeIngredientExpanded
-                //                        }) {
-                //
-                //                        TextField(
-                //                            modifier = Modifier
-                //                                .menuAnchor()
-                //                                .fillMaxWidth(),
-                //                            value = currentExcludeIngredientValue,
-                //                            singleLine = true,
-                //                            onValueChange = { newText ->
-                //                                currentExcludeIngredientValue = newText.trimStart { it == '0' }
-                //                            },
-                //                            label = { Text(text = stringResource(R.string.exclude_ingredients)) },
-                //                            trailingIcon = {
-                //                                ExposedDropdownMenuDefaults.TrailingIcon(expanded = excludeIngredientExpanded)
-                //                            }
-                //                        )
-                //
-                //
-                //                        LaunchedEffect(currentExcludeIngredientValue) {
-                //                            if (currentExcludeIngredientValue.isNotBlank()) searchViewModel.searchIngredient(
-                //                                currentExcludeIngredientValue
-                //                            )
-                //
-                //                        }
-                //
-                //                        val searchIngredientUiState by searchViewModel.searchIngredientUiState.collectAsState()
-                //                        when (val state = searchIngredientUiState) {
-                //                            is SearchIngredientUiState.Error -> Toast.makeText(
-                //                                LocalContext.current, state.exception.message, Toast.LENGTH_LONG
-                //                            ).show()
-                //
-                //                            SearchIngredientUiState.Loading -> {}
-                //
-                //                            is SearchIngredientUiState.Success -> {
-                //                                excludeIngredientPossible = state.ingredients
-                //                                if (excludeIngredientPossible.isNotEmpty()) {
-                //                                    DropdownMenu(modifier = Modifier
-                //                                        .background(MaterialTheme.colorScheme.background)
-                //                                        .exposedDropdownSize(true),
-                //                                        properties = PopupProperties(focusable = false),
-                //                                        expanded = excludeIngredientExpanded,
-                //                                        onDismissRequest = {
-                //                                            excludeIngredientExpanded = false
-                //                                        }) {
-                //                                        excludeIngredientPossible.forEach { selectionOption ->
-                //                                            DropdownMenuItem(
-                //                                                text = { Text(text = selectionOption.name) },
-                //                                                onClick = {
-                //                                                    currentExcludeIngredientValue =
-                //                                                        selectionOption.name;
-                //                                                    listExcludeIngredient += selectionOption
-                //                                                    excludeIngredientExpanded = false
-                //                                                },
-                //                                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-                //
-                //                                            )
-                //                                        }
-                //                                    }
-                //                                }
-                //                            }
-                //
-                //                        }
-                //
-                //                    }
-                //                    LazyVerticalGrid(
-                //                        columns = GridCells.Fixed(2),
-                //                        Modifier.fillMaxWidth(),
-                //                        contentPadding = PaddingValues(8.dp),
-                //                    ) {
-                //                        items(listExcludeIngredient.toList()) { ingredient ->
-                //                            IngredientCard(
-                //                                listIncludeIngredient = listExcludeIngredient,
-                //                                ingredient = ingredient
-                //                            )
-                //                        }
-                //
-                //                    }
-                //                }
-                //                if (leftScreen) {
-                //                    val searchUiState by searchViewModel.searchUiState.collectAsState()
-                //                    when (val state = searchUiState) {
-                //                        is SearchUiState.Error -> Toast.makeText(
-                //                            LocalContext.current, state.exception.message, Toast.LENGTH_LONG
-                //                        ).show()
-                //
-                //                        SearchUiState.Loading -> {
-                //                            Text(text = stringResource(R.string.no_recipe))
-                //                        }
-                //
-                //                        is SearchUiState.Success -> if (state.recipes.results.isNotEmpty()) {
-                //                            LazyColumn(
-                //                                modifier = Modifier
-                //                                    .padding(12.dp)
-                //                                    .fillMaxHeight(0.9f),
-                //                                verticalArrangement = Arrangement.spacedBy(16.dp),
-                //                            ) {
-                //                                items(state.recipes.results) { recipe ->
-                //                                    RecipeCard(
-                //                                        recipe = recipe,
-                //                                        navController = navController,
-                //                                        KEY_SEARCH_RECIPE
-                //                                    )
-                //                                }
-                //                            }
-                //                        } else {
-                //                            Text(text = stringResource(R.string.no_recipe_found))
-                //                        }
-                //                    }
-                //
-                //                    Row(
-                //                        Modifier
-                //                            .height(32.dp)
-                //                            .fillMaxWidth(),
-                //                        horizontalArrangement = Arrangement.Absolute.SpaceAround
-                //                    ) {
-                //                        Button(
-                //
-                //                            onClick = {
-                //                                currentSearch = searchValue
-                //                                search(
-                //                                    searchValue,
-                //                                    includeIngredient = transformToString(listIncludeIngredient.toMutableStateList()),
-                //                                    excludeIngredient = transformToString(listExcludeIngredient.toMutableStateList()),
-                //                                    searchViewModel,
-                //                                    newSearch = true
-                //                                )
-                //                            }) {
-                //                            Text(text = stringResource(R.string.search))
-                //                        }
-                //                        if (currentSearch == searchValue && searchValue != "" && searchViewModel.recipes.offset + searchViewModel.recipes.number < searchViewModel.recipes.totalResults) {
-                //                            Button(
-                //
-                //                                onClick = {
-                //                                    search(
-                //                                        searchValue,
-                //                                        includeIngredient = transformToString(
-                //                                            listIncludeIngredient.toMutableStateList()
-                //                                        ),
-                //                                        excludeIngredient = transformToString(
-                //                                            listExcludeIngredient.toMutableStateList()
-                //                                        ),
-                //                                        searchViewModel,
-                //                                        searchViewModel.recipes.offset + searchViewModel.recipes.number,
-                //                                        false
-                //                                    )
-                //                                }) {
-                //                                Text(text = stringResource(R.string.more))
-                //                            }
-                //                        }
-                //                    }
-                //                }
-                */
 
+                        )
+                }
             }
         }
     }
@@ -476,87 +214,93 @@ fun SearchPage(
     listIncludeIngredient: List<IngredientSearch>,
     listExcludeIngredient: List<IngredientSearch>
 ) {
-    TextField(modifier = Modifier.fillMaxWidth(),
-        value = searchValue,
-        onValueChange = { newText ->
-//            searchValue = newText.trimStart { it == '0' }
-            onMutableSearchValueChange(newText.trimStart { it == '0' })
-        },
-        singleLine = true,
-        placeholder = { Text(text = stringResource(id = R.string.search)) },
-        label = { Text(text = stringResource(R.string.search)) })
+    Column(
+        Modifier.fillMaxHeight(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        TextField(modifier = Modifier.fillMaxWidth(),
+            value = searchValue,
+            onValueChange = { newText ->
+                onMutableSearchValueChange(newText.trimStart { it == '0' })
+            },
+            singleLine = true,
+            placeholder = { Text(text = stringResource(id = R.string.search)) },
+            label = { Text(text = stringResource(R.string.search)) })
 
-    Spacer(modifier = Modifier.padding(12.dp))
+        Column(
+            Modifier
+                .fillMaxHeight(0.915f)
+                .padding(0.dp, 12.dp, 0.dp, 0.dp)) {
 
-    val searchUiState by searchViewModel.searchUiState.collectAsState()
-    when (val state = searchUiState) {
-        is SearchUiState.Error -> Toast.makeText(
-            LocalContext.current, state.exception.message, Toast.LENGTH_LONG
-        ).show()
 
-        SearchUiState.Loading -> {
-            Text(text = stringResource(R.string.no_recipe))
-        }
+            val searchUiState by searchViewModel.searchUiState.collectAsState()
+            when (val state = searchUiState) {
+                is SearchUiState.Error -> Toast.makeText(
+                    LocalContext.current, state.exception.message, Toast.LENGTH_LONG
+                ).show()
 
-        is SearchUiState.Success -> if (state.recipes.results.isNotEmpty()) {
-            LazyColumn(
-                modifier = Modifier
-                    .padding(12.dp)
-                    .fillMaxHeight(0.9f),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                items(state.recipes.results) { recipe ->
-                    RecipeCard(
-                        recipe = recipe,
-                        navController = navController,
-                        KEY_SEARCH_RECIPE
+                SearchUiState.Loading -> {
+                    Text(
+                        text = stringResource(R.string.no_recipe)
                     )
                 }
+
+                is SearchUiState.Success -> if (state.recipes.results.isNotEmpty()) {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        items(state.recipes.results) { recipe ->
+                            RecipeCard(
+                                recipe = recipe,
+                                navController = navController,
+                                KEY_SEARCH_RECIPE
+                            )
+                        }
+                    }
+                } else {
+                    Text(text = stringResource(R.string.no_recipe_found))
+                }
             }
-        } else {
-            Text(text = stringResource(R.string.no_recipe_found))
         }
-    }
 
-    Row(
-        Modifier
-            .height(32.dp)
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.Absolute.SpaceAround
-    ) {
-        Button(
-
-            onClick = {
-//                currentSearch = searchValue
-                onMutableCurrentSearchChange(searchValue)
-                search(
-                    searchValue,
-                    includeIngredient = transformToString(listIncludeIngredient.toMutableStateList()),
-                    excludeIngredient = transformToString(listExcludeIngredient.toMutableStateList()),
-                    searchViewModel,
-                    newSearch = true
-                )
-            }) {
-            Text(text = stringResource(R.string.search))
-        }
-        if (currentSearch == searchValue && searchValue != "" && searchViewModel.recipes.offset + searchViewModel.recipes.number < searchViewModel.recipes.totalResults) {
+        Row(
+            Modifier
+                .height(48.dp)
+                .padding(0.dp,12.dp,0.dp,0.dp)
+                .fillMaxSize(),
+            horizontalArrangement = Arrangement.Absolute.SpaceAround,
+        ) {
             Button(
-
                 onClick = {
+                    onMutableCurrentSearchChange(searchValue)
                     search(
                         searchValue,
-                        includeIngredient = transformToString(
-                            listIncludeIngredient.toMutableStateList()
-                        ),
-                        excludeIngredient = transformToString(
-                            listExcludeIngredient.toMutableStateList()
-                        ),
+                        includeIngredient = transformToString(listIncludeIngredient.toMutableStateList()),
+                        excludeIngredient = transformToString(listExcludeIngredient.toMutableStateList()),
                         searchViewModel,
-                        searchViewModel.recipes.offset + searchViewModel.recipes.number,
-                        false
+                        newSearch = true
                     )
                 }) {
-                Text(text = stringResource(R.string.more))
+                Text(text = stringResource(R.string.search))
+            }
+            if (currentSearch == searchValue && searchViewModel.recipes.offset + searchViewModel.recipes.number < searchViewModel.recipes.totalResults) {
+                Button(
+                    onClick = {
+                        search(
+                            searchValue,
+                            includeIngredient = transformToString(
+                                listIncludeIngredient.toMutableStateList()
+                            ),
+                            excludeIngredient = transformToString(
+                                listExcludeIngredient.toMutableStateList()
+                            ),
+                            searchViewModel,
+                            searchViewModel.recipes.offset + searchViewModel.recipes.number,
+                            false
+                        )
+                    }) {
+                    Text(text = stringResource(R.string.more))
+                }
             }
         }
     }
@@ -569,16 +313,12 @@ fun Filter(
     onMutableIncludeIngredientExpandedChange: (Boolean) -> Unit,
     currentIncludeIngredientValue: String,
     onMutableCurrentIncludeIngredientValueChange: (String) -> Unit,
-//    includeIngredientPossible: List<IngredientSearch>,
-//    onMutableIncludeIngredientPossible: (List<IngredientSearch>) -> Unit,
     listIncludeIngredient: SnapshotStateList<IngredientSearch>,
 
     excludeIngredientExpanded: Boolean,
     onMutableExcludeIngredientExpandedChange: (Boolean) -> Unit,
     currentExcludeIngredientValue: String,
     onMutableCurrentExcludeIngredientValueChange: (String) -> Unit,
-//    excludeIngredientPossible: List<IngredientSearch>,
-//    onMutableExcludeIngredientPossibleChange: (List<IngredientSearch>) -> Unit,
     listExcludeIngredient: SnapshotStateList<IngredientSearch>,
 
     searchViewModel: SearchViewModel,
@@ -587,7 +327,6 @@ fun Filter(
     ExposedDropdownMenuBox(
         expanded = includeIngredientExpanded,
         onExpandedChange = {
-//            includeIngredientExpanded = !includeIngredientExpanded
             onMutableIncludeIngredientExpandedChange(!includeIngredientExpanded)
         }) {
 
@@ -598,7 +337,6 @@ fun Filter(
             value = currentIncludeIngredientValue,
             singleLine = true,
             onValueChange = { newText ->
-//                currentIncludeIngredientValue = newText.trimStart { it == '0' }
                 onMutableCurrentIncludeIngredientValueChange(newText.trimStart { it == '0' })
             },
             label = { Text(text = stringResource(R.string.include_ingredients)) },
@@ -623,9 +361,7 @@ fun Filter(
             SearchIngredientUiState.Loading -> {}
 
             is SearchIngredientUiState.Success -> {
-//                includeIngredientPossible = state.ingredients
-//                onMutableIncludeIngredientPossible(state.ingredients)
-//                if (includeIngredientPossible.isNotEmpty()) {
+
                 if (state.ingredients.isNotEmpty()) {
                     DropdownMenu(modifier = Modifier
                         .background(MaterialTheme.colorScheme.background)
@@ -633,21 +369,15 @@ fun Filter(
                         properties = PopupProperties(focusable = false),
                         expanded = includeIngredientExpanded,
                         onDismissRequest = {
-//                            includeIngredientExpanded = false
                             onMutableIncludeIngredientExpandedChange(false)
                         }) {
                         state.ingredients.forEach { selectionOption ->
                             DropdownMenuItem(
                                 text = { Text(text = selectionOption.name) },
                                 onClick = {
-//                                    currentIncludeIngredientValue =
-//                                        selectionOption.name;
+
                                     onMutableCurrentIncludeIngredientValueChange("")
                                     listIncludeIngredient += selectionOption
-//                                    val temp = listIncludeIngredient + selectionOption
-//                                    onMutableListIncludeIngredient(temp)
-
-//                                    includeIngredientExpanded = false
                                     onMutableIncludeIngredientExpandedChange(false)
                                 },
                                 contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -681,7 +411,6 @@ fun Filter(
     ExposedDropdownMenuBox(
         expanded = excludeIngredientExpanded,
         onExpandedChange = {
-//            excludeIngredientExpanded = !excludeIngredientExpanded
             onMutableExcludeIngredientExpandedChange(!excludeIngredientExpanded)
         }) {
 
@@ -692,7 +421,6 @@ fun Filter(
             value = currentExcludeIngredientValue,
             singleLine = true,
             onValueChange = { newText ->
-//                currentExcludeIngredientValue = newText.trimStart { it == '0' }
                 onMutableCurrentExcludeIngredientValueChange(newText.trimStart { it == '0' })
             },
             label = { Text(text = stringResource(R.string.exclude_ingredients)) },
@@ -718,8 +446,6 @@ fun Filter(
             SearchIngredientUiState.Loading -> {}
 
             is SearchIngredientUiState.Success -> {
-//                excludeIngredientPossible = state.ingredients
-//                onMutableExcludeIngredientPossibleChange(state.ingredients)
                 if (state.ingredients.isNotEmpty()) {
                     DropdownMenu(modifier = Modifier
                         .background(MaterialTheme.colorScheme.background)
@@ -727,14 +453,12 @@ fun Filter(
                         properties = PopupProperties(focusable = false),
                         expanded = excludeIngredientExpanded,
                         onDismissRequest = {
-//                            excludeIngredientExpanded = false
                             onMutableExcludeIngredientExpandedChange(false)
                         }) {
                         state.ingredients.forEach { selectionOption ->
                             DropdownMenuItem(
                                 text = { Text(text = selectionOption.name) },
                                 onClick = {
-//                                    currentExcludeIngredientValue = selectionOption.name;
                                     onMutableCurrentExcludeIngredientValueChange("")
                                     listExcludeIngredient += selectionOption
                                     onMutableExcludeIngredientExpandedChange(false)
