@@ -64,26 +64,13 @@ fun SearchScreen(
         mutableStateOf("")
     }
 
-    var currentIncludeIngredientValue by remember {
-        mutableStateOf("")
-    }
-
     val listIncludeIngredient = rememberMutableStateListOf<IngredientSearch>()
-    var includeIngredientExpanded by remember {
-        mutableStateOf(false)
-    }
-
-    var currentExcludeIngredientValue by remember {
-        mutableStateOf("")
-    }
     val listExcludeIngredient = rememberMutableStateListOf<IngredientSearch>()
-    var excludeIngredientExpanded by rememberSaveable {
-        mutableStateOf(false)
-    }
-
     var leftScreen by remember {
         mutableStateOf(true)
     }
+
+
 
 
 // TODO : FIX THE SIZE PICTURE THAT IS NOT THE SAME FROM the multiple instance of specificRecipeScreen and SpecificRandomRecipeScreen
@@ -130,26 +117,9 @@ fun SearchScreen(
                     )
                 } else {
                     Filter(
-                        includeIngredientExpanded = includeIngredientExpanded,
-                        onMutableIncludeIngredientExpandedChange = {
-                            includeIngredientExpanded = it
-                        },
-                        currentIncludeIngredientValue = currentIncludeIngredientValue,
-                        onMutableCurrentIncludeIngredientValueChange = {
-                            currentIncludeIngredientValue = it
-                        },
                         searchViewModel = searchViewModel,
                         listIncludeIngredient = listIncludeIngredient,
                         listExcludeIngredient = listExcludeIngredient,
-
-                        excludeIngredientExpanded = excludeIngredientExpanded,
-                        onMutableExcludeIngredientExpandedChange = {
-                            excludeIngredientExpanded = it
-                        },
-                        currentExcludeIngredientValue = currentExcludeIngredientValue,
-                        onMutableCurrentExcludeIngredientValueChange = {
-                            currentExcludeIngredientValue = it
-                        },
 
                         )
                 }
@@ -303,33 +273,43 @@ fun SearchPage(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Filter(
-    includeIngredientExpanded: Boolean,
-    onMutableIncludeIngredientExpandedChange: (Boolean) -> Unit,
-    currentIncludeIngredientValue: String,
-    onMutableCurrentIncludeIngredientValueChange: (String) -> Unit,
     listIncludeIngredient: SnapshotStateList<IngredientSearch>,
-
-    excludeIngredientExpanded: Boolean,
-    onMutableExcludeIngredientExpandedChange: (Boolean) -> Unit,
-    currentExcludeIngredientValue: String,
-    onMutableCurrentExcludeIngredientValueChange: (String) -> Unit,
     listExcludeIngredient: SnapshotStateList<IngredientSearch>,
-
     searchViewModel: SearchViewModel,
 ) {
+
+    var includeIngredientExpanded by remember {
+        mutableStateOf(false)
+    }
+
+
+    var currentIncludeIngredientValue by remember {
+        mutableStateOf("")
+    }
+
+    var excludeIngredientExpanded by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    var currentExcludeIngredientValue by remember {
+        mutableStateOf("")
+    }
+
+
+
 // https://stackoverflow.com/questions/76039608/editable-dynamic-exposeddropdownmenubox-in-jetpack-compose
 
     AutoCompleteTextBoxWithItem(isIngredientSuggestionExpanded = includeIngredientExpanded,
-        onMutableIsIngredientSuggestionExpandedChange = onMutableIncludeIngredientExpandedChange,
+        onMutableIsIngredientSuggestionExpandedChange = { includeIngredientExpanded = it},
         currentIngredientValue = currentIncludeIngredientValue,
-        onMutableCurrentIngredientValueChange = onMutableCurrentIncludeIngredientValueChange,
+        onMutableCurrentIngredientValueChange = {currentIncludeIngredientValue =it},
         listIngredient = listIncludeIngredient,
         searchViewModel = searchViewModel)
 
     AutoCompleteTextBoxWithItem(isIngredientSuggestionExpanded = excludeIngredientExpanded,
-        onMutableIsIngredientSuggestionExpandedChange = onMutableExcludeIngredientExpandedChange,
+        onMutableIsIngredientSuggestionExpandedChange = {excludeIngredientExpanded =it},
         currentIngredientValue = currentExcludeIngredientValue,
-        onMutableCurrentIngredientValueChange = onMutableCurrentExcludeIngredientValueChange,
+        onMutableCurrentIngredientValueChange = { currentExcludeIngredientValue =it},
         listIngredient = listExcludeIngredient,
         searchViewModel = searchViewModel)
 
