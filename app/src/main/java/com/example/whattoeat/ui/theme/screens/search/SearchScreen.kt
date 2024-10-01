@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -68,9 +67,7 @@ fun SearchScreen(
     var currentIncludeIngredientValue by remember {
         mutableStateOf("")
     }
-    var includeIngredientPossible by rememberSaveable {
-        mutableStateOf(listOf<IngredientSearch>())
-    }
+
     val listIncludeIngredient = rememberMutableStateListOf<IngredientSearch>()
     var includeIngredientExpanded by remember {
         mutableStateOf(false)
@@ -79,9 +76,6 @@ fun SearchScreen(
     var currentExcludeIngredientValue by remember {
         mutableStateOf("")
     }
-//    var excludeIngredientPossible by rememberSaveable {
-//        mutableStateOf(listOf<IngredientSearch>())
-//    }
     val listExcludeIngredient = rememberMutableStateListOf<IngredientSearch>()
     var excludeIngredientExpanded by rememberSaveable {
         mutableStateOf(false)
@@ -229,7 +223,7 @@ fun SearchPage(
 
         Column(
             Modifier
-                .fillMaxHeight(0.915f)
+                .fillMaxHeight(0.90f)
                 .padding(0.dp, 12.dp, 0.dp, 0.dp)) {
 
 
@@ -324,31 +318,60 @@ fun Filter(
     searchViewModel: SearchViewModel,
 ) {
 // https://stackoverflow.com/questions/76039608/editable-dynamic-exposeddropdownmenubox-in-jetpack-compose
+
+    AutoCompleteTextBoxWithItem(isIngredientSuggestionExpanded = includeIngredientExpanded,
+        onMutableIsIngredientSuggestionExpandedChange = onMutableIncludeIngredientExpandedChange,
+        currentIngredientValue = currentIncludeIngredientValue,
+        onMutableCurrentIngredientValueChange = onMutableCurrentIncludeIngredientValueChange,
+        listIngredient = listIncludeIngredient,
+        searchViewModel = searchViewModel)
+
+    AutoCompleteTextBoxWithItem(isIngredientSuggestionExpanded = excludeIngredientExpanded,
+        onMutableIsIngredientSuggestionExpandedChange = onMutableExcludeIngredientExpandedChange,
+        currentIngredientValue = currentExcludeIngredientValue,
+        onMutableCurrentIngredientValueChange = onMutableCurrentExcludeIngredientValueChange,
+        listIngredient = listExcludeIngredient,
+        searchViewModel = searchViewModel)
+
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AutoCompleteTextBoxWithItem(
+    isIngredientSuggestionExpanded:Boolean,
+    onMutableIsIngredientSuggestionExpandedChange: (Boolean) -> Unit,
+    currentIngredientValue:String,
+    onMutableCurrentIngredientValueChange: (String) -> Unit,
+    listIngredient: SnapshotStateList<IngredientSearch>,
+    searchViewModel: SearchViewModel
+
+    ){
     ExposedDropdownMenuBox(
-        expanded = includeIngredientExpanded,
+        expanded = isIngredientSuggestionExpanded,
         onExpandedChange = {
-            onMutableIncludeIngredientExpandedChange(!includeIngredientExpanded)
+            onMutableIsIngredientSuggestionExpandedChange(!isIngredientSuggestionExpanded)
         }) {
 
         TextField(
             modifier = Modifier
                 .menuAnchor()
                 .fillMaxWidth(),
-            value = currentIncludeIngredientValue,
+            value = currentIngredientValue,
             singleLine = true,
             onValueChange = { newText ->
-                onMutableCurrentIncludeIngredientValueChange(newText.trimStart { it == '0' })
+                onMutableCurrentIngredientValueChange(newText.trimStart { it == '0' })
             },
             label = { Text(text = stringResource(R.string.include_ingredients)) },
             trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(expanded = includeIngredientExpanded)
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded = isIngredientSuggestionExpanded)
             }
         )
 
 
-        LaunchedEffect(currentIncludeIngredientValue) {
-            if (currentIncludeIngredientValue.isNotBlank())
-                searchViewModel.searchIngredient(currentIncludeIngredientValue, true)
+        LaunchedEffect(currentIngredientValue) {
+            if (currentIngredientValue.isNotBlank())
+                searchViewModel.searchIngredient(currentIngredientValue, true)
 
         }
 
@@ -367,18 +390,18 @@ fun Filter(
                         .background(MaterialTheme.colorScheme.background)
                         .exposedDropdownSize(true),
                         properties = PopupProperties(focusable = false),
-                        expanded = includeIngredientExpanded,
+                        expanded = isIngredientSuggestionExpanded,
                         onDismissRequest = {
-                            onMutableIncludeIngredientExpandedChange(false)
+                            onMutableIsIngredientSuggestionExpandedChange(false)
                         }) {
                         state.ingredients.forEach { selectionOption ->
                             DropdownMenuItem(
                                 text = { Text(text = selectionOption.name) },
                                 onClick = {
 
-                                    onMutableCurrentIncludeIngredientValueChange("")
-                                    listIncludeIngredient += selectionOption
-                                    onMutableIncludeIngredientExpandedChange(false)
+                                    onMutableCurrentIngredientValueChange("")
+                                    listIngredient += selectionOption
+                                    onMutableIsIngredientSuggestionExpandedChange(false)
                                 },
                                 contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
 
@@ -396,92 +419,9 @@ fun Filter(
         Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(8.dp),
     ) {
-        items(listIncludeIngredient.toList()) { ingredient ->
+        items(listIngredient.toList()) { ingredient ->
             IngredientCard(
-                listIncludeIngredient = listIncludeIngredient,
-                ingredient = ingredient
-            )
-        }
-
-    }
-
-
-
-
-    ExposedDropdownMenuBox(
-        expanded = excludeIngredientExpanded,
-        onExpandedChange = {
-            onMutableExcludeIngredientExpandedChange(!excludeIngredientExpanded)
-        }) {
-
-        TextField(
-            modifier = Modifier
-                .menuAnchor()
-                .fillMaxWidth(),
-            value = currentExcludeIngredientValue,
-            singleLine = true,
-            onValueChange = { newText ->
-                onMutableCurrentExcludeIngredientValueChange(newText.trimStart { it == '0' })
-            },
-            label = { Text(text = stringResource(R.string.exclude_ingredients)) },
-            trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(expanded = excludeIngredientExpanded)
-            }
-        )
-
-
-        LaunchedEffect(currentExcludeIngredientValue) {
-            if (currentExcludeIngredientValue.isNotBlank()) searchViewModel.searchIngredient(
-                currentExcludeIngredientValue, false
-            )
-
-        }
-
-        val searchIngredientUiState by searchViewModel.searchIngredientUiState.collectAsState()
-        when (val state = searchIngredientUiState) {
-            is SearchIngredientUiState.Error -> Toast.makeText(
-                LocalContext.current, state.exception.message, Toast.LENGTH_LONG
-            ).show()
-
-            SearchIngredientUiState.Loading -> {}
-
-            is SearchIngredientUiState.Success -> {
-                if (state.ingredients.isNotEmpty()) {
-                    DropdownMenu(modifier = Modifier
-                        .background(MaterialTheme.colorScheme.background)
-                        .exposedDropdownSize(true),
-                        properties = PopupProperties(focusable = false),
-                        expanded = excludeIngredientExpanded,
-                        onDismissRequest = {
-                            onMutableExcludeIngredientExpandedChange(false)
-                        }) {
-                        state.ingredients.forEach { selectionOption ->
-                            DropdownMenuItem(
-                                text = { Text(text = selectionOption.name) },
-                                onClick = {
-                                    onMutableCurrentExcludeIngredientValueChange("")
-                                    listExcludeIngredient += selectionOption
-                                    onMutableExcludeIngredientExpandedChange(false)
-                                },
-                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-
-                            )
-                        }
-                    }
-                }
-            }
-
-        }
-
-    }
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        Modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(8.dp),
-    ) {
-        items(listExcludeIngredient.toList()) { ingredient ->
-            IngredientCard(
-                listIncludeIngredient = listExcludeIngredient,
+                listIncludeIngredient = listIngredient,
                 ingredient = ingredient
             )
         }
