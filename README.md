@@ -69,7 +69,7 @@ In French :
 
 
 To be able to test the app you will need to go get an spoonacular API Key and add it in the local.properties file.
-You can go get your key by signing up there : ![url](https://spoonacular.com/food-api/console#Dashboard)
+You can go get your key by signing up there : https://spoonacular.com/food-api/console#Dashboard
 
 ![image](https://github.com/user-attachments/assets/6d42c5ba-e1fe-4b39-a8f1-95d5bc3cf582)
 
