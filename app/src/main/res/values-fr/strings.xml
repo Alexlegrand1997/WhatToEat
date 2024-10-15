@@ -31,4 +31,5 @@
     <string name="include_ingredients">Ingredients incluent</string>
     <string name="exclude_ingredients">Ingredients Excluent</string>
     <string name="filter">Filtre</string>
+    <string name="search_ingredient_pts">Recherche d\'ingredient par lettre : %1$s pts</string>
 </resources>

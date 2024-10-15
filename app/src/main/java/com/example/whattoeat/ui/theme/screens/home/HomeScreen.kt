@@ -39,6 +39,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.whattoeat.R
 import com.example.whattoeat.core.Constants.COST_POINT_RANDOM_RECIPE_REFRESH
 import com.example.whattoeat.core.Constants.COST_POINT_SAVE_RECIPE
+import com.example.whattoeat.core.Constants.COST_POINT_SEARCH_INGREDIENT_PER_LETTER
 import com.example.whattoeat.core.Constants.COST_POINT_SEARCH_RECIPE
 import com.example.whattoeat.data.repositories.AppSetting
 import com.example.whattoeat.ui.theme.composables.LoadingSpinner
@@ -164,6 +165,8 @@ fun homeWelcomeScreen(appSetting: AppSetting, settingViewModel: SettingViewModel
                     style = Typography.titleSmall
                 )
                 Text(text = stringResource(R.string.search_recipe_pts, COST_POINT_SEARCH_RECIPE), style = Typography.titleSmall)
+
+                Text(text = stringResource(R.string.search_ingredient_pts, COST_POINT_SEARCH_INGREDIENT_PER_LETTER), style = Typography.titleSmall)
             }
 
 

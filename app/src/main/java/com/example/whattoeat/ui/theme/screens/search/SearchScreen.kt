@@ -151,9 +151,6 @@ private fun <T : Any> snapshotStateListSaver() = listSaver<SnapshotStateList<T>,
     restore = { it.toMutableStateList() },
 )
 
-//leftScreenValue: Boolean,
-//onMutableValueChange: (Boolean) -> Unit
-
 @Composable
 fun SearchPage(
     searchValue: String,
@@ -233,14 +230,6 @@ fun SearchPage(
                 }
             }
 
-//            if (searchViewModel.isLoading!!) {
-//                LinearProgressIndicator(
-//                    Modifier
-//                        .height(48.dp)
-//                        .padding(0.dp, 8.dp, 0.dp, 8.dp),
-//                    color = MaterialTheme.colorScheme.primary,
-//                )
-//            }
         }
 
         Row(
