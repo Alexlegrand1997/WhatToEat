@@ -23,12 +23,14 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,9 +50,16 @@ import androidx.navigation.NavController
 import com.example.whattoeat.R
 import com.example.whattoeat.core.Constants.KEY_SEARCH_RECIPE
 import com.example.whattoeat.models.IngredientSearch
+import com.example.whattoeat.models.Recipe
+import com.example.whattoeat.models.Recipes
+import com.example.whattoeat.models.Results
+import com.example.whattoeat.ui.theme.composables.LoadingSpinner
 import com.example.whattoeat.ui.theme.screens.randomRecipe.components.RecipeCard
 import com.example.whattoeat.ui.theme.screens.search.components.IngredientCard
 import com.example.whattoeat.ui.theme.screens.search.components.TopNavigationButton
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.time.delay
+import okhttp3.internal.wait
 
 @Composable
 fun SearchScreen(
@@ -69,8 +78,6 @@ fun SearchScreen(
     var leftScreen by remember {
         mutableStateOf(true)
     }
-
-
 
 
 // TODO : FIX THE SIZE PICTURE THAT IS NOT THE SAME FROM the multiple instance of specificRecipeScreen and SpecificRandomRecipeScreen
@@ -128,26 +135,6 @@ fun SearchScreen(
     }
 }
 
-fun transformToString(listIncludeIngredient: MutableList<IngredientSearch>): String {
-    var stringForApi = ""
-    listIncludeIngredient.forEach { ingredient ->
-        stringForApi += ",${ingredient.name}"
-    }
-    return stringForApi
-}
-
-
-fun search(
-    search: String,
-    includeIngredient: String,
-    excludeIngredient: String,
-    searchViewModel: SearchViewModel,
-    offset: Int = 0,
-    newSearch: Boolean = true
-) {
-    searchViewModel.search(search, includeIngredient, excludeIngredient, offset, newSearch)
-}
-
 
 //https://stackoverflow.com/questions/68885154/using-remembersaveable-with-mutablestatelistof
 
@@ -178,6 +165,12 @@ fun SearchPage(
     listIncludeIngredient: List<IngredientSearch>,
     listExcludeIngredient: List<IngredientSearch>
 ) {
+    var listRecipe by remember {
+        mutableStateOf<List<Recipe>>(listOf())
+    }
+
+    val searchUiState by searchViewModel.searchUiState.collectAsState()
+
     Column(
         Modifier.fillMaxHeight(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -194,49 +187,75 @@ fun SearchPage(
         Column(
             Modifier
                 .fillMaxHeight(0.90f)
-                .padding(0.dp, 12.dp, 0.dp, 0.dp)) {
 
+                .padding(0.dp, 12.dp, 0.dp, 0.dp)
+        ) {
+            if (listRecipe.isNotEmpty()) {
+                // https://developer.android.com/quick-guides/content/lazily-load-list
+                LazyColumn(
+                    Modifier.fillMaxHeight(0.99f),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(listRecipe) { recipe ->
+                        RecipeCard(
+                            recipe = recipe,
+                            navController = navController,
+                            KEY_SEARCH_RECIPE
+                        )
+                    }
+                }
+            }
 
-            val searchUiState by searchViewModel.searchUiState.collectAsState()
             when (val state = searchUiState) {
+
                 is SearchUiState.Error -> Toast.makeText(
                     LocalContext.current, state.exception.message, Toast.LENGTH_LONG
                 ).show()
 
-                SearchUiState.Loading -> {
-                    Text(
-                        text = stringResource(R.string.no_recipe)
-                    )
+                is SearchUiState.Loading -> {
+                    if (currentSearch.isBlank() && listRecipe.isEmpty())
+                        Text(
+                            text = stringResource(R.string.no_recipe)
+                        )
+                    else if (!searchViewModel.isLoading!!) {
+                        LinearProgressIndicator(
+                            Modifier.fillMaxWidth(),
+                            color = MaterialTheme.colorScheme.primary,
+                        )
+                    }
                 }
 
-                is SearchUiState.Success -> if (state.recipes.results.isNotEmpty()) {
-                    LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        items(state.recipes.results) { recipe ->
-                            RecipeCard(
-                                recipe = recipe,
-                                navController = navController,
-                                KEY_SEARCH_RECIPE
-                            )
-                        }
+                is SearchUiState.Success -> {
+                    listRecipe = state.recipes.results
+                    if (listRecipe.isEmpty()) {
+                        Text(text = stringResource(R.string.no_recipe_found))
                     }
-                } else {
-                    Text(text = stringResource(R.string.no_recipe_found))
                 }
             }
+
+//            if (searchViewModel.isLoading!!) {
+//                LinearProgressIndicator(
+//                    Modifier
+//                        .height(48.dp)
+//                        .padding(0.dp, 8.dp, 0.dp, 8.dp),
+//                    color = MaterialTheme.colorScheme.primary,
+//                )
+//            }
         }
 
         Row(
             Modifier
                 .height(48.dp)
-                .padding(0.dp,12.dp,0.dp,0.dp)
+                .padding(0.dp, 12.dp, 0.dp, 0.dp)
                 .fillMaxSize(),
             horizontalArrangement = Arrangement.Absolute.SpaceAround,
         ) {
             Button(
                 onClick = {
-                    onMutableCurrentSearchChange(searchValue)
+                    onMutableCurrentSearchChange(searchValue);
+                    if (listRecipe.isNotEmpty()) {
+                        listRecipe = listOf()
+                    }
                     search(
                         searchValue,
                         includeIngredient = transformToString(listIncludeIngredient.toMutableStateList()),
@@ -250,6 +269,7 @@ fun SearchPage(
             if (currentSearch == searchValue && searchViewModel.recipes.offset + searchViewModel.recipes.number < searchViewModel.recipes.totalResults) {
                 Button(
                     onClick = {
+
                         search(
                             searchValue,
                             includeIngredient = transformToString(
@@ -261,7 +281,9 @@ fun SearchPage(
                             searchViewModel,
                             searchViewModel.recipes.offset + searchViewModel.recipes.number,
                             false
-                        )
+                        );
+
+
                     }) {
                     Text(text = stringResource(R.string.more))
                 }
@@ -269,6 +291,27 @@ fun SearchPage(
         }
     }
 }
+
+fun transformToString(listIncludeIngredient: MutableList<IngredientSearch>): String {
+    var stringForApi = ""
+    listIncludeIngredient.forEach { ingredient ->
+        stringForApi += ",${ingredient.name}"
+    }
+    return stringForApi
+}
+
+
+fun search(
+    search: String,
+    includeIngredient: String,
+    excludeIngredient: String,
+    searchViewModel: SearchViewModel,
+    offset: Int = 0,
+    newSearch: Boolean = true
+) {
+    searchViewModel.search(search, includeIngredient, excludeIngredient, offset, newSearch)
+}
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -296,22 +339,25 @@ fun Filter(
     }
 
 
-
 // https://stackoverflow.com/questions/76039608/editable-dynamic-exposeddropdownmenubox-in-jetpack-compose
 
-    AutoCompleteTextBoxWithItem(isIngredientSuggestionExpanded = includeIngredientExpanded,
-        onMutableIsIngredientSuggestionExpandedChange = { includeIngredientExpanded = it},
+    AutoCompleteTextBoxWithItem(
+        isIngredientSuggestionExpanded = includeIngredientExpanded,
+        onMutableIsIngredientSuggestionExpandedChange = { includeIngredientExpanded = it },
         currentIngredientValue = currentIncludeIngredientValue,
-        onMutableCurrentIngredientValueChange = {currentIncludeIngredientValue =it},
+        onMutableCurrentIngredientValueChange = { currentIncludeIngredientValue = it },
         listIngredient = listIncludeIngredient,
-        searchViewModel = searchViewModel)
+        searchViewModel = searchViewModel
+    )
 
-    AutoCompleteTextBoxWithItem(isIngredientSuggestionExpanded = excludeIngredientExpanded,
-        onMutableIsIngredientSuggestionExpandedChange = {excludeIngredientExpanded =it},
+    AutoCompleteTextBoxWithItem(
+        isIngredientSuggestionExpanded = excludeIngredientExpanded,
+        onMutableIsIngredientSuggestionExpandedChange = { excludeIngredientExpanded = it },
         currentIngredientValue = currentExcludeIngredientValue,
-        onMutableCurrentIngredientValueChange = { currentExcludeIngredientValue =it},
+        onMutableCurrentIngredientValueChange = { currentExcludeIngredientValue = it },
         listIngredient = listExcludeIngredient,
-        searchViewModel = searchViewModel)
+        searchViewModel = searchViewModel
+    )
 
 }
 
@@ -319,14 +365,14 @@ fun Filter(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AutoCompleteTextBoxWithItem(
-    isIngredientSuggestionExpanded:Boolean,
+    isIngredientSuggestionExpanded: Boolean,
     onMutableIsIngredientSuggestionExpandedChange: (Boolean) -> Unit,
-    currentIngredientValue:String,
+    currentIngredientValue: String,
     onMutableCurrentIngredientValueChange: (String) -> Unit,
     listIngredient: SnapshotStateList<IngredientSearch>,
     searchViewModel: SearchViewModel
 
-    ){
+) {
     ExposedDropdownMenuBox(
         expanded = isIngredientSuggestionExpanded,
         onExpandedChange = {
@@ -378,7 +424,6 @@ fun AutoCompleteTextBoxWithItem(
                             DropdownMenuItem(
                                 text = { Text(text = selectionOption.name) },
                                 onClick = {
-
                                     onMutableCurrentIngredientValueChange("")
                                     listIngredient += selectionOption
                                     onMutableIsIngredientSuggestionExpandedChange(false)

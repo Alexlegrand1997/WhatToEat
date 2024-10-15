@@ -16,6 +16,7 @@ import com.example.whattoeat.models.Results
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -37,9 +38,13 @@ class SearchViewModel @Inject constructor(
         _searchIngredientUiState.asStateFlow()
 
     var recipes: Results = Results()
-//    var listIncludeIngredient: List<IngredientSearch> =  listOf()
-    var listIncludeIngredient: MutableLiveData<List<IngredientSearch>> =  MutableLiveData<List<IngredientSearch>>(listOf())
 
+    //    var listIncludeIngredient: List<IngredientSearch> =  listOf()
+    var listIncludeIngredient: MutableLiveData<List<IngredientSearch>> =
+        MutableLiveData<List<IngredientSearch>>(listOf())
+
+    private val _isLoading = MutableLiveData<Boolean>(false)
+    val isLoading = _isLoading.value
 
     fun search(
         search: String,
@@ -49,6 +54,9 @@ class SearchViewModel @Inject constructor(
         newSearch: Boolean = true
     ) {
         viewModelScope.launch {
+            if (!newSearch) {
+                _isLoading.value = true
+            }
             if (includeIngredient.isBlank() && excludeIngredient.isBlank()) withoutIngredient(
                 search,
                 offset,
@@ -71,11 +79,19 @@ class SearchViewModel @Inject constructor(
                         )
                     }
 
-                    ApiResult.Loading -> SearchUiState.Loading
-                    is ApiResult.Success -> _searchRecipeUiState.update {
-                        AlreadyLoadSearchRecipe.setLoadedRecipeState(apiResult.data)
-                        setResult(apiResult.data, newSearch)
-                        SearchUiState.Success(recipes)
+                    ApiResult.Loading ->
+                        _searchRecipeUiState.update {
+                            _isLoading.value =true
+                            SearchUiState.Loading
+                    };
+
+                    is ApiResult.Success -> {
+                        _searchRecipeUiState.update {
+                            AlreadyLoadSearchRecipe.setLoadedRecipeState(apiResult.data)
+                            setResult(apiResult.data, newSearch)
+                            _isLoading.value = false
+                            SearchUiState.Success(recipes)
+                        }
                     }
                 }
 
