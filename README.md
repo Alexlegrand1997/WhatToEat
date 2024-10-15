@@ -48,7 +48,9 @@ This page will give the possibility to the user to get random recipe.
 For each recipe it will be possible to see the ingredient, see the instruction and save this recipe.
 There is also a button to get another random recipe
 
-![image](https://github.com/user-attachments/assets/1836b6db-bad3-4814-92a0-c6ee4dd5d14e)
+![image](https://github.com/user-attachments/assets/e0ab517a-3bb7-4c4a-9f41-8a6ff4f68ae1)
+
+![image](https://github.com/user-attachments/assets/fe23c388-59bb-46d5-ba8a-4f2eb69ad2e0)
 
 Setting Page :
 
