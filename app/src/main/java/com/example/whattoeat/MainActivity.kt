@@ -9,8 +9,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.whattoeat.ui.theme.composables.BottomNavBar
 import com.example.whattoeat.ui.theme.screens.randomRecipe.RandomRecipeViewModel
+import com.example.whattoeat.ui.theme.screens.search.SearchViewModel
 import com.example.whattoeat.ui.theme.screens.setting.SettingViewModel
 import com.example.whattoeat.ui.theme.screens.setting.SettingsScreenEvent
 import com.example.whattoeat.ui.theme.screens.specificRecipe.SpecificRecipeViewModel
@@ -26,15 +28,14 @@ class MainActivity : ComponentActivity() {
     private val settingViewModel by viewModels<SettingViewModel>()
     private val randomRecipeViewModel by viewModels<RandomRecipeViewModel>()
     private val specificRecipeViewModel by viewModels<SpecificRecipeViewModel>()
+    private val searchViewModel by viewModels<SearchViewModel>()
 
 
-    // TODO : ADD PAGE CONNECT USER : https://spoonacular.com/food-api/docs#Connect-User
 
-    // TODO : Check how to show user that when he is looking at a recipe he can back
 
     // TODO : When a specificRecipe is load and we check another one we can briefly see the old recipe
 
-    // TODO : Think about how to adjust precision of measure so the user can read and it is nice to read
+    // TODO : Make a template for button like : BUTTON(text, onclick)...
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +57,8 @@ class MainActivity : ComponentActivity() {
                 {
                     BottomNavBar(application,
                         randomRecipeViewModel,
-                        specificRecipeViewModel
+                        specificRecipeViewModel,
+                        searchViewModel
                     )
                 }
             }

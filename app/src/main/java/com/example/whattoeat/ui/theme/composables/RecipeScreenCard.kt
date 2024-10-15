@@ -51,7 +51,6 @@ fun RecipeScreenCard(
                 modifier = Modifier.weight(0.75f),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
-
             ) {
                 Button(
                     onClick = { currentRecipeInfo.value = true },
