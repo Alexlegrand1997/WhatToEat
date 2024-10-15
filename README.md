@@ -30,8 +30,9 @@ to go get the information of the recipe.
 
 When and recipe is selectionned the client will be redirected on the recipe information page where he will be able to unsave the recipe and see the instruction to make it. The client will also have access to the ingredient information.
 
-![image](https://github.com/user-attachments/assets/8d80489b-7df2-4049-b720-96f7b7d38af6)
-![image](https://github.com/user-attachments/assets/433a9907-7880-4463-88f4-8484e5d41471)
+![image](https://github.com/user-attachments/assets/2794f545-7b5a-4a35-b92e-409566e0dbde)
+
+![image](https://github.com/user-attachments/assets/a3078c93-e081-4bc8-ab98-5c5220d55856)
 
 Search Recipe Page :
 
