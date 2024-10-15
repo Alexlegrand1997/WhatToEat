@@ -17,15 +17,14 @@ Home page :
 
 This page is there to tell the user how many point he/she got left and how many point each action will cost.
 There is also the possibility to change the name that is only register in the phone through a datastore.
-![image](https://github.com/user-attachments/assets/b22fe2b8-dbd7-4521-8240-2478e2659dca)
-
+![image](https://github.com/user-attachments/assets/16226c6a-3ecf-4f9b-9665-027575bac5e5)
 
 Favorite page :
 
 This page is use to register all the recipe that are interesting and that the user would like to be able to retrieve quickly.
 To respect Spoonacular API just the id, name of the recipe and picture url are save. So the client will still have to make a request to the api
 to go get the information of the recipe.
-![image](https://github.com/user-attachments/assets/dcc2087e-f097-49b9-832d-51bee292d9e6)
+![image](https://github.com/user-attachments/assets/86bc86d8-c0ec-4f7f-b551-a96636c3d92f)
 
 When and recipe is selectionned the client will be redirected on the recipe information page where he will be able to unsave the recipe and see the instruction to make it. The client will also have access to the ingredient information.
 ![image](https://github.com/user-attachments/assets/8d80489b-7df2-4049-b720-96f7b7d38af6)
@@ -33,9 +32,8 @@ When and recipe is selectionned the client will be redirected on the recipe info
 
 Search Recipe Page : 
 This page give the possibility for the user to search recipe base on a search, include ingredient and exclude ingredient.
-![image](https://github.com/user-attachments/assets/7bc1eeda-64a4-40e6-8fd0-41ddd895db25)
-![image](https://github.com/user-attachments/assets/1947bd29-91d2-4508-a490-6514bfc787bb)
-![image](https://github.com/user-attachments/assets/99fa6ff4-821f-4794-a62c-d6d31c756cad)
+![image](https://github.com/user-attachments/assets/1cbf9e60-a371-4027-a96b-d2df9f9b6665)
+![image](https://github.com/user-attachments/assets/2c6cf301-8225-4cb0-9aba-0376e4d3c505)
 
 
 Random Recipe Page:
@@ -47,8 +45,13 @@ There is also a button to get another random recipe
 Setting Page :
 This page is use to handle the basic setting. In this case it will be possible to adjust the theme of the app and the unit use for recipe.
 These informations are save in the phone through a datastore
-![image](https://github.com/user-attachments/assets/f350b9b0-fcbf-4c9c-8e1e-a9df59bf01f6)
+![image](https://github.com/user-attachments/assets/714be2ea-289b-46ab-92f6-255c07deeb4f)
 
 Other :
 The application also ajust all text (Except from the text coming from the api which is english only) between french or english depending of the phone setting
+In english :
+![image](https://github.com/user-attachments/assets/749479e4-28cd-4b57-9892-c1070b80200f)
+
+In French :
+![image](https://github.com/user-attachments/assets/c488025b-3fc9-44f7-9ea6-d48d3f103ac4)
 
