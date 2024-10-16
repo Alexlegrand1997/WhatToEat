@@ -162,10 +162,9 @@ fun SearchPage(
     listIncludeIngredient: List<IngredientSearch>,
     listExcludeIngredient: List<IngredientSearch>
 ) {
-    var listRecipe by remember {
+    var listRecipe by rememberSaveable {
         mutableStateOf<List<Recipe>>(listOf())
     }
-
     val searchUiState by searchViewModel.searchUiState.collectAsState()
 
     Column(
@@ -183,14 +182,13 @@ fun SearchPage(
 
         Column(
             Modifier
-                .fillMaxHeight(0.90f)
-
+//                .fillMaxHeight(0.90f)
                 .padding(0.dp, 12.dp, 0.dp, 0.dp)
         ) {
-            if (listRecipe.isNotEmpty()) {
+            if (searchViewModel.recipes.results.isNotEmpty()) {
                 // https://developer.android.com/quick-guides/content/lazily-load-list
                 LazyColumn(
-                    Modifier.fillMaxHeight(0.99f),
+                    Modifier.fillMaxHeight(0.90f),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(listRecipe) { recipe ->
@@ -204,7 +202,6 @@ fun SearchPage(
             }
 
             when (val state = searchUiState) {
-
                 is SearchUiState.Error -> Toast.makeText(
                     LocalContext.current, state.exception.message, Toast.LENGTH_LONG
                 ).show()
